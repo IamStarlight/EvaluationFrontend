@@ -58,5 +58,10 @@
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "eslintConfig": {
+    "rules": {
+      "no-console": "off"
+    }
+  }
 }
