@@ -54,17 +54,14 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
-
 ]
-
 export const asyncRoutes = [
   {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { roles: ['admin'], title: 'Example', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'table',
@@ -89,7 +86,7 @@ export const asyncRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { roles: ['admin'], title: 'Form', icon: 'form' }
       }
     ]
   },
@@ -100,6 +97,7 @@ export const asyncRoutes = [
     redirect: '/nested/menu1',
     name: 'Nested',
     meta: {
+      roles: ['admin'],
       title: 'Nested',
       icon: 'nested'
     },
