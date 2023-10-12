@@ -1,11 +1,13 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <button @click="change">changeroles</button>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+
 
 export default {
   name: 'Dashboard',
@@ -13,7 +15,15 @@ export default {
     ...mapGetters([
       'name'
     ])
+  },
+  methods: {
+    change () {
+      this.$store.dispatch("user/setchangerole",
+        ['4']
+      );
+    }
   }
+
 }
 </script>
 
@@ -22,6 +32,7 @@ export default {
   &-container {
     margin: 30px;
   }
+
   &-text {
     font-size: 30px;
     line-height: 46px;

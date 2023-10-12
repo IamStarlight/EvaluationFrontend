@@ -58,9 +58,10 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '个人主页', icon: 'dashboard' }
     }]
   },
+
 ]
 //这个是动态的路由，使用role配置权限，其他一样
 export const asyncRoutes = [
@@ -69,19 +70,19 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { roles: ['admin'], title: 'Example', icon: 'el-icon-s-help' },
+    meta: { roles: ['1'], title: '课程', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { roles: ['admin'], title: 'Table', icon: 'table' }
+        meta: { title: 'Table', icon: 'table' }
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
-        meta: { roles: ['admin'], title: 'Tree', icon: 'tree' }
+        meta: { title: 'Tree', icon: 'tree' }
       }
     ]
   },
@@ -94,7 +95,7 @@ export const asyncRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { roles: ['admin'], title: 'Form', icon: 'form' }
+        meta: { title: 'Form', icon: 'form' }
       }
     ]
   },
@@ -105,7 +106,6 @@ export const asyncRoutes = [
     redirect: '/nested/menu1',
     name: 'Nested',
     meta: {
-      roles: ['admin'],
       title: 'Nested',
       icon: 'nested'
     },
@@ -114,31 +114,31 @@ export const asyncRoutes = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { roles: ['admin'], title: 'Menu1' },
+        meta: { title: 'Menu1' },
         children: [
           {
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1'),
             name: 'Menu1-1',
-            meta: { roles: ['admin'], title: 'Menu1-1' }
+            meta: { title: 'Menu1-1' }
           },
           {
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'Menu1-2',
-            meta: { roles: ['admin'], title: 'Menu1-2' },
+            meta: { title: 'Menu1-2' },
             children: [
               {
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
                 name: 'Menu1-2-1',
-                meta: { roles: ['admin'], title: 'Menu1-2-1' }
+                meta: { title: 'Menu1-2-1' }
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'Menu1-2-2',
-                meta: { roles: ['admin'], title: 'Menu1-2-2' }
+                meta: { title: 'Menu1-2-2' }
               }
             ]
           },
@@ -146,7 +146,7 @@ export const asyncRoutes = [
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3'),
             name: 'Menu1-3',
-            meta: { roles: ['admin'], title: 'Menu1-3' }
+            meta: { title: 'Menu1-3' }
           }
         ]
       },
@@ -154,7 +154,7 @@ export const asyncRoutes = [
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
-        meta: { roles: ['admin'], title: 'menu2' }
+        meta: { title: 'menu2' }
       }
     ]
   },
