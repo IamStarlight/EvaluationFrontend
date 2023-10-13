@@ -13,14 +13,24 @@ export default {
   name: 'Dashboard',
   computed: {
     ...mapGetters([
-      'name'
+      'name',
+      'roles'
     ])
   },
   methods: {
     change () {
-      this.$store.dispatch("user/setchangerole",
-        ['4']
-      );
+      if (this.roles == 3)
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['4']
+        );
+      } else
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['5']
+        );
+
+      }
     }
   }
 
