@@ -1,19 +1,58 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+  <div class="personal-info-container">
+    <h2>个人信息</h2>
+    <div class="personal-info">
+      <div class="info-item">
+        <label>用户名：</label>
+        <p>{{ username }}</p>
+      </div>
+      <div class="info-item">
+        <label>ID号：</label>
+        <p>{{ id }}</p>
+      </div>
+      <div class="info-item">
+        <label>密码：</label>
+        <p>{{ password }}</p>
+      </div>
+      <div class="info-item">
+        <label>个性签名：</label>
+        <p>{{ signature }}</p>
+      </div>
+    </div>
+    <button class="change-password-btn" @click="showModal = true">修改密码</button>
+
+    <!-- 修改密码弹窗 -->
+    <div class="modal" v-if="showModal">
+      <div class="modal-content">
+        <h3>修改密码</h3>
+        <input type="password" v-model="oldPassword" placeholder="请输入原密码" />
+        <input type="password" v-model="newPassword" placeholder="请输入新密码" />
+        <button class="confirm-btn" @click="changePassword">确认修改</button>
+      </div>
+    </div>
+    <div class="dashboard-container">
+      <div class="dashboard-text">name: {{ name }}</div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-
+import { getUserInfo, changePassword } from "@/api/change";
 
 export default {
   name: 'Dashboard',
-  data() {
+  computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+      'sid'
+    ])
+  },
+  data () {
     return {
-      username: '1111',
-      id: '',
+      username: this.name,
+      id: this.sid,
       password: '',
       signature: '',
       showModal: false,
@@ -21,18 +60,12 @@ export default {
       oldPassword: ''
     };
   },
-  mounted() {
+  mounted () {
     // 页面加载时调用 API 获取个人信息
     this.getUserInfo();
   },
-  computed: {
-    ...mapGetters([
-      'name',
-      'roles'
-    ])
-  },
   methods: {
-    getUserInfo() {
+    getUserInfo () {
       getUserInfo()
         .then(response => {
           const userInfo = response.data.userInfo;
@@ -48,7 +81,7 @@ export default {
           console.log(error);
         });
     },
-    changePassword() {
+    changePassword () {
       const data = {
         oldPassword: this.oldPassword,
         newPassword: this.newPassword
@@ -57,7 +90,8 @@ export default {
       console.log(this.password);
       console.log(data.newPassword);
       // 根据您的需求，您可以在此处添加对输入的旧密码进行比较的逻辑
-      if (data.oldPassword !== this.password) {
+      if (data.oldPassword !== this.password)
+      {
         console.log("旧密码输入错误");
         return; // 如果旧密码输入错误，不继续执行修改密码的操作
       }
@@ -71,7 +105,7 @@ export default {
           this.$alert('修改成功', '提示', {
             confirmButtonText: '确定',
           });
-          this.showModal=false
+          this.showModal = false
           //this.hideModal();
         })
         .catch(error => {
@@ -93,7 +127,8 @@ export default {
 
 .personal-info {
   display: flex;
-  flex-direction: column; /* 修改为纵向布局 */
+  flex-direction: column;
+  /* 修改为纵向布局 */
   margin: -10px;
 }
 
@@ -106,7 +141,8 @@ export default {
 }
 
 .change-password-btn {
-  margin-top: 10px; /* 修改为上方留出一点间距 */
+  margin-top: 10px;
+  /* 修改为上方留出一点间距 */
   display: block;
 }
 
@@ -143,7 +179,8 @@ input {
 }
 
 .dashboard-container {
-  margin-top: 20px; /* 修改为上方留出一点间距 */
+  margin-top: 20px;
+  /* 修改为上方留出一点间距 */
 }
 
 .dashboard-text {
