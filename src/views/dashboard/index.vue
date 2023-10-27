@@ -1,46 +1,11 @@
 <template>
-  <div class="personal-info-container">
-    <h2>个人信息</h2>
-    <div class="personal-info">
-      <div class="info-item">
-        <label>用户名：</label>
-        <p>{{ username }}</p>
-      </div>
-      <div class="info-item">
-        <label>ID号：</label>
-        <p>{{ id }}</p>
-      </div>
-      <div class="info-item">
-        <label>密码：</label>
-        <p>{{ password }}</p>
-      </div>
-      <div class="info-item">
-        <label>个性签名：</label>
-        <p>{{ signature }}</p>
-      </div>
-    </div>
-    <button class="change-password-btn" @click="showModal=true">修改密码</button>
-
-    <!-- 修改密码弹窗 -->
-    <div class="modal" v-if="showModal">
-      <div class="modal-content">
-        <h3>修改密码</h3>
-        <input type="password" v-model="oldPassword" placeholder="请输入原密码" />
-        <input type="password" v-model="newPassword" placeholder="请输入新密码" />
-        <button class="confirm-btn" @click="changePassword">确认修改</button>
-      </div>
-    </div>
-    <div class="dashboard-container">
-      <div class="dashboard-text">name: {{ name }}</div>
-      <button @click="change">changeroles</button>
-    </div>
+  <div class="dashboard-container">
+    <div class="dashboard-text">name: {{ name }}</div>
   </div>
 </template>
 
-
 <script>
 import { mapGetters } from 'vuex'
-import {getUserInfo,changePassword} from "@/api/change";
 
 
 export default {
@@ -113,23 +78,6 @@ export default {
           console.log(error);
         });
     },
-
-
-    change () {
-      if (this.roles == 3)
-      {
-        this.$store.dispatch("user/setchangerole",
-          ['4']
-        );
-      } else
-      {
-        this.$store.dispatch("user/setchangerole",
-          ['5']
-        );
-      }
-    }
-
-
   }
 }
 </script>

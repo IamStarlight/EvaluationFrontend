@@ -40,8 +40,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'hyx',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -91,7 +91,10 @@ export default {
     handleLogin () {
       this.loading = true
       this.$store.dispatch('user/login', this.loginForm).then(() => {
+        alert("登录成功!")
+        console.log('跳转后的路由地址:', this.$route.fullPath)
         this.$router.push({ path: this.redirect || '/' })
+        console.log('跳转后的路由地址:', this.$route.fullPath)
         this.loading = false
       }).catch(() => {
         this.loading = false

@@ -71,14 +71,26 @@ export const constantRoutes = [
 //这个是动态的路由，使用role配置权限，其他一样
 export const asyncRoutes = [
   {
-    path: '/form',
+    path: '/course',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
+        name: 'Course',
+        component: () => import('@/views/course/index'),
         meta: { roles: ['1', '3'], title: '课程', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/cdash',
+    component: Layout,
+    children: [
+      {
+        path: 'show',
+        name: 'Course',
+        component: () => import('@/views/cdash/index'),
+        meta: { roles: ['4', '5'], title: '课程简介', icon: 'form' }
       }
     ]
   },
