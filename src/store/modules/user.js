@@ -94,14 +94,14 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        const { enabled, username, userface, nickname } = data
-        const roles = [enabled.toString()];
+        const { permission, id, userface, name } = data
+        const roles = [permission.toString()];
         console.log(state.roles)
         commit('SET_ROLES', roles)
         console.log(state.roles)
         // commit('SET_SID', sid)
-        commit('SET_SID', username)
-        commit('SET_NAME', nickname)
+        commit('SET_SID', id)
+        commit('SET_NAME', name)
         commit('SET_AVATAR', userface)
         const a = { roles: roles }
         resolve(a)

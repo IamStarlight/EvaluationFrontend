@@ -1,21 +1,21 @@
 const state = {
-  id: 1,
-  name: '',
-  teacher: '',
-  introduction: 'ssss'
+  cid: 1,
+  cname: '',
+  tid: '',
+  content: 'ssss'
 }
 const mutations = {
-  SET_ID: (state, id) => {
-    state.id = id
+  SET_ID: (state, cid) => {
+    state.id = cid
   },
-  SET_NAME: (state, name) => {
-    state.cname = name
+  SET_NAME: (state, cname) => {
+    state.cname = cname
   },
-  SET_TEACHER: (state, teacher) => {
-    state.teacher = teacher
+  SET_TEACHER: (state, tid) => {
+    state.teacher = tid
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.cintroduction = introduction
+  SET_INTRODUCTION: (state, content) => {
+    state.cintroduction = content
   },
 }
 const actions = {

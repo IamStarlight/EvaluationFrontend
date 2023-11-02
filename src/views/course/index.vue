@@ -10,30 +10,30 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-        <el-table-column align="center" label="课程号" width="95">
+        <el-table-column align="center" label="课程号" width="100">
           <template slot-scope="scope">
-            {{ scope.row.id }}
+            {{ scope.row.cid }}
           </template>
         </el-table-column>
         <el-table-column label="课程名">
           <template slot-scope="scope">
-            {{ scope.row.course }}
+            {{ scope.row.cname }}
           </template>
         </el-table-column>
         <el-table-column label="任课老师" width="110" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.teacher }}</span>
+            <span>{{ scope.row.tid }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="课程简介" width="110" align="center">
+        <el-table-column label="课程简介" width="500" align="center">
           <template slot-scope="scope">
-            {{ scope.row.introduction }}
+            {{ scope.row.content }}
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="进入课程" width="120">
           <template slot-scope="scope">
             <span><el-button type="primary" plain
-                @click="change(scope.row.id, scope.row.course, scope.row.teacher, scope.row.introduction)">进入</el-button></span>
+                @click="change(scope.row.cid, scope.row.cname, scope.row.tid, scope.row.content)">进入</el-button></span>
           </template>
         </el-table-column>
       </el-table>
@@ -67,20 +67,7 @@ export default {
   },
   data () {
     return {
-      list: [
-        {
-          id: '1',
-          course: '实训1',
-          teacher: '刘荧',
-          introduction: '哈哈哈哈哈哈哈哈'
-        },
-        {
-          id: '2',
-          course: '实训2',
-          teacher: '刘荧2',
-          introduction: '哈哈哈哈哈哈哈哈2'
-        }
-      ],
+      list: [],
       beg: true,
       listLoading: false,
       i: 0,
@@ -88,13 +75,13 @@ export default {
     }
   },
   created () {
-    //this.fetchData()
+    this.fetchData()
   },
 
   methods: {
     fetchData () {
       this.listLoading = true
-      getAll(this.sid).then(response => {
+      getAll().then(response => {
         this.list = Array.from(response.data)
         console.log("Data" + this.list)
         this.listLoading = false
@@ -115,16 +102,16 @@ export default {
 
       }
       this.$store.dispatch("course/setchangeid",
-        id
+        cid
       );
       this.$store.dispatch("course/setchangecname",
         cname
       );
       this.$store.dispatch("course/setchangeteacher",
-        teacher
+        tid
       );
       this.$store.dispatch("course/setchangeintro",
-        intro
+        content
       );
       this.$router.push({ path: '/cdash/show' })
     },
