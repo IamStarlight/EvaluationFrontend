@@ -5,16 +5,15 @@ export function getList (titles) {
   con['title'] = titles;
   con = JSON.stringify(con);
   return request({
-    url: '/vue-admin-template/course/search',
+    url: 'course/student/admin',
     method: 'get',
     params: { title: titles }
   })
 }
 
-export function getAll (sid) {
+export function getAll () {
   return request({
-    url: '/vue-admin-template/course/all',
+    url: 'course/student',
     method: 'get',
-    params: { sid: sid }
   })
 }
