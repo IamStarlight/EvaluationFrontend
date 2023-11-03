@@ -40,14 +40,14 @@ router.beforeEach(async (to, from, next) => {
 
           //add permission
           const { roles } = await store.dispatch('user/getInfo')
-
+          console.log(roles)
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
           //console.log(accessRoutes)
           router.addRoutes(accessRoutes)
           // 获取完整的路由配置
           // const routes = router.options.routes;
           // console.log('Updated Routes:', routes);
-          next({ ...to, replace: true })
+          next('/')
         } catch (error)
         {
           // remove token and go to login page to re-login

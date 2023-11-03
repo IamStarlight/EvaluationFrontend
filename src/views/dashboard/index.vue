@@ -41,24 +41,19 @@
         </div>
       </div>
     </div>
-    <!-- 仪表盘容器 -->
-<!--    <div class="dashboard-container">-->
-<!--      <div class="dashboard-text">name: {{ name }}</div>-->
-<!--      <button @click="change">changeroles</button>-->
-<!--    </div>-->
   </div>
 </template>
 
 
 
 <script>
-//import { mapGetters } from 'vuex'
-import {getUserInfo,changePassword} from "@/api/change";
+import { mapGetters } from 'vuex'
+import { getUserInfo, changePassword } from "@/api/change";
 
 
 export default {
   name: 'Dashboard',
-  data() {
+  data () {
     return {
       username: '1111',
       id: '',
@@ -74,10 +69,11 @@ export default {
     this.getUserInfo();
   },
    computed: {
-  //   ...mapGetters([
-  //     'name',
-  //     'roles'
-  //   ]),
+     ...mapGetters([
+       'name',
+       'roles',
+       'sid'
+     ]),
     // 根据当前时间返回不同的问候语
     greeting() {
       const currentHour = new Date().getHours(); // 获取当前小时数
@@ -158,76 +154,7 @@ export default {
 }
 </script>
 
-<!--<style lang="scss" scoped>-->
-<!--.personal-info-container {-->
-<!--  margin: 20px;-->
-<!--  border: 1px solid #ccc;-->
-<!--  border-radius: 4px;-->
-<!--  padding: 20px;-->
-<!--  background-color: #f1f8ff;-->
-<!--}-->
-
-<!--.personal-info {-->
-<!--  display: flex;-->
-<!--  flex-direction: column; /* 修改为纵向布局 */-->
-<!--  margin: -10px;-->
-<!--}-->
-
-<!--.info-item {-->
-<!--  padding: 10px;-->
-<!--}-->
-
-<!--.info-item label {-->
-<!--  font-weight: bold;-->
-<!--}-->
-
-<!--.change-password-btn {-->
-<!--  margin-top: 10px; /* 修改为上方留出一点间距 */-->
-<!--  display: block;-->
-<!--}-->
-
-<!--.modal {-->
-<!--  position: fixed;-->
-<!--  top: 0;-->
-<!--  left: 0;-->
-<!--  width: 100%;-->
-<!--  height: 100%;-->
-<!--  display: flex;-->
-<!--  align-items: center;-->
-<!--  justify-content: center;-->
-<!--  background-color: rgba(0, 0, 0, 0.5);-->
-<!--  z-index: 999;-->
-<!--}-->
-
-<!--.modal-content {-->
-<!--  width: 300px;-->
-<!--  padding: 20px;-->
-<!--  background-color: #fff;-->
-<!--  border-radius: 4px;-->
-<!--}-->
-
-<!--input {-->
-<!--  margin-bottom: 10px;-->
-<!--  padding: 5px;-->
-<!--}-->
-
-<!--.confirm-btn {-->
-<!--  padding: 10px 20px;-->
-<!--  display: block;-->
-<!--  margin-left: auto;-->
-<!--  margin-right: 0;-->
-<!--}-->
-
-<!--.dashboard-container {-->
-<!--  margin-top: 20px; /* 修改为上方留出一点间距 */-->
-<!--}-->
-
-<!--.dashboard-text {-->
-<!--  font-size: 30px;-->
-<!--  line-height: 46px;-->
-<!--}-->
-<!--</style>-->
-<style>
+<style lang="scss" scoped>
 .personal-info-container {
   border: 1px solid #ccc;
   background-color: #f5f5f5;
@@ -329,4 +256,3 @@ label{
   font-size:18px
 }
 </style>
-

@@ -1,15 +1,15 @@
 import request from '@/utils/request';
 
-export function getUserInfo() {
+export function getUserInfo () {
   return request({
-    url: '/vue-admin-template/change/userInfo',
+    url: '/domain/user/userInfo',
     method: 'get'
   });
 }
 
-export function changePassword(newPassword) {
+export function changePassword (newPassword) {
   return request({
-    url: '/vue-admin-template/change/changepassword',
+    url: '/domain/user/changePassword',
     method: 'post',
     data: {
       newPassword

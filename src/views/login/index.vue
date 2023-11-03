@@ -7,9 +7,9 @@
       <div class="b"></div>
       <div class="c">
         <div class="d" ref="loginForm" :model="loginForm">
-          <h1>北交疯人院</h1>
+          <h1>吃饱吃好</h1>
           <h2>Login</h2>
-          <input type="text" class="e" placeholder="USER NAME" v-model="loginForm.username">
+          <input type="text" class="e" placeholder="id" v-model="loginForm.username">
           <input type="password" class="e" placeholder="PASSWORD" v-model="loginForm.password">
           <el-button class="g" type="primary" @click.native.prevent="handleLogin">Login</el-button>
           <el-button type="text" style="color: black; font-weight: 700;" @click.native.prevent="handleSign">sign
@@ -40,8 +40,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '21301000',
+        password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -76,6 +76,18 @@ export default {
     }
   },
   methods: {
+    validateInput () {
+      const minLength = 8; // 最小长度
+      const maxLength = 8; // 最大长度
+
+      if (this.loginForm.username.length < minLength)
+      {
+        this.loginForm.username = this.loginForm.username.slice(0, minLength); // 不允许少于最小长度
+      } else if (this.loginForm.username.length > maxLength)
+      {
+        this.loginForm.username = this.loginForm.username.slice(0, maxLength); // 不允许超过最大长度
+      }
+    },
     showPwd () {
       if (this.passwordType === 'password')
       {
@@ -90,10 +102,15 @@ export default {
     },
     handleLogin () {
       this.loading = true
+      console.log(this.loginForm)
       this.$store.dispatch('user/login', this.loginForm).then(() => {
+        alert("登录成功!")
+        console.log('跳转后的路由地址:', this.$route.fullPath)
         this.$router.push({ path: this.redirect || '/' })
+        console.log('跳转后的路由地址:', this.$route.fullPath)
         this.loading = false
       }).catch(() => {
+        alert("登录失败!")
         this.loading = false
       })
     },

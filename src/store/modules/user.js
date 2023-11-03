@@ -6,9 +6,10 @@ import generateRoutes from './permission'
 const getDefaultState = () => {
   return {
     token: getToken(),
+    sid: '',
     name: '',
     avatar: '',
-    roles: []
+    roles: ['1']
   }
 }
 
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_SID: (state, sid) => {
+    state.sid = sid
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -49,9 +53,7 @@ const actions = {
   },
 
   async setchangerole ({ commit, dispatch }, roles) {
-    console.log(state.roles)
     commit('SET_ROLES', roles)
-    console.log(state.roles)
     resetRouter()
     // generate accessible routes map based on roles
     const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
@@ -92,13 +94,20 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar } = data
+        const { permission, id, userface, name } = data
+        const roles = [permission.toString()];
+        console.log(state.roles)
         commit('SET_ROLES', roles)
-        console.log(roles)
-
+        console.log(state.roles)
+        // commit('SET_SID', sid)
+        commit('SET_SID', id)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        commit('SET_AVATAR', userface)
+        const a = { roles: roles }
+        resolve(a)
+        console.log(
+          "111111111"
+        )
       }).catch(error => {
         reject(error)
       })
