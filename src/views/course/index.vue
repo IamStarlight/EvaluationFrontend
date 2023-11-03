@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column label="任课老师" width="110" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.tid }}</span>
+            <span>{{ scope.row.tname }}</span>
           </template>
         </el-table-column>
         <el-table-column label="课程简介" width="500" align="center">
@@ -33,7 +33,7 @@
         <el-table-column align="center" prop="created_at" label="进入课程" width="120">
           <template slot-scope="scope">
             <span><el-button type="primary" plain
-                @click="change(scope.row.cid, scope.row.cname, scope.row.tid, scope.row.content)">进入</el-button></span>
+                @click="change(scope.row.cid, scope.row.cname, scope.row.tname, scope.row.content)">进入</el-button></span>
           </template>
         </el-table-column>
       </el-table>
@@ -88,7 +88,7 @@ export default {
       })
     },
 
-    change (id, cname, teacher, intro) {
+    change (cid, cname, tid, content) {
       if (this.roles == 3)
       {
         this.$store.dispatch("user/setchangerole",

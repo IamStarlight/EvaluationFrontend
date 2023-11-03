@@ -18,11 +18,6 @@
       </el-button> -->
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="学号" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
@@ -133,7 +128,7 @@ export default {
         { min: 8, max: 8, message: "需要8位字符", trigger: "change" }],
         password: [{ required: true, message: '需要输入密码', trigger: 'blur' },
         ],
-        email: [{ required: false, message: '需要输入邮箱', trigger: 'change' },
+        email: [{ required: true, message: '需要输入邮箱', trigger: 'change' },
         { pattern: "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", message: '邮箱格式错误', trigger: 'blur' }],
       },
       downloadLoading: false
@@ -161,7 +156,40 @@ export default {
       row.status = status
     },
     handleFilter () {
-      this.getList()
+      if (this.listQuery.importance === '' && this.listQuery.title === '')
+      {
+
+      } else if (this.listQuery.importance != '' && this.listQuery.title === '')
+      {
+        //按等级搜索
+        this.listLoading = true
+        fetchList(this.listQuery.importance).then(response => {
+          this.list = response.data
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+        })
+      } else if (this.listQuery.importance === '' && this.listQuery.title != '')
+      {
+        //按学号搜索
+        this.listLoading = true
+        fetchList(this.listQuery.title).then(response => {
+          this.list = response.data
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+        })
+      } else
+      {
+        //两个一起搜索
+        this.listLoading = true
+        fetchList().then(response => {
+          this.list = response.data
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+        })
+      }
     },
     resetTemp () {
       this.temp = {
@@ -194,6 +222,7 @@ export default {
               duration: 2000
             })
           })
+          this.listLoading = true
           this.getList()
         }
       })
@@ -220,6 +249,7 @@ export default {
               duration: 2000
             })
           })
+          this.listLoading = true
           this.getList()
         }
       })

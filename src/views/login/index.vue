@@ -7,7 +7,7 @@
       <div class="b"></div>
       <div class="c">
         <div class="d" ref="loginForm" :model="loginForm">
-          <h1>北交疯人院</h1>
+          <h1>吃饱吃好</h1>
           <h2>Login</h2>
           <input type="text" class="e" placeholder="id" v-model="loginForm.username">
           <input type="password" class="e" placeholder="PASSWORD" v-model="loginForm.password">
@@ -40,8 +40,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'hyx',
-        password: '123456'
+        username: '21301000',
+        password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -110,6 +110,7 @@ export default {
         console.log('跳转后的路由地址:', this.$route.fullPath)
         this.loading = false
       }).catch(() => {
+        alert("登录失败!")
         this.loading = false
       })
     },

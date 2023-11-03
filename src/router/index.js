@@ -70,6 +70,7 @@ export const constantRoutes = [
 ]
 //这个是动态的路由，使用role配置权限，其他一样
 export const asyncRoutes = [
+
   {
     path: '/course',
     component: Layout,
@@ -103,8 +104,13 @@ export const asyncRoutes = [
       {
         path: 'table',
         name: 'Table',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/homework/show/index'),
         meta: { title: '提交作业', icon: 'table' }
+      },
+      {
+        path: 'submit',
+        component: () => import('@/views/homework/edit/index'),
+        hidden: true
       }
     ]
   },
@@ -199,6 +205,11 @@ export const asyncRoutes = [
         name: 'Cmanage',
         component: () => import('@/views/manage/course/index'),
         meta: { title: '课程管理', icon: 'table' }
+      },
+      {
+        path: 'update',
+        component: () => import('@/views/manage/update/index'),
+        hidden: true
       }
     ]
   },
@@ -272,7 +283,7 @@ export const asyncRoutes = [
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
 
 ]
 
