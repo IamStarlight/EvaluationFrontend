@@ -1,91 +1,5 @@
-<!--<template>-->
-<!--  <div class="app-container">-->
-<!--    <el-form ref="form" :model="form" label-width="120px">-->
-<!--      <el-form-item label="Activity name">-->
-<!--        <el-input v-model="form.name" />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Activity zone">-->
-<!--        <el-select v-model="form.region" placeholder="please select your zone">-->
-<!--          <el-option label="Zone one" value="shanghai" />-->
-<!--          <el-option label="Zone two" value="beijing" />-->
-<!--        </el-select>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Activity time">-->
-<!--        <el-col :span="11">-->
-<!--          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;" />-->
-<!--        </el-col>-->
-<!--        <el-col :span="2" class="line">-</el-col>-->
-<!--        <el-col :span="11">-->
-<!--          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />-->
-<!--        </el-col>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Instant delivery">-->
-<!--        <el-switch v-model="form.delivery" />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Activity type">-->
-<!--        <el-checkbox-group v-model="form.type">-->
-<!--          <el-checkbox label="Online activities" name="type" />-->
-<!--          <el-checkbox label="Promotion activities" name="type" />-->
-<!--          <el-checkbox label="Offline activities" name="type" />-->
-<!--          <el-checkbox label="Simple brand exposure" name="type" />-->
-<!--        </el-checkbox-group>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Resources">-->
-<!--        <el-radio-group v-model="form.resource">-->
-<!--          <el-radio label="Sponsor" />-->
-<!--          <el-radio label="Venue" />-->
-<!--        </el-radio-group>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="Activity form">-->
-<!--        <el-input v-model="form.desc" type="textarea" />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item>-->
-<!--        <el-button type="primary" @click="onSubmit">Create</el-button>-->
-<!--        <el-button @click="onCancel">Cancel</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script>-->
-<!--export default {-->
-<!--  data() {-->
-<!--    return {-->
-<!--      form: {-->
-<!--        name: '',-->
-<!--        region: '',-->
-<!--        date1: '',-->
-<!--        date2: '',-->
-<!--        delivery: false,-->
-<!--        type: [],-->
-<!--        resource: '',-->
-<!--        desc: ''-->
-<!--      }-->
-<!--    }-->
-<!--  },-->
-<!--  methods: {-->
-<!--    onSubmit() {-->
-<!--      this.$message('submit!')-->
-<!--    },-->
-<!--    onCancel() {-->
-<!--      this.$message({-->
-<!--        message: 'cancel!',-->
-<!--        type: 'warning'-->
-<!--      })-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped>-->
-<!--.line{-->
-<!--  text-align: center;-->
-<!--}-->
-<!--</style>-->
-
 <template>
   <div class="courses">
-    <Header :current_page="current_page"/>
     <div class="main">
 <!--      filter换成搜索功能-->
       <div class="filter">
@@ -97,178 +11,124 @@
             <el-button type="primary" @click="search">搜索</el-button>
           </el-form-item>
         </el-form>
-
-<!--        <el-row class="filter-el-row1">-->
-<!--          <el-col :span="2" class="filter-text">课程分类:</el-col>-->
-<!--          <el-col :span="2" class="current">全部</el-col>-->
-<!--          <el-col :span="2">Python</el-col>-->
-<!--          <el-col :span="2">Linux运维</el-col>-->
-<!--          <el-col :span="2">Python进阶</el-col>-->
-<!--          <el-col :span="2">开发工具</el-col>-->
-<!--          <el-col :span="2">Go语言</el-col>-->
-<!--          <el-col :span="2">机器学习</el-col>-->
-<!--          <el-col :span="2">技术生涯</el-col>-->
-<!--        </el-row>-->
-<!--        <el-row class="filter-el-row2">-->
-<!--          <el-col :span="2" class="filter-text filter-text2">筛&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;选:</el-col>-->
-<!--          <el-col :span="2" class="current">默认</el-col>-->
-<!--          <el-col :span="2">人气</el-col>-->
-<!--          <el-col :span="2" class="">-->
-<!--            <span @click.stop="filter_price=!filter_price">价格</span>-->
-<!--            <div class="filter-price">-->
-<!--              <span class="up" @click.stop="filter_price=true" :class="filter_price==true?'active':''"><i class="el-icon-caret-top"></i></span>-->
-<!--              <span class="down" @click.stop="filter_price=false"  :class="filter_price==false?'active':''"><i class="el-icon-caret-bottom"></i></span>-->
-<!--            </div>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
       </div>
-<!--      以下是课程列表-->
-      <div class="courses_list">
-<!--        一个课程需要一个item，这个怎么解决呢，查一下-->
-        <el-row class="course-item">
-          <el-col :span="24" class="course-item-box">
-            <el-row>
-<!--              这里需要一个图片，模仿mis上面的-->
-              <el-col :span="12" class="course-item-left"><img src="/static/courses/675076.jpeg" alt=""></el-col>
-              <el-col :span="12" class="course-item-right">
-                <div class="course-title">
-                  <p class="box-title">课程名1</p>
-                  <p class="box-number">xxx位学生已加入该课程</p>
-                </div>
-                <div class="author">
-                  <p class="box-author">任课教师</p>
-                  <p class="lession">共xxx课时</p>
-                </div>
-                <el-row class="course-content">
-                  <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介</el-col>
-<!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>02 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-<!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>03 | 三元运算符... <span class="free">免费</span> </el-col>-->
-<!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>04 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                </el-row>
-                <div class="course-price">
-<!--                  <p class="course-price-left">-->
-<!--                    <span class="discount">限时免费</span>-->
-<!--                    <span class="count">¥0.00</span>-->
-<!--                    <span class="old_count">原价: ¥8.00元</span>-->
-<!--                  </p>-->
-                  <button class="buy">进入</button>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-        <el-row class="course-item">
-          <el-col :span="24" class="course-item-box">
-            <el-row>
-              <el-col :span="12" class="course-item-left"><img src="/static/courses/675076.jpeg" alt=""></el-col>
-              <el-col :span="12" class="course-item-right">
-                <div class="course-title">
-                  <p class="box-title">课程名1</p>
-                  <p class="box-number">xxx位学生已加入该课程</p>
-                </div>
-                <div class="author">
-                  <p class="box-author">任课教师</p>
-                  <p class="lession">共xxx课时</p>
-                </div>
-                <el-row class="course-content">
-                  <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介</el-col>
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>02 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>03 | 三元运算符... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>04 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                </el-row>
-                <div class="course-price">
-                  <!--                  <p class="course-price-left">-->
-                  <!--                    <span class="discount">限时免费</span>-->
-                  <!--                    <span class="count">¥0.00</span>-->
-                  <!--                    <span class="old_count">原价: ¥8.00元</span>-->
-                  <!--                  </p>-->
-                  <button class="buy">进入</button>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-        <el-row class="course-item">
-          <el-col :span="24" class="course-item-box">
-            <el-row>
-              <el-col :span="12" class="course-item-left"><img src="/static/courses/675076.jpeg" alt=""></el-col>
-              <el-col :span="12" class="course-item-right">
-                <div class="course-title">
-                  <p class="box-title">课程名1</p>
-                  <p class="box-number">xxx位学生已加入该课程</p>
-                </div>
-                <div class="author">
-                  <p class="box-author">任课教师</p>
-                  <p class="lession">共xxx课时</p>
-                </div>
-                <el-row class="course-content">
-                  <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介</el-col>
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>02 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>03 | 三元运算符... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>04 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                </el-row>
-                <div class="course-price">
-                  <!--                  <p class="course-price-left">-->
-                  <!--                    <span class="discount">限时免费</span>-->
-                  <!--                    <span class="count">¥0.00</span>-->
-                  <!--                    <span class="old_count">原价: ¥8.00元</span>-->
-                  <!--                  </p>-->
-                  <button class="buy">进入</button>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-        <el-row class="course-item">
-          <el-col :span="24" class="course-item-box">
-            <el-row>
-              <el-col :span="12" class="course-item-left"><img src="/static/courses/675076.jpeg" alt=""></el-col>
-              <el-col :span="12" class="course-item-right">
-                <div class="course-title">
-                  <p class="box-title">课程名1</p>
-                  <p class="box-number">xxx位学生已加入该课程</p>
-                </div>
-                <div class="author">
-                  <p class="box-author">任课教师</p>
-                  <p class="lession">共xxx课时</p>
-                </div>
-                <el-row class="course-content">
-                  <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介</el-col>
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>02 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>03 | 三元运算符... <span class="free">免费</span> </el-col>-->
-                  <!--                  <el-col :span="12"><i class="el-icon-caret-right"></i>04 | 常用模块学习-模块的种类和... <span class="free">免费</span> </el-col>-->
-                </el-row>
-                <div class="course-price">
-                  <!--                  <p class="course-price-left">-->
-                  <!--                    <span class="discount">限时免费</span>-->
-                  <!--                    <span class="count">¥0.00</span>-->
-                  <!--                    <span class="old_count">原价: ¥8.00元</span>-->
-                  <!--                  </p>-->
-                  <button class="buy">进入</button>
-                </div>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
 
+<!--      以下是课程列表-->
+
+      <div class="courses_list">
+        <el-row v-for="course in courses" :key="course.id" class="course-item">
+          <el-col :span="24" class="course-item-box">
+             <el-row>
+            <!--              这里需要一个图片，模仿mis上面的-->
+                <el-col :span="12" class="course-item-left"><img src="src/assets/course.png" alt=""></el-col>
+                   <el-col :span="12" class="course-item-right">
+                      <div class="course-title">
+                         <p class="box-title">{{ course.name }}</p>
+                         <p class="box-number">有{{course.students}}位学生已加入课程</p>
+                      </div>
+                     <div class="author">
+                        <p class="box-author">{{course.teacher}}</p>
+<!--                        <p class="lession">共xxx课时</p>-->
+                    </div>
+                    <el-row class="course-content">
+                         <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介：{{course.content}}</el-col>
+                    </el-row>
+                    <div class="enter">
+                      <el-button class="change" type="primary" plain
+                                 @click="change(course.id, course.name,course.students,course.teacher, course.content)">进入
+                      </el-button>
+                    </div>
+                 </el-col>
+             </el-row>
+          </el-col>
+        </el-row>
       </div>
     </div>
-    <Footer/>
   </div>
 </template>
 
+
 <script>
+import {getList} from "@/api/Tcourse";
+import { mapGetters } from 'vuex'
+
 export default {
   name:"Courses",
   data(){
     return {
+      courses: null,
+      listLoading: true,
       current_page:1,
       filter_price:false,
+      searchKeyword: ''
     }
   },
   components:{
   },
+  created() {
+    this.fetchData();
+  },
+  mounted() {
+    // this.getList();
+  },
+  computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+    ])
+  },
   methods:{
+    fetchData() {
+      this.listLoading = true
+      getList().then(response => {
+        this.courses = response.data.items
+        this.listLoading = false
+      })
+    },
+
+    change (id, name,student,teacher,content) {
+      if (this.roles == 3)
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['4']
+        );
+      } else
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['5']
+        );
+
+      }
+      this.$store.dispatch("course/setchangeid",
+        id
+      );
+      this.$store.dispatch("course/setchangecname",
+        name
+      );
+      this.$store.dispatch("course/setchangecname",
+        student
+      );
+      this.$store.dispatch("course/setchangeteacher",
+        teacher
+      );
+      this.$store.dispatch("course/setchangeintro",
+        content
+      );
+      // this.$router.push({ path: '/cdash/show' })
+    },
+
+    search () {
+      this.listLoading = true
+      if (this.searchKeyword == "")
+      {
+        this.fetchData()
+        return
+      }
+      getList(this.searchKeyword).then(response => {
+        this.courses = Array.from(response.data.items)
+        this.listLoading = false
+      })
+     }
   }
 }
 </script>
@@ -413,13 +273,13 @@ export default {
   font-size: 13px;
   white-space: nowrap;
 }
-.course-price{
+.enter{
   overflow: hidden;
 }
-.course-price .course-price-left{
+.enter .enter-left{
   float: left;
 }
-.course-price .discount{
+.enter .discount{
   padding: 6px 10px;
   display: inline-block;
   font-size: 16px;
@@ -430,20 +290,20 @@ export default {
   border: 1px solid #fa6240;
   border-radius: 10px 0 10px 0;
 }
-.course-price .course-price-left{
+.enter .enter-left{
   line-height: 22px;
 }
-.course-price .count{
+.enter .count{
   font-size: 24px;
   color: #fa6240;
 }
-.course-price .old_count{
+.enter .old_count{
   font-size: 14px;
   color: #9b9b9b;
   text-decoration: line-through;
   margin-left: 10px;
 }
-.course-price .buy{
+.enter .change{
   float: right;
   width: 120px;
   height: 38px;
@@ -456,7 +316,7 @@ export default {
   transition: all .2s ease-in-out;/* css3新版本的样式中支持支持 jQuery里面的动画预设效果 */
   /* all表示当前元素的所有样式  .2s表示改变样式完成的时间  ease-in-out */
 }
-.course-price .buy:hover{
+.enter .change:hover{
   color: #fff;
   background: #ffc210;
   border: 1px solid #ffc210;
