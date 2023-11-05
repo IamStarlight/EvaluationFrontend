@@ -10,19 +10,19 @@
       <div class="personal-info">
         <div class="info-item">
           <label style="color: black;">用户名：</label>
-          <p style="color: purple;">{{ username }}</p>
+          <p style="color: purple;">{{ name }}</p>
         </div>
         <div class="info-item">
           <label style="color: black;">ID号：</label>
           <p style="color: purple;">{{ id }}</p>
         </div>
         <div class="info-item">
-          <label style="color: black;">密码：</label>
-          <p style="color: purple;">{{ password }}</p>
+          <label style="color: black;">permission：</label>
+          <p style="color: purple;">{{ permission }}</p>
         </div>
         <div class="info-item">
-          <label style="color: black;">个性签名：</label>
-          <p style="color: purple;">{{ signature }}</p>
+          <label style="color: black;">邮箱：</label>
+          <p style="color: purple;">{{ email}}</p>
         </div>
       </div>
       <button class="change-password-btn" @click="showModal=true">修改密码</button>
@@ -32,8 +32,8 @@
       <div class="modal" v-if="showModal">
         <div class="modal-content">
           <h3>修改密码</h3>
-          <input type="password" v-model="oldPassword" placeholder="请输入原密码" />
-          <input type="password" v-model="newPassword" placeholder="请输入新密码" />
+          <input type="password" v-model="oldpwd" placeholder="请输入原密码" />
+          <input type="password" v-model="newpwd" placeholder="请输入新密码" />
           <div class="modal-buttons">
             <button class="confirm-btn" @click="changePassword">确认修改</button>
             <button class="cancel-btn" @click="cancel">取消</button>
@@ -55,13 +55,14 @@ export default {
   name: 'Dashboard',
   data () {
     return {
-      username: '1111',
+      name: '1111',
       id: '',
       password: '',
-      signature: '',
+      permission:'',
+      email:'',
       showModal: false,
-      newPassword: '',
-      oldPassword: ''
+      newpwd: '',
+      oldpwd: ''
     };
   },
   mounted() {
@@ -78,11 +79,11 @@ export default {
     greeting() {
       const currentHour = new Date().getHours(); // 获取当前小时数
       if (currentHour >= 5 && currentHour < 12) {
-        return `早上好，${this.username}！`;
+        return `早上好，${this.name}！`;
       } else if (currentHour >= 12 && currentHour < 18) {
-        return `下午好，${this.username}！`;
+        return `下午好，${this.name}！`;
       } else {
-        return `晚上好，${this.username}，夜深了早点休息。`;
+        return `晚上好，${this.name}，夜深了早点休息。`;
       }
     },
   },
@@ -90,14 +91,15 @@ export default {
       getUserInfo() {
         getUserInfo()
           .then(response => {
-            const userInfo = response.data.userInfo;
+            const userInfo = response.data;
             console.log(userInfo);//成功输出
-            console.log(this.username);//111111
-            this.username = userInfo.username;
-            console.log(this.username);//成功输出
+            console.log(this.name);//111111
+            this.name = userInfo.name;
+            console.log(this.name);//成功输出
             this.id = userInfo.id;
             this.password = userInfo.password;
-            this.signature = userInfo.signature;
+            this.permission = userInfo.permission;
+            this.email = userInfo.email
           })
           .catch(error => {
             console.log(error);
@@ -105,19 +107,19 @@ export default {
       },
       changePassword() {
         const data = {
-          oldPassword: this.oldPassword,
-          newPassword: this.newPassword
+          oldpwd: this.oldpwd,
+          newpwd: this.newpwd
         };
-        console.log(data.oldPassword);
+        console.log(data.oldpwd);
         console.log(this.password);
-        console.log(data.newPassword);
+        console.log(data.newpwd);
         // 根据您的需求，您可以在此处添加对输入的旧密码进行比较的逻辑
-        if (data.oldPassword !== this.password) {
-          console.log("旧密码输入错误");
-          return; // 如果旧密码输入错误，不继续执行修改密码的操作
-        }
+        // if (data.oldpwd !== this.password) {
+        //   console.log("旧密码输入错误");
+        //   return; // 如果旧密码输入错误，不继续执行修改密码的操作
+        // }
 
-        changePassword(data.newPassword)
+        changePassword(data)
           .then(response => {
             console.log(response.data.message);
             // 根据 API 返回的响应，进行相应的处理

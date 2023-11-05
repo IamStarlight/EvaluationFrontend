@@ -37,7 +37,7 @@ router.beforeEach(async (to, from, next) => {
       {
         try
         {
-
+          console.log("111111")
           //add permission
           const { roles } = await store.dispatch('user/getInfo')
           console.log(roles)

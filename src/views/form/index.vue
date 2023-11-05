@@ -16,18 +16,18 @@
 <!--      以下是课程列表-->
 
       <div class="courses_list">
-        <el-row v-for="course in courses" :key="course.id" class="course-item">
+        <el-row v-for="course in courses" :key="course.cid" class="course-item">
           <el-col :span="24" class="course-item-box">
              <el-row>
             <!--              这里需要一个图片，模仿mis上面的-->
                 <el-col :span="12" class="course-item-left"><img src="src/assets/course.png" alt=""></el-col>
                    <el-col :span="12" class="course-item-right">
                       <div class="course-title">
-                         <p class="box-title">{{ course.name }}</p>
-                         <p class="box-number">有{{course.students}}位学生已加入课程</p>
+                         <p class="box-title">{{ course.cname }}</p>
+<!--                         <p class="box-number">有{{course.students}}位学生已加入课程</p>-->
                       </div>
                      <div class="author">
-                        <p class="box-author">{{course.teacher}}</p>
+                        <p class="box-author">{{course.tname}}</p>
 <!--                        <p class="lession">共xxx课时</p>-->
                     </div>
                     <el-row class="course-content">
@@ -35,7 +35,7 @@
                     </el-row>
                     <div class="enter">
                       <el-button class="change" type="primary" plain
-                                 @click="change(course.id, course.name,course.students,course.teacher, course.content)">进入
+                                 @click="change(course.cid, course.cname,course.tname,course.content)">进入
                       </el-button>
                     </div>
                  </el-col>
@@ -56,7 +56,14 @@ export default {
   name:"Courses",
   data(){
     return {
-      courses: null,
+      // courses:[{
+      //   id:'1',
+      //   name:'数据结构',
+      //   teacher:'lsy',
+      //   students:'42',
+      //   content:'123123'
+      // }],
+      courses: [],
       listLoading: true,
       current_page:1,
       filter_price:false,
@@ -81,12 +88,12 @@ export default {
     fetchData() {
       this.listLoading = true
       getList().then(response => {
-        this.courses = response.data.items
+        this.courses = response.data
         this.listLoading = false
       })
     },
 
-    change (id, name,student,teacher,content) {
+    change (cid, cname,tname,content) {
       if (this.roles == 3)
       {
         this.$store.dispatch("user/setchangerole",
@@ -100,16 +107,16 @@ export default {
 
       }
       this.$store.dispatch("course/setchangeid",
-        id
+        cid
       );
       this.$store.dispatch("course/setchangecname",
-        name
+        cname
       );
-      this.$store.dispatch("course/setchangecname",
-        student
-      );
+      // this.$store.dispatch("course/setchangecname",
+      //   student
+      // );
       this.$store.dispatch("course/setchangeteacher",
-        teacher
+        tname
       );
       this.$store.dispatch("course/setchangeintro",
         content
@@ -125,7 +132,7 @@ export default {
         return
       }
       getList(this.searchKeyword).then(response => {
-        this.courses = Array.from(response.data.items)
+        this.courses = Array.from(response.data)
         this.listLoading = false
       })
      }

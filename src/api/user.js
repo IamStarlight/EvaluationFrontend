@@ -25,7 +25,7 @@ export function logout () {
 
 export function fetchList () {
   return request({
-    url: 'user/all/student',
+    url: 'user/student/all',
     method: 'get',
   })
 }
@@ -57,7 +57,7 @@ export function deleteinfo (data) {
 
 export function reset (data) {
   return request({
-    url: 'user/update/password',
+    url: 'user/password/admin',
     method: 'post',
     params: data
   })

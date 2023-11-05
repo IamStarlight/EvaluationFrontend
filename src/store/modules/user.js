@@ -93,7 +93,9 @@ const actions = {
         {
           return reject('Verification failed, please Login again.')
         }
-
+        console.log(
+          "111111111"
+        )
         const { permission, id, userface, name } = data
         const roles = [permission.toString()];
         console.log(state.roles)

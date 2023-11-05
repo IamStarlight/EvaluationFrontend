@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+export function getList() {
   return request({
     url: '/course/teacher',
     method: 'get',
-    params
+    //params
   })
 }
 

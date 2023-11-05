@@ -2,17 +2,15 @@ import request from '@/utils/request';
 
 export function getUserInfo () {
   return request({
-    url: '/domain/user/userInfo',
+    url: '/user/info',
     method: 'get'
   });
 }
 
-export function changePassword (newPassword) {
+export function changePassword(data) {
   return request({
-    url: '/domain/user/changePassword',
+    url: '/user/password/user',
     method: 'post',
-    data: {
-      newPassword
-    }
+    params:data
   });
 }

@@ -23,12 +23,12 @@ import adminRouter from './module/admin'
  * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
-  }
+ roles: ['admin','editor']    control the page roles (you can set multiple roles)
+ title: 'title'               the name show in sidebar and breadcrumb (recommend set)
+ icon: 'svg-name'/'el-icon-x' the icon show in the sidebar
+ breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+ activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+ }
  */
 
 /**
@@ -79,7 +79,19 @@ export const asyncRoutes = [
         path: 'index',
         name: 'Course',
         component: () => import('@/views/course/index'),
-        meta: { roles: ['2', '3'], title: '课程', icon: 'form' }
+        meta: { roles: ['3'], title: '课程', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/scourse',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Course',
+        component: () => import('@/views/form/index'),
+        meta: { roles: ['2'], title: '课程', icon: 'form' }
       }
     ]
   },
@@ -147,19 +159,19 @@ export const asyncRoutes = [
       {
         path: 'distribute',
         name: 'Distribute',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/distribute'),
         meta: { title: '发布作业', icon: 'table' }
       },
       {
         path: 'distributed',
         name: 'Distributed',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/distributed'),
         meta: { title: '已发布作业', icon: 'table' }
       },
       {
         path: 'box',
         name: 'box',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/box'),
         meta: { title: '草稿箱', icon: 'table' }
       }
     ]
