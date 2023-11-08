@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { fetchcourseList, createcourseinfo, deletecourseinfo } from '@/api/user'
+import { fetchcourseList, createcourseinfo, deletecourseinfo } from '@/api/course'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -139,13 +139,14 @@ export default {
     }
   },
   created () {
-    this.listLoading = true
-    this.getList()
+    //this.listLoading = true
+    //this.getList()
   },
   methods: {
     getList () {
       this.listLoading = true
-      fetchcourseList(id).then(response => {
+      const a = { cid: this.id }
+      fetchcourseList(a).then(response => {
         this.list = response.data
         setTimeout(() => {
           this.listLoading = false

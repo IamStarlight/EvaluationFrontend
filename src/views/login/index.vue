@@ -6,14 +6,24 @@
     <div class="a">
       <div class="b"></div>
       <div class="c">
-        <div class="d" ref="loginForm" :model="loginForm">
+        <div class="d">
           <h1>吃饱吃好</h1>
           <h2>Login</h2>
-          <input type="text" class="e" placeholder="id" v-model="loginForm.username">
-          <input type="password" class="e" placeholder="PASSWORD" v-model="loginForm.password">
-          <el-button class="g" type="primary" @click.native.prevent="handleLogin">Login</el-button>
-          <el-button type="text" style="color: black; font-weight: 700;" @click.native.prevent="handleSign">sign
-            in</el-button>
+          <el-form :rules="loginRules" :model="loginForm" ref="loginForm" class="login-form" style="margin-top: 10px;"
+            autocomplete="on">
+            <el-form-item prop="username" style="margin-top: -40px;">
+              <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="number"
+                tabindex="1" autocomplete="on"></el-input>
+            </el-form-item>
+            <el-form-item prop="password" style="margin-top: 30px;">
+              <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
+                placeholder="Password" name="password" tabindex="2" autocomplete="on"></el-input>
+            </el-form-item>
+            <el-button style="margin-top: 30px;margin-right: 30px;" type="primary"
+              @click.native.prevent="handleLogin">Login</el-button>
+            <!-- <el-button type="text" style="color: black; font-weight: 700;" @click.native.prevent="handleSign">sign
+              in</el-button> -->
+          </el-form>
         </div>
       </div>
     </div>
@@ -27,21 +37,22 @@ export default {
   name: 'Login',
   data () {
     const validateUsername = (rule, value, callback) => {
+      // if (value.length != 8)
+      // {
+      //   callback(new Error('请输入8位学号'))
+      // } else
+      // {
+      //   callback()
+      // }
       callback()
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6)
-      {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else
-      {
-        callback()
-      }
+      callback()
     }
     return {
       loginForm: {
-        username: '21301000',
-        password: 'admin'
+        username: '1',
+        password: '123'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -101,17 +112,26 @@ export default {
       })
     },
     handleLogin () {
-      this.loading = true
-      console.log(this.loginForm)
-      this.$store.dispatch('user/login', this.loginForm).then(() => {
-        alert("登录成功!")
-        console.log('跳转后的路由地址:', this.$route.fullPath)
-        this.$router.push({ path: this.redirect || '/' })
-        console.log('跳转后的路由地址:', this.$route.fullPath)
-        this.loading = false
-      }).catch(() => {
-        alert("登录失败!")
-        this.loading = false
+      this.$refs.loginForm.validate(valid => {
+        if (valid)
+        {
+          this.loading = true
+          console.log(this.loginForm)
+          this.$store.dispatch('user/login', this.loginForm).then(() => {
+            alert("登录成功!")
+            console.log('跳转后的路由地址:', this.$route.fullPath)
+            this.$router.push({ path: this.redirect || '/' })
+            console.log('跳转后的路由地址:', this.$route.fullPath)
+            this.loading = false
+          }).catch(() => {
+            alert("登录失败!")
+            this.loading = false
+          })
+        } else
+        {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     handleSign () {

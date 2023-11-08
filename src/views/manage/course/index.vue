@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column label="任课老师" width="200px" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.tname }}</span>
+          <span>{{ row.tid }}</span>
         </template>
       </el-table-column>
       <el-table-column label="课程简介" width="400px" align="center">
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { fetchList, createinfo, updateinfo, deleteinfo } from '@/api/user'
+import { fetchList, fetchListid, createinfo, updateinfo, deleteinfo } from '@/api/course'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -126,13 +126,13 @@ export default {
   },
   created () {
     //this.listLoading = true
-    //this.getList()
+    this.getList()
   },
   methods: {
     getList () {
       this.listLoading = true
       fetchList().then(response => {
-        this.list = response.data.items
+        this.list = response.data
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -151,9 +151,10 @@ export default {
 
       } else
       {
-        //按等级搜索
+        //按课程号搜索
         this.listLoading = true
-        fetchList(this.listQuery.title).then(response => {
+        const a = { cid: this.listQuery.title }
+        fetchListid(a).then(response => {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
@@ -213,6 +214,7 @@ export default {
     },
     handleDelete (row, index) {
       this.temp = Object.assign({}, row)
+      const a = { cid: this.temp.cid }
       deleteinfo(this.temp).then(() => {
         this.$notify({
           title: 'Success',

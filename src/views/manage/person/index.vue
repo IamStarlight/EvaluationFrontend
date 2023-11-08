@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { fetchList, createinfo, updateinfo, deleteinfo, reset } from '@/api/user'
+import { fetchList, fetchListpermission, fetchListid, fetchListall, createinfo, updateinfo, deleteinfo, reset } from '@/api/user'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -141,8 +141,10 @@ export default {
   methods: {
     getList () {
       this.listLoading = true
-      fetchList().then(response => {
+      const a = { permission: '3' }
+      fetchList(a).then(response => {
         this.list = response.data
+        this.list.permission = '学生'
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -163,7 +165,8 @@ export default {
       {
         //按等级搜索
         this.listLoading = true
-        fetchList(this.listQuery.importance).then(response => {
+        const a = { permission: this.listQuery.importance }
+        fetchListpermission(a).then(response => {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
@@ -172,8 +175,9 @@ export default {
       } else if (this.listQuery.importance === '' && this.listQuery.title != '')
       {
         //按学号搜索
+        const a = { id: this.listQuery.title }
         this.listLoading = true
-        fetchList(this.listQuery.title).then(response => {
+        fetchListid(a).then(response => {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
@@ -183,7 +187,8 @@ export default {
       {
         //两个一起搜索
         this.listLoading = true
-        fetchList().then(response => {
+        const a = { id: this.listQuery.title, permission: this.listQuery.importance }
+        fetchListall(a).then(response => {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
