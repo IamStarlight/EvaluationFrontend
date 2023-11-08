@@ -5,7 +5,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://localhost:3309',//process.env.VUE_APP_BASE_API, // url = base url + request url'http://localhost:9999',//
+  baseURL: 'http://192.168.43.128:3309',//process.env.VUE_APP_BASE_API, // url = base url + request url'http://localhost:9999',//
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -38,7 +38,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-  */
+   */
 
   /**
    * Determine the request status by custom code

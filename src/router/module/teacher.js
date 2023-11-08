@@ -11,19 +11,19 @@ const teacherRouter = [
       {
         path: 'distribute',
         name: 'Distribute',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '发布作业', icon: 'table' }
       },
       {
         path: 'distributed',
         name: 'Distributed',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '已发布作业', icon: 'table' }
       },
       {
         path: 'box',
         name: 'box',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '草稿箱', icon: 'table' }
       }
     ]

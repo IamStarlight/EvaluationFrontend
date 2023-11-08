@@ -16,6 +16,7 @@ export function getInfo () {
   })
 }
 
+
 export function logout () {
   return request({
     url: 'user/logout',
@@ -23,13 +24,37 @@ export function logout () {
   })
 }
 
-export function fetchList () {
+export function fetchList (data) {
   return request({
-    url: 'user/student/all',
+    url: 'user/all',
     method: 'get',
+    params: data
   })
 }
 
+export function fetchListpermission (data) {
+  return request({
+    url: 'user/register',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchListid (data) {
+  return request({
+    url: 'user/register',
+    method: 'post',
+    data
+  })
+}
+
+export function fetchListall (data) {
+  return request({
+    url: 'user/register',
+    method: 'post',
+    data
+  })
+}
 
 export function createinfo (data) {
   return request({

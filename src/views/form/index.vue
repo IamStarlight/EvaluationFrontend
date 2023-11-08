@@ -27,7 +27,7 @@
 <!--                         <p class="box-number">有{{course.students}}位学生已加入课程</p>-->
                       </div>
                      <div class="author">
-                        <p class="box-author">{{course.tname}}</p>
+                        <p class="box-author">{{course.name}}</p>
 <!--                        <p class="lession">共xxx课时</p>-->
                     </div>
                     <el-row class="course-content">
@@ -35,7 +35,7 @@
                     </el-row>
                     <div class="enter">
                       <el-button class="change" type="primary" plain
-                                 @click="change(course.cid, course.cname,course.tname,course.content)">进入
+                                 @click="change(course.cid, course.cname,course.name,course.content)">进入
                       </el-button>
                     </div>
                  </el-col>
@@ -56,14 +56,13 @@ export default {
   name:"Courses",
   data(){
     return {
-      // courses:[{
-      //   id:'1',
-      //   name:'数据结构',
-      //   teacher:'lsy',
-      //   students:'42',
-      //   content:'123123'
-      // }],
-      courses: [],
+      courses:[{
+        cid:'1',
+        cname:'数据结构',
+        name:'lsy',
+        content:'123123'
+      }],
+      //courses: [],
       listLoading: true,
       current_page:1,
       filter_price:false,
@@ -93,7 +92,7 @@ export default {
       })
     },
 
-    change (cid, cname,tname,content) {
+    change (cid, cname,name,content) {
       if (this.roles == 3)
       {
         this.$store.dispatch("user/setchangerole",
@@ -116,7 +115,7 @@ export default {
       //   student
       // );
       this.$store.dispatch("course/setchangeteacher",
-        tname
+        name
       );
       this.$store.dispatch("course/setchangeintro",
         content

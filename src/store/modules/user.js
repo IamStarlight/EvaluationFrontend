@@ -45,6 +45,19 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
+        console.log("giving permission")
+        const a = data.permission
+        if (a == "ROLE_ADMIN")
+        {
+          commit('SET_ROLES', ['1'])
+        } else if (a == 'ROLE_TEACHER')
+        {
+          commit('SET_ROLES', ['2'])
+        } else
+        {
+          commit('SET_ROLES', ['3'])
+        }
+        console.log(state.roles)
         resolve()
       }).catch(error => {
         reject(error)
@@ -88,28 +101,35 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         const { data } = response
-
         if (!data)
         {
           return reject('Verification failed, please Login again.')
         }
         console.log(
-          "111111111"
+          "infoing"
         )
-        const { permission, id, userface, name } = data
-        const roles = [permission.toString()];
-        console.log(state.roles)
-        commit('SET_ROLES', roles)
-        console.log(state.roles)
+        const { permission, id, name } = data
+        // const roles = [permission.toString()];
+        // commit('SET_ROLES', roles)
+        // console.log(state.roles)
+        // if (permission == "ROLE_ADMIN")
+        // {
+        //   commit('SET_ROLES', '1')
+        // } else if (permission == 'ROLE_TEACHER')
+        // {
+        //   commit('SET_ROLES', '2')
+        // } else
+        // {
+        //   commit('SET_ROLES', '3')
+        // }
         // commit('SET_SID', sid)
         commit('SET_SID', id)
         commit('SET_NAME', name)
-        commit('SET_AVATAR', userface)
-        const a = { roles: roles }
-        resolve(a)
         console.log(
-          "111111111"
+          "infodone"
         )
+        const a = { roles: state.roles }
+        resolve(a)
       }).catch(error => {
         reject(error)
       })
@@ -165,4 +185,3 @@ export default {
   mutations,
   actions
 }
-
