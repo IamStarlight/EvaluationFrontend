@@ -9,8 +9,8 @@ export function getUserInfo () {
 
 export function changePassword(data) {
   return request({
-    url: '/user/password/user',
-    method: 'post',
+    url: '/user/mypassword',
+    method: 'put',
     params:data
   });
 }

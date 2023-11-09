@@ -24,7 +24,7 @@
                    <el-col :span="12" class="course-item-right">
                       <div class="course-title">
                          <p class="box-title">{{ course.cname }}</p>
-<!--                         <p class="box-number">有{{course.students}}位学生已加入课程</p>-->
+                         <p class="box-number">有{{course.class_number}}位学生已加入课程</p>
                       </div>
                      <div class="author">
                         <p class="box-author">{{course.name}}</p>
@@ -49,20 +49,20 @@
 
 
 <script>
-import {getList} from "@/api/Tcourse";
+import {getTList} from "@/api/Tcourse";
 import { mapGetters } from 'vuex'
 
 export default {
   name:"Courses",
   data(){
     return {
-      courses:[{
-        cid:'1',
-        cname:'数据结构',
-        name:'lsy',
-        content:'123123'
-      }],
-      //courses: [],
+      // courses:[{
+      //   cid:'1',
+      //   cname:'数据结构',
+      //   name:'lsy',
+      //   content:'123123'
+      // }],
+      courses: [],
       listLoading: true,
       current_page:1,
       filter_price:false,
@@ -86,8 +86,9 @@ export default {
   methods:{
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
+      getTList().then(response => {
         this.courses = response.data
+        console.log(response.data.cid)
         this.listLoading = false
       })
     },
@@ -130,7 +131,7 @@ export default {
         this.fetchData()
         return
       }
-      getList(this.searchKeyword).then(response => {
+      getTList(this.searchKeyword).then(response => {
         this.courses = Array.from(response.data)
         this.listLoading = false
       })

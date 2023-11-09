@@ -5,6 +5,7 @@
   -->
   <div class="container">
     <div class="container1">
+      <div class="notice">课程号:{{id}}</div>
       <div class="notice">本课程为：{{ cname }}</div>
     </div>
 
@@ -15,14 +16,14 @@
         <input id="title" class="hom-info-input" type="text" placeholder="请输入作业标题">
       </div>
       <div class="date-time-container">
-        <label for="deadline">截止日期:</label>
-        <input id="deadline" class="hom-info-input" type="datetime-local">
+        <label for="endTime">截止日期:</label>
+        <input id="endTime" class="hom-info-input" type="datetime-local" >
       </div>
     </div>
 
     <!--大文本输入框-->
     <div class="hom-info-container2">
-      <label for="content">作业内容:</label>
+      <label for="detail">作业内容:</label>
       <tinymce v-model="content" style="width: 1200px;" />
     </div>
 
@@ -64,6 +65,7 @@ import Tinymce from '@/components/Tinymce'
 import {mapGetters} from "vuex";
 import 'vue-datetime/dist/vue-datetime.css';
 import {deliverHomework} from "@/api/homework";
+import {id} from "html-webpack-plugin/lib/chunksorter";
 export default {
   data () {
     return {
@@ -89,11 +91,11 @@ export default {
         resource: '',
         desc: ''
       },
-      deadline: '123',
-      tid:'21301000',
-      cid:'1',
-      content: '123',
-      title: '123'
+      // endTime,
+      // tid:'',
+      // cid:'',
+      // detail: '',
+      // title: ''
     }
   },
   components: {
@@ -104,6 +106,7 @@ export default {
 
   computed: {
     ...mapGetters([
+      'id',
       'cname',
       'teacher',
     ])
@@ -172,24 +175,33 @@ export default {
       })
     },
     onSubmit () {
+      //获取截止日期输入框元素
+      const endTimeInput= document.getElementById('endTime')
+     const endTimeValue = endTimeInput.value;
+      const endTime = new Date(endTimeValue);
         // 获取作业内容
-        const content = this.content;
+        const detail = 'eat';
         // 获取课程ID
-        const cid = this.cid;
+        // const cid = this.cid;
+      const cid = this.id
         // 获取老师ID
-        const tid = this.tid;
+       // const tid = this.tid;
+
+        const wid = 5;
         // 获取作业标题
-        const title = this.title;
+        const titleInput = document.getElementById('title');
+        const title = titleInput.value
         // 获取截止日期
-        const deadline = this.deadline;
+      // const endTime = '2023-12-31 23:59';
 
         // 构造请求参数
         const requestData = {
-          content,
+          detail,
           cid,
-          tid,
+          //tid,
           title,
-          deadline,
+          wid,
+          endTime,
         };//wid是自动生成的吗
 
         // 发送请求给后端，并传递请求参数

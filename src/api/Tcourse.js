@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getList() {
+export function getTList() {
   return request({
     url: '/course/teacher',
     method: 'get',
