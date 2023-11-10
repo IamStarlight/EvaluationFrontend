@@ -41,7 +41,7 @@ export function deleteinfo (data) {
 
 export function fetchcourseList (data) {
   return request({
-    url: 'course/sclist',
+    url: 'sc/list',
     method: 'get',
     params: data
   })

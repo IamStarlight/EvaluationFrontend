@@ -23,7 +23,7 @@ service.interceptors.request.use(
       config.headers['Token'] = getToken()
       //config.headers['token'] = getToken()
     }
-    //config.headers["Access-Control-Allow-Origin"] = "http://192.168.43.128:3309";
+    config.headers["Access-Control-Allow-Origin"] = "http://192.168.43.128:3309";
     return config
   },
   error => {
@@ -56,7 +56,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 403 || res.code === 402 || res.code === 401 || res.code === 400)
+      if (res.code === 4000)
       {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {

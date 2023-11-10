@@ -8,9 +8,9 @@
     <div class="filter-container">
       <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"
         @keyup.enter.native="handleFilter" />
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+      <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
-      </el-button>
+      </el-button> -->
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
@@ -23,11 +23,6 @@
       </el-button> -->
     </div>
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.cid }}</span>
-        </template>
-      </el-table-column>
       <el-table-column label="学号" min-width="150px">
         <template slot-scope="{row}">
           <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
@@ -200,7 +195,6 @@ export default {
           const a = parseInt(this.temp.id)
           const b = { sid: a, cid: this.cid }
           createcourseinfo(b).then(() => {
-            this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -210,7 +204,9 @@ export default {
             })
           })
           this.listLoading = true
-          this.getList()
+          setTimeout(() => {
+            this.getList();
+          }, 1000);
         }
       })
     },

@@ -123,13 +123,25 @@ const actions = {
         //   commit('SET_ROLES', '3')
         // }
         // commit('SET_SID', sid)
+        const a = permission
+        if (a == "ROLE_ADMIN")
+        {
+          commit('SET_ROLES', ['1'])
+        } else if (a == 'ROLE_TEACHER')
+        {
+          commit('SET_ROLES', ['2'])
+        } else
+        {
+          commit('SET_ROLES', ['3'])
+        }
+        console.log(state.roles)
         commit('SET_SID', id)
         commit('SET_NAME', name)
         console.log(
           "infodone"
         )
-        const a = { roles: state.roles }
-        resolve(a)
+        const b = { roles: state.roles }
+        resolve(b)
       }).catch(error => {
         reject(error)
       })

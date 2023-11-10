@@ -121,7 +121,7 @@ export default {
       this.$store.dispatch("course/setchangeintro",
         content
       );
-      // this.$router.push({ path: '/cdash/show' })
+      this.$router.push({ path: '/cdash/show' })
     },
 
     search () {

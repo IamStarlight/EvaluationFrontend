@@ -108,7 +108,7 @@ export default {
     },
 
     change (cid, cname, tid, bool, states) {
-      if (parseInt(states) < 6 && parseInt(state) >= 1)
+      if (1)
       {
         this.$router.push({ path: '/example/submit' })
       } else if (states == 'B' && bool == "T")

@@ -1,40 +1,40 @@
 <template>
   <div>
     <h2>批改作业</h2>
-    <p>正在批改作业id为：{{this.$route.query.wid}}</p>
-<!--    <p>正在批改作业id为：{{studentHomework.wid}}</p>-->
+    <p>正在批改作业id为：{{ this.$route.query.wid }}</p>
+    <!--    <p>正在批改作业id为：{{studentHomework.wid}}</p>-->
     <table>
       <thead>
-      <tr>
-        <th>学生ID</th>
-        <th>学生姓名</th>
-        <th>提交时间</th>
-        <th>老师评分</th>
-        <th>总分</th>
-<!--        <th>状态</th>-->
-        <th>是否迟交</th>
-        <th>操作</th>
-      </tr>
+        <tr>
+          <th>学生ID</th>
+          <th>学生姓名</th>
+          <th>提交时间</th>
+          <th>老师评分</th>
+          <th>总分</th>
+          <!--        <th>状态</th>-->
+          <th>是否迟交</th>
+          <th>操作</th>
+        </tr>
       </thead>
       <tbody>
-      <tr v-for="studentHomework in studentHomework" :key="studentHomework.id">
-        <td>{{ studentHomework.id }}</td>
-        <td>{{ studentHomework.name }}</td>
-        <td>{{ studentHomework.submit_time }}</td>
-        <td>{{ studentHomework.teacher_grade }}</td>
-        <td>{{ studentHomework.total_grade}}</td>
-<!--        <td>{{ studentHomework.status}}</td>-->
-        <td>{{ studentHomework.is_late }}</td>
-        <td>
-           <button class="btn1" @click="handleClick(studentHomework.id)">
-             详情
-           </button>
-           <span style="margin: 10px;"></span>
-<!--           <button class="btn2" @click="handleSave(studentHomework.id)">-->
-<!--             评论-->
-<!--           </button>-->
-        </td>
-      </tr>
+        <tr v-for="studentHomework in studentHomework" :key="studentHomework.id">
+          <td>{{ studentHomework.id }}</td>
+          <td>{{ studentHomework.name }}</td>
+          <td>{{ studentHomework.submit_time }}</td>
+          <td>{{ studentHomework.teacher_grade }}</td>
+          <td>{{ studentHomework.total_grade }}</td>
+          <!--        <td>{{ studentHomework.status}}</td>-->
+          <td>{{ studentHomework.is_late }}</td>
+          <td>
+            <button class="btn1" @click="handleClick(studentHomework.id)">
+              详情
+            </button>
+            <span style="margin: 10px;"></span>
+            <!--           <button class="btn2" @click="handleSave(studentHomework.id)">-->
+            <!--             评论-->
+            <!--           </button>-->
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -42,18 +42,18 @@
 
 
 <script>
-import {mapGetters} from "vuex";
-import {getHomework} from "@/api/homework";
+import { mapGetters } from "vuex";
+import { getHomework } from "@/api/homework";
 
 export default {
   name: "GradingComponent",
 
   computed: {
     ...mapGetters([
-      'id'
+      'cid'
     ])
   },
-  data() {
+  data () {
     return {
       // studentHomework: [
       //   { sid: 1, name: "张三", submitTime: "2023-11-01T13:00:00.000Z", teacherGrade: 95,isOK:"1" ,content:"123"},
@@ -62,19 +62,19 @@ export default {
       //   { sid: 4, name: "赵六", submitTime: "2023-11-04T16:00:00.000Z", teacherGrade: 90 },
       //   { sid: 5, name: "刘七", submitTime: "2023-11-05T17:00:00.000Z", teacherGrade: 75 }
       // ],
-      studentHomework:[],
-      loading :false
+      studentHomework: [],
+      loading: false
     };
   },
-  created() {
+  created () {
     this.fetchData();
   },
-  mounted(){
+  mounted () {
   },
   methods: {
-    fetchData() {
+    fetchData () {
       const wid = this.$route.query.wid;
-      const cid = this.id;
+      const cid = this.cid;
       const data = {
         wid,
         cid,
@@ -87,7 +87,7 @@ export default {
       })
     },
 
-    handleClick(id) {
+    handleClick (id) {
       console.log(this.studentHomework.id);//为什么为空呢
       console.log(this.$route.query.wid)//非空
       this.$nextTick(() => {
@@ -100,7 +100,7 @@ export default {
         });
       });
     },
-    handleSave(studentId) {
+    handleSave (studentId) {
       // 假设这里有一个网络请求删除该学生的评语
       console.log(studentId);
     }
