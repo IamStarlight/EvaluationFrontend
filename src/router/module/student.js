@@ -11,7 +11,7 @@ const studentRouter = [
       {
         path: 'table',
         name: 'Table',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '提交作业', icon: 'table' }
       }
     ]

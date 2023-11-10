@@ -173,7 +173,13 @@ export const asyncRoutes = [
         path: 'box',
         name: 'box',
         component: () => import('@/views/table/box'),
-        meta: { title: '草稿箱', icon: 'table' }
+        meta: { title: '批改作业', icon: 'table' }
+      },
+      {
+        path: 'grading',
+        name: 'grading',
+        component: () => import('@/views/table/grading'),
+        //meta: { title: '作业详情', icon: 'table' }
       }
     ]
   },

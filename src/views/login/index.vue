@@ -6,7 +6,7 @@
     <div class="a">
       <div class="b"></div>
       <div class="c">
-        <div class="d">
+        <div class="d" ref="loginForm" :model="loginForm">
           <h1>吃饱吃好</h1>
           <h2>Login</h2>
           <el-form :rules="loginRules" :model="loginForm" ref="loginForm" class="login-form" style="margin-top: 10px;"

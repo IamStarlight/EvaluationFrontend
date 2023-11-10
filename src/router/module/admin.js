@@ -11,13 +11,13 @@ const adminRouter = [
       {
         path: 'pmanage',
         name: 'Pmanage',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '人员管理', icon: 'table' }
       },
       {
         path: 'cmanage',
         name: 'Cmanage',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/table/grading.vue'),
         meta: { title: '课程管理', icon: 'table' }
       }
     ]

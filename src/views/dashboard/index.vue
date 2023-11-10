@@ -113,11 +113,6 @@ export default {
         console.log(data.oldpwd);
         console.log(this.password);
         console.log(data.newpwd);
-        // 根据您的需求，您可以在此处添加对输入的旧密码进行比较的逻辑
-        // if (data.oldpwd !== this.password) {
-        //   console.log("旧密码输入错误");
-        //   return; // 如果旧密码输入错误，不继续执行修改密码的操作
-        // }
 
         changePassword(data)
           .then(response => {
