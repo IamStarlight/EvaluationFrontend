@@ -6,7 +6,7 @@ const state = {
 }
 const mutations = {
   SET_ID: (state, cid) => {
-    state.id = cid
+    state.cid = cid
   },
   SET_NAME: (state, cname) => {
     state.cname = cname
@@ -20,7 +20,9 @@ const mutations = {
 }
 const actions = {
   async setchangeid ({ commit, dispatch }, id) {
+    console.log(id)
     commit('SET_ID', id)
+    console.log(state.id)
   },
   async setchangecname ({ commit, dispatch }, id) {
     commit('SET_NAME', id)

@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="dashboard-text">编辑课程资料</div>
-    <div class="dashboard-text">课程号是 : {{ id }}</div>
+    <div class="dashboard-text">课程号是 : {{ cid }}</div>
     <div class="dashboard-text">课程名是 : {{ cname }}</div>
     <div class="dashboard-text">任课老师是 : {{ teacher }}</div>
     <div class="dashboard-text">课程简介是 : {{ cintroduction }}</div>
@@ -14,6 +14,9 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
         Add
       </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handlereturn">
+        返回课程列表
+      </el-button>
       <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
         @click="handleDownload">
         Export
@@ -22,7 +25,7 @@
     <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+          <span>{{ row.cid }}</span>
         </template>
       </el-table-column>
       <el-table-column label="学号" min-width="150px">
@@ -33,11 +36,6 @@
       <el-table-column label="姓名" width="110px" align="center">
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="职位" width="80px">
-        <template slot-scope="{row}">
-          <span>{{ row.permission }}</span>
         </template>
       </el-table-column>
       <el-table-column label="邮箱" width="200px" align="center">
@@ -88,7 +86,7 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'id',
+      'cid',
       'cname',
       'teacher',
       'cintroduction'
@@ -139,13 +137,13 @@ export default {
     }
   },
   created () {
-    //this.listLoading = true
-    //this.getList()
+    this.listLoading = true
+    this.getList()
   },
   methods: {
     getList () {
       this.listLoading = true
-      const a = { cid: this.id }
+      const a = { cid: this.cid }
       fetchcourseList(a).then(response => {
         this.list = response.data
         setTimeout(() => {
@@ -191,13 +189,17 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
+    handlereturn () {
+      this.$router.push({ path: '/admin/cmanage' })
+    },
     createData () {
       this.$refs['dataForm'].validate((valid) => {
         if (valid)
         {
-          console.log(this.temp)
-          this.temp.password = "123"
-          createcourseinfo(this.temp.id).then(() => {
+          // this.temp = Object.assign({}, row)
+          const a = parseInt(this.temp.id)
+          const b = { sid: a, cid: this.cid }
+          createcourseinfo(b).then(() => {
             this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -215,7 +217,7 @@ export default {
     handleDelete (row, index) {
       this.temp = Object.assign({}, row)
       const a = this.temp.id
-      const b = { uid: a }
+      const b = { sid: a, cid: this.cid }
       deletecourseinfo(b).then(() => {
         this.$notify({
           title: 'Success',
@@ -223,6 +225,10 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.listLoading = true
+        setTimeout(() => {
+          this.getList();
+        }, 100);
       })
     },
     handleDownload () {

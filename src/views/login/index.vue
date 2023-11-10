@@ -303,7 +303,7 @@ $light_gray: #eee;
 .b {
   width: 800px;
   height: 550px;
-  background-image: url(../../assets/background/H.jpg);
+  background-image: url(../../assets/background/BluePond.jpg);
   /* 让图片适应大小 */
   background-size: cover;
   font: 900 50px '';

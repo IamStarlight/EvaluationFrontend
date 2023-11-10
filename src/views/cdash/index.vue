@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">课程号是 : {{ id }}</div>
+    <div class="dashboard-text">课程号是 : {{ cid }}</div>
     <div class="dashboard-text">课程名是 : {{ cname }}</div>
     <div class="dashboard-text">任课老师是 : {{ teacher }}</div>
     <div class="dashboard-text">课程简介是 : {{ cintroduction }}</div>
@@ -44,7 +44,7 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'id',
+      'cid',
       'cname',
       'teacher',
       'cintroduction'

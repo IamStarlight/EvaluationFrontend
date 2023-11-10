@@ -10,8 +10,8 @@ export function getList () {
 export function fetchListid (data) {
   return request({
     url: 'course/info',
-    method: 'post',
-    data
+    method: 'get',
+    params: data
   })
 }
 
@@ -25,7 +25,7 @@ export function fetchList (data) {
 
 export function createinfo (data) {
   return request({
-    url: 'user/register',
+    url: 'course/add',
     method: 'post',
     data
   })
@@ -33,36 +33,35 @@ export function createinfo (data) {
 
 export function deleteinfo (data) {
   return request({
-    url: 'user/delete',
-    method: 'post',
+    url: 'course/delete',
+    method: 'delete',
     params: data
   })
 }
 
 export function fetchcourseList (data) {
   return request({
-    url: 'user/delete',
-    method: 'post',
+    url: 'course/sclist',
+    method: 'get',
     params: data
   })
 }
 
 export function createcourseinfo (data) {
   return request({
-    url: 'user/register',
-    method: 'post',
-    data
-  })
-}
-
-export function deletecourseinfo (data) {
-  return request({
-    url: 'user/delete',
+    url: 'sc/add',
     method: 'post',
     params: data
   })
 }
 
+export function deletecourseinfo (data) {
+  return request({
+    url: 'sc/delete',
+    method: 'delete',
+    params: data
+  })
+}
 
 export function getAll () {
   return request({
@@ -70,3 +69,12 @@ export function getAll () {
     method: 'get',
   })
 }
+
+export function getAllhomework (data) {
+  return request({
+    url: 'homework/info',
+    method: 'get',
+    params: data
+  })
+}
+
