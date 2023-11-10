@@ -42,17 +42,17 @@ export function fetchListpermission (data) {
 
 export function fetchListid (data) {
   return request({
-    url: 'user/register',
-    method: 'post',
-    data
+    url: 'user/oneinfo',
+    method: 'get',
+    params: data
   })
 }
 
 export function fetchListall (data) {
   return request({
-    url: 'user/register',
-    method: 'post',
-    data
+    url: 'user/oneinfo',
+    method: 'get',
+    params: data
   })
 }
 
@@ -67,7 +67,7 @@ export function createinfo (data) {
 export function updateinfo (data) {
   return request({
     url: 'user/update',
-    method: 'post',
+    method: 'put',
     data
   })
 }
@@ -75,15 +75,15 @@ export function updateinfo (data) {
 export function deleteinfo (data) {
   return request({
     url: 'user/delete',
-    method: 'post',
+    method: 'delete',
     params: data
   })
 }
 
 export function reset (data) {
   return request({
-    url: 'user/password/admin',
-    method: 'post',
+    url: 'user/password',
+    method: 'put',
     params: data
   })
 }

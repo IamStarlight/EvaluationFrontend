@@ -29,8 +29,8 @@
         </template>
       </el-table-column>
       <el-table-column label="职位" width="80px">
-        <template slot-scope="{row}">
-          <span>{{ row.permission }}</span>
+        <template>
+          <span>{{ this.nowpermission }}</span>
         </template>
       </el-table-column>
       <el-table-column label="邮箱" width="200px" align="center">
@@ -77,11 +77,34 @@
         </el-button>
       </div>
     </el-dialog>
+
+
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible1">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px"
+        style="width: 400px; margin-left:50px;">
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="temp.name" />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="temp.email" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="primary" @click="dialogStatus === 'create' ? createData() : updateData()">
+          Confirm
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { fetchList, createinfo, updateinfo, deleteinfo, reset } from '@/api/user'
+import { fetchList, fetchListpermission, fetchListid, fetchListall, createinfo, updateinfo, deleteinfo, reset } from '@/api/user'
+import { mapGetters } from 'vuex'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -97,8 +120,7 @@ export default {
         id: '',
         name: 'hyx',
         password: '2222',
-        email: 'hjhjhj@hhh.com',
-        permission: ''
+        email: 'hjhjhj@hhh.com'
       }],
       listQuery: {
         title: '',
@@ -107,6 +129,7 @@ export default {
       total: 0,
       listLoading: false,
       importanceOptions: [1, 2, 3],
+      nowpermission: '3',
       temp: {
         id: '',
         name: 'hyx',
@@ -115,6 +138,7 @@ export default {
         permission: ''
       },
       dialogFormVisible: false,
+      dialogFormVisible1: false,
       dialogStatus: '',
       textMap: {
         update: 'Edit',
@@ -134,15 +158,44 @@ export default {
       downloadLoading: false
     }
   },
+  computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+      'sid'
+    ]),
+  },
   created () {
     this.listLoading = true
     this.getList()
   },
   methods: {
+    changeType (a) {
+      if (typeof a === 'object')
+      {
+        const b = [a]
+      } else
+      {
+
+      }
+      return b
+    },
     getList () {
       this.listLoading = true
-      fetchList().then(response => {
-        this.list = response.data
+      const a = { permission: this.nowpermission }
+      fetchList(a).then(response => {
+        if (1 == 2)
+        {
+          console.log("aaaa")
+          this.list = [response.data]
+        } else if (response.data == null)
+        {
+          this.list = ''
+        } else
+        {
+          this.list = response.data
+        }
+        console.log(this.list)
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -162,9 +215,24 @@ export default {
       } else if (this.listQuery.importance != '' && this.listQuery.title === '')
       {
         //按等级搜索
+        if (this.listQuery.importance != '1' || this.listQuery.importance != '2' || this.listQuery.importance != '3')
+        {
+          this.nowpermission = this.listQuery.importance
+        }
         this.listLoading = true
-        fetchList(this.listQuery.importance).then(response => {
-          this.list = response.data
+        const a = { permission: this.listQuery.importance }
+        fetchList(a).then(response => {
+          if (1 == 2)
+          {
+            this.list = [response.data]
+          } else if (response.data == null)
+          {
+            this.list = ''
+          } else
+          {
+            this.list = response.data
+          }
+          console.log(this.list)
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
@@ -172,19 +240,53 @@ export default {
       } else if (this.listQuery.importance === '' && this.listQuery.title != '')
       {
         //按学号搜索
+        //console.log(this.listQuery.title)
         this.listLoading = true
-        fetchList(this.listQuery.title).then(response => {
-          this.list = response.data
+        const a = { id: this.listQuery.title, permission: "" }
+        fetchListid(a).then(response => {
+          if (typeof response.data === 'object')
+          {
+            this.list = [response.data]
+          } else
+          {
+            this.list = response.data
+          }
+          if (response.data.permission == 'ROLE_ADMIN')
+          {
+            this.nowpermission = '1'
+          } else if (response.data.permission == 'ROLE_TEACHER')
+          {
+            this.nowpermission = '2'
+          } else
+          {
+            this.nowpermission = '3'
+          }
+          console.log(response.data)
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
         })
+
       } else
       {
         //两个一起搜索
         this.listLoading = true
-        fetchList().then(response => {
-          this.list = response.data
+        if (this.listQuery.importance != '1' || this.listQuery.importance != '2' || this.listQuery.importance != '3')
+        {
+          this.nowpermission = this.listQuery.importance
+        }
+        const a = { id: this.listQuery.title, permission: this.listQuery.importance }
+        fetchListall(a).then(response => {
+          if (typeof response.data === 'object')
+          {
+            this.list = [response.data]
+          } else if (response.data == null)
+          {
+            this.list = ''
+          } else
+          {
+            this.list = response.data
+          }
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
@@ -213,7 +315,7 @@ export default {
           console.log(this.temp)
           this.temp.password = "123"
           createinfo(this.temp).then(() => {
-            this.list.unshift(this.temp)
+            // this.list.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -223,14 +325,17 @@ export default {
             })
           })
           this.listLoading = true
-          this.getList()
+          setTimeout(() => {
+            this.getList();
+          }, 1000);
+
         }
       })
     },
     handleUpdate (row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
-      this.dialogFormVisible = true
+      this.dialogFormVisible1 = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -240,8 +345,9 @@ export default {
         if (valid)
         {
           console.log(this.temp)
-          updateinfo(this.temp).then(() => {
-            this.dialogFormVisible = false
+          const a = { id: this.temp.id, name: this.temp.name, permission: this.nowpermission, email: this.temp.email }
+          updateinfo(a).then(() => {
+            this.dialogFormVisible1 = false
             this.$notify({
               title: 'Success',
               message: 'Update Successfully',
@@ -250,14 +356,20 @@ export default {
             })
           })
           this.listLoading = true
-          this.getList()
+          setTimeout(() => {
+            this.getList();
+          }, 1000);
+
         }
       })
     },
     handleDelete (row, index) {
       this.temp = Object.assign({}, row)
-      const a = this.temp.id
-      const b = { uid: a }
+      const a = parseInt(this.temp.id)
+      const b = { id: a, permission: this.nowpermission }
+      // if (this.temp.id == this.sid){
+
+      // }else{
       deleteinfo(b).then(() => {
         this.$notify({
           title: 'Success',
@@ -265,11 +377,15 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.listLoading = true
+        this.getList()
       })
+
     },
     handlepassword (row, index) {
       this.temp = Object.assign({}, row)
-      const b = { id: this.temp.id, newpwd: "123" }
+      console.log(typeof parseInt(this.temp.id))
+      const b = { id: parseInt(this.temp.id), newpwd: "123" }
       reset(b).then(() => {
         this.$notify({
           title: 'Success',

@@ -92,7 +92,8 @@ export const asyncRoutes = [
         name: 'Course',
         component: () => import('@/views/form/index'),
         meta: { roles: ['2'], title: '课程', icon: 'form' }
-      }
+      },
+
     ]
   },
   {

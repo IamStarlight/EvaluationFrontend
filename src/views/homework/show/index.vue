@@ -4,33 +4,45 @@
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column align="center" label="作业名" width="500">
           <template slot-scope="scope">
-            {{ scope.row.cid }}
+            {{ scope.row.title }}
           </template>
         </el-table-column>
         <el-table-column label="发布人">
-          <template slot-scope="scope">
-            {{ scope.row.cname }}
-          </template>
+          {{ this.teacher }}
         </el-table-column>
         <el-table-column label="提交截止日期" width="200" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.tname }}</span>
+            <span>{{ scope.row.end_time }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" prop="created_at" label="提交作业" width="120">
           <template slot-scope="scope">
-            <span><el-button type="primary" plain
-                @click="change(scope.row.cid, scope.row.cname, scope.row.tname, scope.row.content)">提交</el-button></span>
+            <span>
+              <el-button :type="'success'" plain
+                @click="change(scope.row.hid, scope.row.tname, scope.row.date, scope.row.bool, scope.row.states)">提交
+              </el-button>
+            </span>
           </template>
         </el-table-column>
+        <!-- <el-table-column align="center" prop="created_at" label="提交作业" width="120">
+          <template slot-scope="scope">
+            <span>
+              <el-button
+                :type="(scope.row.states > 2 && scope.row.states < 6) ? 'success' : (scope.row.states === 4 ? (scope.row.bool === 'T' ? 'warning' : 'info') : 'info')"
+                plain @click="change(scope.row.hid, scope.row.tname, scope.row.date, scope.row.bool, scope.row.states)">
+                {{ scope.row.states === 'A' ? '提交' : (scope.row.states === 'B' ? '已提交' : '未提交') }}
+              </el-button>
+            </span>
+          </template>
+        </el-table-column> -->
         <el-table-column label="批阅任务" width="100" align="center">
           <template slot-scope="scope">
-            {{ scope.row.content }}
+            {{ scope.row.read }}
           </template>
         </el-table-column>
         <el-table-column label="成绩" width="100" align="center">
           <template slot-scope="scope">
-            {{ scope.row.content }}
+            {{ scope.row.score }}
           </template>
         </el-table-column>
       </el-table>
@@ -39,7 +51,7 @@
 </template>
 
 <script>
-import { getList, getAll } from '@/api/course'
+import { getList, getAllhomework } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
@@ -49,7 +61,9 @@ export default {
     ...mapGetters([
       'name',
       'roles',
-      'sid'
+      'sid',
+      'teacher',
+      'cid'
     ])
   },
   filters: {
@@ -64,7 +78,14 @@ export default {
   },
   data () {
     return {
-      list: [],
+      list: [{
+        wid: "1",
+        tname: '',
+        end_time: Date,
+        status: "A",
+        score: "11",
+        bool: "B",
+      }],
       beg: true,
       listLoading: false,
       i: 0,
@@ -78,15 +99,25 @@ export default {
   methods: {
     fetchData () {
       this.listLoading = true
-      getAll().then(response => {
+      const a = { sid: this.sid, cid: this.cid }
+      getAllhomework(a).then(response => {
         this.list = Array.from(response.data)
         console.log("Data" + this.list)
         this.listLoading = false
       })
     },
 
-    change (cid, cname, tid, content) {
-      this.$router.push({ path: '/example/submit' })
+    change (cid, cname, tid, bool, states) {
+      if (parseInt(states) < 6 && parseInt(state) >= 1)
+      {
+        this.$router.push({ path: '/example/submit' })
+      } else if (states == 'B' && bool == "T")
+      {
+        this.$router.push({ path: '/example/submit' })
+      } else
+      {
+
+      }
     },
 
     search () {

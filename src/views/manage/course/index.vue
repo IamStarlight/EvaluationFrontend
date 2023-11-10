@@ -35,6 +35,11 @@
           <span>{{ row.content }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="学生数目" width="400px" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.class_number }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
@@ -50,14 +55,11 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px"
         style="width: 400px; margin-left:50px;">
-        <el-form-item label="课程号" prop="cid">
-          <el-input v-model="temp.cid" />
-        </el-form-item>
         <el-form-item label="课程名" prop="cname">
           <el-input v-model="temp.cname" />
         </el-form-item>
-        <el-form-item label="老师" prop="tname">
-          <el-input v-model="temp.tname" />
+        <el-form-item label="老师" prop="tid">
+          <el-input v-model="temp.tid" />
         </el-form-item>
         <el-form-item label="课程简介" prop="content">
           <el-input v-model="temp.content" />
@@ -76,7 +78,7 @@
 </template>
 
 <script>
-import { fetchList, createinfo, updateinfo, deleteinfo } from '@/api/user'
+import { fetchList, fetchListid, createinfo, updateinfo, deleteinfo } from '@/api/course'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
@@ -91,8 +93,10 @@ export default {
       list: [{
         cid: '12345',
         cname: '22',
-        tname: '2222',
+        tid: '2222',
+        tname: '',
         content: '222',
+        class_number: ''
       }],
       listQuery: {
         title: '',
@@ -102,9 +106,8 @@ export default {
       listLoading: false,
       importanceOptions: [1, 2, 3],
       temp: {
-        cid: '12345',
         cname: '22',
-        tname: '2222',
+        tid: '2222',
         content: '222',
       },
       dialogFormVisible: false,
@@ -112,7 +115,7 @@ export default {
       rules: {
         cname: [{ required: true, message: '需要输入课程名', trigger: 'change' }],
         cid: [{ required: true, message: '需要输入课程号', trigger: 'blur' }],
-        tname: [{ required: true, message: '需要输入任课老师', trigger: 'blur' },
+        tid: [{ required: true, message: '需要输入任课老师', trigger: 'blur' },
         ],
         content: [{ required: false, message: '需要输入邮箱', trigger: 'change' }],
       },
@@ -125,14 +128,14 @@ export default {
     }
   },
   created () {
-    //this.listLoading = true
-    //this.getList()
+    this.listLoading = true
+    this.getList()
   },
   methods: {
     getList () {
       this.listLoading = true
       fetchList().then(response => {
-        this.list = response.data.items
+        this.list = response.data
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
@@ -151,9 +154,10 @@ export default {
 
       } else
       {
-        //按等级搜索
+        //按课程号搜索
         this.listLoading = true
-        fetchList(this.listQuery.title).then(response => {
+        const a = { cid: this.listQuery.title }
+        fetchListid(a).then(response => {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
@@ -163,9 +167,8 @@ export default {
     },
     resetTemp () {
       this.temp = {
-        cid: '',
         cname: '',
-        tname: '',
+        tid: '',
         content: '',
       }
     },
@@ -192,11 +195,17 @@ export default {
               duration: 2000
             })
           })
+          this.listLoading = true
+          setTimeout(() => {
+            this.getList();
+          }, 1000);
+
         }
       })
     },
     handleUpdate (row) {
       this.temp = Object.assign({}, row) // copy obj
+      console.log(this.temp.cid)
       this.$store.dispatch("course/setchangeid",
         this.temp.cid
       );
@@ -213,6 +222,7 @@ export default {
     },
     handleDelete (row, index) {
       this.temp = Object.assign({}, row)
+      const a = { cid: this.temp.cid }
       deleteinfo(this.temp).then(() => {
         this.$notify({
           title: 'Success',
@@ -220,6 +230,10 @@ export default {
           type: 'success',
           duration: 2000
         })
+        this.listLoading = true
+        setTimeout(() => {
+          this.getList();
+        }, 100);
       })
     },
     handleDownload () {

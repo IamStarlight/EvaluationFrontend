@@ -10,17 +10,17 @@
           <h1>吃饱吃好</h1>
           <h2>Login</h2>
           <el-form :rules="loginRules" :model="loginForm" ref="loginForm" class="login-form" style="margin-top: 10px;"
-                   autocomplete="on">
+            autocomplete="on">
             <el-form-item prop="username" style="margin-top: -40px;">
               <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="number"
-                        tabindex="1" autocomplete="on"></el-input>
+                tabindex="1" autocomplete="on"></el-input>
             </el-form-item>
             <el-form-item prop="password" style="margin-top: 30px;">
               <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-                        placeholder="Password" name="password" tabindex="2" autocomplete="on"></el-input>
+                placeholder="Password" name="password" tabindex="2" autocomplete="on"></el-input>
             </el-form-item>
             <el-button style="margin-top: 30px;margin-right: 30px;" type="primary"
-                       @click.native.prevent="handleLogin">Login</el-button>
+              @click.native.prevent="handleLogin">Login</el-button>
             <!-- <el-button type="text" style="color: black; font-weight: 700;" @click.native.prevent="handleSign">sign
               in</el-button> -->
           </el-form>
@@ -303,7 +303,7 @@ $light_gray: #eee;
 .b {
   width: 800px;
   height: 550px;
-  background-image: url(../../assets/background/H.jpg);
+  background-image: url(../../assets/background/BluePond.jpg);
   /* 让图片适应大小 */
   background-size: cover;
   font: 900 50px '';
@@ -355,7 +355,7 @@ $light_gray: #eee;
   line-height: 30px;
   border-radius: 30px;
   background-image: linear-gradient(to left,
-    #9c88ff, #3cadeb);
+      #9c88ff, #3cadeb);
   text-align: center;
 }
 </style>
