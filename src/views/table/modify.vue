@@ -58,6 +58,7 @@
 </template>
 
 <script>
+//TODO:这里暂时copy的发布作业界面，到时候记得改动
 import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
@@ -91,11 +92,6 @@ export default {
         resource: '',
         desc: ''
       },
-      // endTime,
-      // tid:'',
-      // cid:'',
-      // detail: '',
-      // title: ''
     }
   },
   components: {
@@ -177,43 +173,43 @@ export default {
     onSubmit () {
       //获取截止日期输入框元素
       const endTimeInput= document.getElementById('endTime')
-     const endTimeValue = endTimeInput.value;
+      const endTimeValue = endTimeInput.value;
       const endTime = new Date(endTimeValue);
-        // 获取作业内容
-        const detail = 'eat';
+      // 获取作业内容
+      const detail = 'eat';
       const cid = this.cid
-        const wid = 5;
+      const wid = 5;
       const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
-        // 获取作业标题
-        const titleInput = document.getElementById('title');
-        const title = titleInput.value
+      // 获取作业标题
+      const titleInput = document.getElementById('title');
+      const title = titleInput.value
 
-        // 构造请求参数
-        const requestData = {
-          detail,
-          cid,
-          //tid,
-          title,
-          wid,
-          endTime,
-          status
-        };//wid是自动生成的吗
+      // 构造请求参数
+      const requestData = {
+        detail,
+        cid,
+        //tid,
+        title,
+        wid,
+        endTime,
+        status
+      };//wid是自动生成的吗
 
-        // 发送请求给后端，并传递请求参数
-        deliverHomework(requestData)
-          .then(response => {
-            console.log(response.data.message);
-            // 根据 API 返回的响应，进行相应的处理
-            // 可以给用户显示作业提交成功的消息
-            this.$message.success('作业发布成功');
-            // 其他操作
-          })
-          .catch(error => {
-            console.log(error);
-            // 错误处理
-            // 可以将错误信息提示给用户
-            this.$message.error('作业发布失败');
-          });
+      // 发送请求给后端，并传递请求参数
+      deliverHomework(requestData)
+        .then(response => {
+          console.log(response.data.message);
+          // 根据 API 返回的响应，进行相应的处理
+          // 可以给用户显示作业提交成功的消息
+          this.$message.success('作业发布成功');
+          // 其他操作
+        })
+        .catch(error => {
+          console.log(error);
+          // 错误处理
+          // 可以将错误信息提示给用户
+          this.$message.error('作业发布失败');
+        });
 
       this.$message('submit!')
     },

@@ -173,13 +173,24 @@ export const asyncRoutes = [
         path: 'box',
         name: 'box',
         component: () => import('@/views/table/box'),
-        meta: { title: '批改作业', icon: 'table' }
+        // meta: { title: '批改作业', icon: 'table' }
       },
       {
         path: 'grading',
         name: 'grading',
         component: () => import('@/views/table/grading'),
         //meta: { title: '作业详情', icon: 'table' }
+      },
+      {
+        path: 'draft',
+        name: 'draft',
+        component: () => import('@/views/table/draft'),
+        meta: { title: '草稿箱', icon: 'table' }
+      },
+      {
+        path: 'modify',
+        name: 'modify',
+        component: () => import('@/views/table/modify'),
       }
     ]
   },
@@ -190,7 +201,7 @@ export const asyncRoutes = [
       {
         path: 'email',
         name: 'Email',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/email/email'),
         meta: { roles: ['5'], title: '信箱', icon: 'form' }
       }
     ]

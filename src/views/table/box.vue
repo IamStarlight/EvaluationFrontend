@@ -50,7 +50,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      'id'
+      'cid'
     ])
   },
   data() {
@@ -74,7 +74,7 @@ export default {
   methods: {
     fetchData() {
       const wid = this.$route.query.wid;
-      const cid = this.id;
+      const cid = this.cid;
       const data = {
         wid,
         cid,

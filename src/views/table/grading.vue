@@ -2,7 +2,7 @@
   <div class="hom-container1">
     <p>正在批改学号为：{{this.$route.query.sid}} 同学的作业</p>
     <div class="hom-details">
-      <p>{{ sHomework.details }}</p>
+      <p>{{ sHomework[0].details }}</p>
     </div>
     <div class="hom-score" style="display: flex; flex-direction: column;">
       <el-input
@@ -35,13 +35,13 @@ import { getStudentHomework, updateScore } from "@/api/homework";
 export default {
   data() {
     return {
-      sHomework: {},
+      sHomework: [],
     };
   },
 
   computed: {
     ...mapGetters([
-      'id'
+      'cid'
     ]),
   },
 
@@ -53,7 +53,7 @@ export default {
     fetchData() {
       const wid = this.$route.query.wid;
       const sid = this.$route.query.sid;
-      const cid = this.id;
+      const cid = this.cid;
       const data = {
         sid,
         wid,
@@ -71,7 +71,7 @@ export default {
       const wid = this.$route.query.wid;
       // const sid = this.studentHomework.id;
       const sid = this.$route.query.sid;//学生id
-      const cid =this.id;
+      const cid =this.cid;
       //const teacherGrade = this.studentHomework.teacher_grade;
       const teacherGrade = grade;
       //console.log(this.studentHomework.teacherGrade);
