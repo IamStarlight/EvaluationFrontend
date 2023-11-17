@@ -4,9 +4,8 @@
       上传图片
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <el-upload :multiple="true" :file-list="fileList" :show-file-list="true" :on-remove="handleRemove"
-        :on-success="handleSuccess" :before-upload="beforeUpload" class="editor-slide-upload"
-        action="https://httpbin.org/post" list-type="picture-card">
+      <el-upload :multiple="true" :http-request="httpRequest" :before-upload="beforeUpload" class="editor-slide-upload"
+        :limit="1" list-type="picture-card">
         <el-button size="small" type="primary">
           Click upload
         </el-button>
@@ -23,8 +22,19 @@
 
 <script>
 // import { getToken } from 'api/qiniu'
-
+import { getpdf, getAllhomework } from '@/api/course'
+import { mapGetters } from 'vuex'
 export default {
+  computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+      'sid',
+      'teacher',
+      'cid',
+      'homeworkid'
+    ])
+  },
   name: 'EditorSlideUpload',
   props: {
     color: {
@@ -40,17 +50,43 @@ export default {
     }
   },
   methods: {
+    httpRequest (option) {
+      this.fileList.push(option)
+    },
+    handleExceed () {
+      this.$message({ type: 'error', message: '最多支持1个附件上传' })
+    },
     checkAllSuccess () {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
+
     handleSubmit () {
-      const arr = Object.keys(this.listObj).map(v => this.listObj[v])
-      if (!this.checkAllSuccess())
+      if (this.fileList.length === 0)
       {
-        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
-        return
+        this.$alert("请选择图片再进行上传操作");
+        return;
       }
-      this.$emit('successCBK', arr)
+      // 使用form表单的数据格式
+      const paramsData = new FormData()
+      // 将上传文件数组依次添加到参数paramsData中
+      this.fileList.forEach((x) => {
+        paramsData.append('file', x.file)
+      });
+      // 将输入表单数据添加到params表单中
+      paramsData.append('cid', this.cid)
+      paramsData.append('wid', this.homeworkid)
+      getpdf(paramsData).then(response => {
+        this.$message({
+          message: "提交成功",
+          type: "success"
+        })
+        this.$router.push({ path: '/example/table' })
+      }).catch(() => {
+        this.$message({
+          message: "导入失败",
+          type: "error"
+        })
+      })
       this.listObj = {}
       this.fileList = []
       this.dialogVisible = false

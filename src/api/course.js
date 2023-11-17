@@ -72,9 +72,50 @@ export function getAll () {
 
 export function getAllhomework (data) {
   return request({
-    url: 'homework/info',
+    url: 'homework/bycourse',
     method: 'get',
     params: data
   })
 }
+
+export function getpdf (data) {
+  return request({
+    url: 'course/add',
+    method: 'post',
+    data
+  })
+}
+
+export function getmhomework (data) {
+  return request({
+    url: 'peer/Allwork',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getcomment (data) {
+  return request({
+    url: 'homework/submit',
+    method: 'post',
+    data
+  })
+}
+
+export function getdetail (data) {
+  return request({
+    url: 'homework/submit',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getexhomework (data) {
+  return request({
+    url: 'peer/updateEvaluation',
+    method: 'post',
+    data
+  })
+}
+
 

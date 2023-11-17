@@ -11,5 +11,7 @@ const getters = {
   cname: state => state.course.cname,
   teacher: state => state.course.teacher,
   cintroduction: state => state.course.cintroduction,
+  homeworkid: state => state.course.homeworkid,
+  exchangeid: state => state.course.exchangeid
 }
 export default getters

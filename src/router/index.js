@@ -134,8 +134,23 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'Eva',
-        component: () => import('@/views/form/index'),
-        meta: { roles: ['4'], title: '互评作业', icon: 'form' }
+        component: () => import('@/views/exchange/list'),
+        meta: { roles: ['4'], title: '互评作业表', icon: 'form' },
+        hidden: true
+      },
+      {
+        path: 'index1',
+        name: 'Eva',
+        component: () => import('@/views/exchange/show'),
+        meta: { roles: ['4'], title: '互评作业', icon: 'form' },
+        hidden: true
+      },
+      {
+        path: 'index2',
+        name: 'Eva',
+        component: () => import('@/views/exchange/email'),
+        meta: { roles: ['4'], title: '互评申诉', icon: 'form' },
+        hidden: true
       }
     ]
   },

@@ -2,7 +2,9 @@ const state = {
   cid: 1,
   cname: '',
   tid: '',
-  content: 'ssss'
+  content: 'ssss',
+  homeworkid: "",
+  exchangeid: "",
 }
 const mutations = {
   SET_ID: (state, cid) => {
@@ -16,6 +18,12 @@ const mutations = {
   },
   SET_INTRODUCTION: (state, content) => {
     state.cintroduction = content
+  },
+  SET_HID: (state, content) => {
+    state.homeworkid = content
+  },
+  SET_EID: (state, content) => {
+    state.exchangeid = content
   },
 }
 const actions = {
@@ -32,6 +40,12 @@ const actions = {
   },
   async setchangeintro ({ commit, dispatch }, id) {
     commit('SET_INTRODUCTION', id)
+  },
+  async setchangehomeworkid ({ commit, dispatch }, id) {
+    commit('SET_HID', id)
+  },
+  async setchangeexchangeid ({ commit, dispatch }, id) {
+    commit('SET_EID', id)
   },
 }
 

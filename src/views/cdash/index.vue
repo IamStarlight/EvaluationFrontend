@@ -61,7 +61,7 @@ export default {
       } else
       {
         this.$store.dispatch("user/setchangerole",
-          ['1']
+          ['2']
         );
       }
     }

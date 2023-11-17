@@ -7,36 +7,38 @@
     <div class="container1">
     </div>
     <div class="hom-container">
-      <div class="hom-title">{{ homework.title }}</div>
-      <div class="hom-user">Author: {{ this.teacher }}</div>
-      <div class="hom-user">publish-time: {{ homework.endTime }}</div>
+      <div class="hom-title">{{ blog.title }}</div>
+      <div class="hom-user">Author: {{ blog.author }}</div>
+      <div class="hom-user">publish-time: {{ blog.time }}</div>
       <div class="hom-content-container">
         <div class="hom-content">
           <div class="markdown-body">
-            <VueMarkdown :source="homework.details" v-highlight></VueMarkdown>
+            <VueMarkdown :source="blog.content" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homework.url" target="_blank" class="buttonText">{{ homework.url }}</a>
         </div>
       </div>
     </div>
-    <div class="hom-container3">
-      <el-button type="primary" @click="dialogVisible = true" style="margin-right: 20px;">选择上传pdf</el-button>
-      <editorImage color="#1890ff" class="editor-upload-btn" style="margin-right: 20px;" />
-      <el-button type="primary" @click="dialogVisible1 = true" style="margin-right: 20px;">选择输入文字</el-button>
+    <div class="hom-container1">
+      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>
+      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+    </div>
+    <div class="hom-container2">
+      <tinymce v-model="content" style="width: 950px;" />
     </div>
     <div class="hom-container3">
+      <el-button type="primary">提交作业</el-button>
       <el-button type="info" @click=onCancel()>退出作业</el-button>
     </div>
 
 
 
     <el-dialog title="导入信息" :visible.sync="dialogVisible">
-      <el-form ref="importFormRef" label-width="130px">
+      <el-form ref="importFormRef" :model="importForm" label-width="130px">
         <el-form-item label="上传文件:">
           <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"
             :on-exceed="handleExceed" :limit="1">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>
+            <div slot="tip" class="el-upload__tip">只能上传.xlsx文件,且不超过5M</div>
           </el-upload>
         </el-form-item>
         <el-form-item>
@@ -45,26 +47,15 @@
         </el-form-item>
       </el-form>
     </el-dialog>
-
-
-
-    <el-dialog title="导入信息" :visible.sync="dialogVisible1">
-      <tinymce v-model="form.detail" />
-      <el-button type="primary" @click="onSubmit()">提交作业</el-button>
-      <el-button type="info" @click="dialogVisible1 = false">关闭窗口</el-button>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getpdf, getcomment, getdetail } from '@/api/course'
 import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from 'vuex'
-import { parseTime } from '@/utils/index'
-const currentTime = parseTime(Date.now(), '{y}-{m}-{d} {h}:{i}:{s}')
 export default {
   computed: {
     ...mapGetters([
@@ -76,27 +67,34 @@ export default {
       'homeworkid'
     ])
   },
-  created () {
-    this.fetchData()
-  },
   data () {
     return {
       //对话框控制权
       dialogVisible: false,
-      dialogVisible1: false,
+      //导入表单数据
+      importForm: {
+        kgCode: '',
+        targetUrl: '',
+        targetUsername: '',
+        targetPassword: '',
+      },
       //存放上传文件
       fileList: [],
-      homework: {
-        title: "作业1",
-        details: 'sdsdsd',
-        endTime: currentTime,
-        url: '2323232'
+      blog: {
+        title: '作业1',
+        author: 'ddd',
+        content: 'sdsdsd',
+        time: 'sdsdsd'
       },
       form: {
-        sid: "",
-        detail: "",
-        cid: "",
-        wid: ""
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
       }
     }
   },
@@ -107,17 +105,6 @@ export default {
   },
 
   methods: {
-    fetchData () {
-      const a = { wid: this.homeworkid, cid: this.cid }
-      getdetail(a).then(response => {
-        this.homework.title = response.data["title"]
-        //console.log(response.data["title"])       
-        this.homework.details = response.data["details"]
-        this.homework.endTime = response.data["endTime"]
-        this.url = response.data["url"]
-      })
-    },
-
     // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
     httpRequest (option) {
       this.fileList.push(option)
@@ -132,7 +119,7 @@ export default {
         this.$message.error("最大上传5M")
         return false
       }
-      //判断文件类型，必须是pdf格式
+      //判断文件类型，必须是xlsx格式
       let fileName = file.name
       let reg = /^.+(\.pdf)$/
       if (!reg.test(fileName))
@@ -146,67 +133,41 @@ export default {
     handleExceed () {
       this.$message({ type: 'error', message: '最多支持1个附件上传' })
     },
-    //导入pdf病种信息数据
+    //导入Excel病种信息数据
     submitImportForm () {
       // 使用form表单的数据格式
-      const paramsData = new FormData()
+      const params = new FormData()
       // 将上传文件数组依次添加到参数paramsData中
       this.fileList.forEach((x) => {
         paramsData.append('file', x.file)
       });
       // 将输入表单数据添加到params表单中
-      paramsData.append('cid', this.cid)
-      paramsData.append('wid', this.wid)
-      getpdf(paramsData).then(response => {
-        this.$message({
-          message: "导入成功",
-          type: "success"
-        })
-        this.$router.push({ path: '/example/table' })
-      }).catch(() => {
-        this.$message({
-          message: "导入失败",
-          type: "error"
-        })
-      })
-      this.$refs.upload.clearFiles()//清空上传列表
-      this.fileList = []//集合清空
-      this.dialogVisible = false//关闭对话框
-      // //这里根据自己封装的axios来进行调用后端接口
-      // this.httpPostWithLoading(IMPORT_URL, paramsData).then(match => {
-      //   if (match.success)
-      //   {
-      //     this.$message({
-      //       message: "导入成功",
-      //       type: "success"
-      //     })
-      //     this.$router.push({ path: '/example/table' })
-      //   } else
-      //   {
-      //     this.$message({
-      //       message: "导入失败",
-      //       type: "error"
-      //     })
-      //   }
-      //   this.$refs.upload.clearFiles()//清空上传列表
-      //   this.fileList = []//集合清空
-      //   this.dialogVisible = false//关闭对话框
+      params.append('kgCode', this.importForm.kgCode)
+      params.append('targetUrl', this.importForm.targetUrl)
+      params.append('targetUsername', this.importForm.targetUsername)
+      params.append('targetPassword', this.importForm.targetPassword)
 
-      // })
+      //这里根据自己封装的axios来进行调用后端接口
+      this.httpPostWithLoading(IMPORT_URL, paramsData).then(match => {
+        if (match.success)
+        {
+          this.$message({
+            message: "导入成功",
+            type: "success"
+          })
+        } else
+        {
+          this.$message({
+            message: "导入失败",
+            type: "error"
+          })
+        }
+        this.fileList = []//集合清空
+        this.dialogVisible1 = false//关闭对话框
+
+      })
     },
     onSubmit () {
-      this.form.cid = this.cid
-      this.form.wid = this.homeworkid
-      this.form.sid = this.sid
-      getcomment(this.form).then(response => {
-        this.$message('submit!')
-        this.$router.push({ path: '/example/table' })
-      }).catch(() => {
-        this.$message({
-          message: "导入失败",
-          type: "error"
-        })
-      })
       this.$message('submit!')
     },
     onCancel () {
