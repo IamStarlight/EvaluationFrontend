@@ -20,7 +20,7 @@
     <div class="hom-container1">
       <div class="hom-title">评分</div>
       <el-form :rules="Rules" :model="result" ref="result">
-        <el-form-item ref="score" prop="score">
+        <el-form-item ref="grade" prop="grade">
           <el-input v-model="result.grade" placeholder="得分" type="number"></el-input>
         </el-form-item>
       </el-form>
@@ -68,7 +68,7 @@ export default {
     }
     return {
       Rules: {
-        score: [{ required: true, trigger: 'blur', validator: validateInput }],
+        grade: [{ required: true, trigger: 'blur', validator: validateInput }],
       },
       blog: {
         title: '作业1',//名字

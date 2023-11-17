@@ -15,7 +15,7 @@
           <div class="markdown-body">
             <VueMarkdown :source="homework.details" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homework.url" target="_blank" class="buttonText">{{ homework.url }}</a>
+          <a color="blue" :href="homework.url" target="_blank" class="buttonText">下载附件：{{ homework.url }}</a>
         </div>
       </div>
     </div>
@@ -24,7 +24,20 @@
       <editorImage color="#1890ff" class="editor-upload-btn" style="margin-right: 20px;" />
       <el-button type="primary" @click="dialogVisible1 = true" style="margin-right: 20px;">选择输入文字</el-button>
     </div>
+    <div class="hom-container">
+      <div class="hom-title">已上传成功列表</div>
+      <div class="hom-content-container">
+        <div class="hom-content">
+          <div class="markdown-body">
+            <div class="hom-user">只允许上传文字内容和一个附件:</div>
+            <div class="hom-user">{{ this.now }}</div>
+            <div class="hom-user">{{ this.now1 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="hom-container3">
+      <el-button type="primary" @click=onPass()>完成提交</el-button>
       <el-button type="info" @click=onCancel()>退出作业</el-button>
     </div>
 
@@ -92,6 +105,8 @@ export default {
         endTime: currentTime,
         url: '2323232'
       },
+      now: "",
+      now1: "",
       form: {
         sid: "",
         detail: "",
@@ -114,7 +129,7 @@ export default {
         //console.log(response.data["title"])       
         this.homework.details = response.data["details"]
         this.homework.endTime = response.data["endTime"]
-        this.url = response.data["url"]
+        this.homeworl.url = response.data["url"]
       })
     },
 
@@ -162,7 +177,7 @@ export default {
           message: "导入成功",
           type: "success"
         })
-        this.$router.push({ path: '/example/table' })
+        this.now1 = "已上传一个文件"
       }).catch(() => {
         this.$message({
           message: "导入失败",
@@ -200,18 +215,35 @@ export default {
       this.form.sid = this.sid
       getcomment(this.form).then(response => {
         this.$message('submit!')
-        this.$router.push({ path: '/example/table' })
+        this.now = "已上传一份文本"
       }).catch(() => {
         this.$message({
           message: "导入失败",
           type: "error"
         })
       })
-      this.$message('submit!')
+
+    },
+    onPass () {
+      if (this.now != "" || this.now1 != "")
+      {
+        this.$message({
+          message: '提交成功',
+          type: 'success'
+        })
+        this.$router.push({ path: '/example/table' })
+      } else
+      {
+        this.$message({
+          message: '未提交作业',
+          type: 'warning'
+        })
+      }
+
     },
     onCancel () {
       this.$message({
-        message: 'cancel!',
+        message: '已取消提交',
         type: 'warning'
       })
       this.$router.push({ path: '/example/table' })

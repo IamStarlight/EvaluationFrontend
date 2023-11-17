@@ -102,7 +102,23 @@ export function getcomment (data) {
   })
 }
 
+export function getemail (data) {
+  return request({
+    url: 'homework/submit',
+    method: 'post',
+    data
+  })
+}
+
 export function getdetail (data) {
+  return request({
+    url: 'homework/submit',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getdetailmy (data) {
   return request({
     url: 'homework/submit',
     method: 'get',

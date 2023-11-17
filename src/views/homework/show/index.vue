@@ -33,9 +33,10 @@
           <template slot-scope="scope">
             <span>
               <el-button
-                :type="(scope.row.status == 'A') ? 'success' : (scope.row.status === 'B' ? (scope.row.bool === 'T' ? 'warning' : 'info') : 'info')"
+                :type="(scope.row.status == 'A') ? 'success' : (scope.row.status === 'B' || scope.row.status === 'D' ? 'warning' : 'info')"
                 plain @click="change(scope.row.hid, scope.row.tname, scope.row.date, scope.row.bool, scope.row.status)">
-                {{ scope.row.status === 'A' ? '提交' : (scope.row.status === 'B' ? '已提交' : '未提交') }}
+                {{ scope.row.status === 'A' ? '提交' : (scope.row.status === 'B' || scope.row.status === 'D' ? '已提交' :
+                  (scope.row.status == 'C' ? '未提交' : '不可提交')) }}
               </el-button>
             </span>
           </template>
@@ -53,10 +54,9 @@
         <el-table-column align="center" prop="created_at" label="申诉" width="120">
           <template slot-scope="scope">
             <span>
-              <el-button
-                :type="(scope.row.status == 'A') ? 'success' : (scope.row.status === 'B' ? (scope.row.bool === 'T' ? 'warning' : 'info') : 'info')"
-                plain @click="change1(scope.row.hid, scope.row.tname, scope.row.date, scope.row.bool, scope.row.status)">
-                {{ scope.row.status === 'A' ? '提交' : (scope.row.status === 'B' ? '已提交' : '未提交') }}
+              <el-button :type="(scope.row.read == '是') ? 'success' : 'info'" plain
+                @click="change1(scope.row.hid, scope.row.tname, scope.row.date, scope.row.read, scope.row.status)">
+                {{ scope.row.read == '是' ? '申诉' : '不可申诉' }}
               </el-button>
             </span>
           </template>
@@ -72,6 +72,10 @@
         </el-table-column>
       </el-table>
     </div>
+
+    <el-dialog title="提交作业信息" :visible.sync="dialogVisible">
+      <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -111,9 +115,10 @@ export default {
         end_time: currentTime,
         status: "A",//A是可以提交未提交,B是已经提交了,C是已截止未提交，D是截止提交了，E是不可以提交
         score: "11",//成绩
-        read: "",//是否批阅
-        bool: "T",//A是可以完成未完成,B是已经完成,C是已截止未完成，D是截止完成了，E是不可以互评
+        read: "是",//是否批阅
+        bool: "A",//A是可以完成未完成,B是已经完成,C是已截止未完成，D是截止完成了，E是不可以互评
       }],
+      dialogVisible: false,
       beg: true,
       listLoading: false,
       i: 0,
@@ -141,26 +146,29 @@ export default {
     },
 
     change (hid, cname, tid, bool, states) {
-      if (states == 'A' && bool == "T")
+      if (states == 'A')
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid
         );
         this.$router.push({ path: '/example/submit' })
         console.log(this.homeworkid)
-      } else if (states == 'B' && bool == "T")
+      } else if (states == 'B')
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid
         );
-        this.$router.push({ path: '/example/submit' })
-      } else
+        this.$router.push({ path: '/example/record' })
+      } else if (states == 'D')
       {
-
+        this.$store.dispatch("course/setchangehomeworkid",
+          hid
+        );
+        this.dialogVisible = true
       }
     },
-    change1 (hid, cname, tid, bool, states) {
-      if (bool == "T")
+    change1 (hid, cname, tid, read, states) {
+      if (read == "是")
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid
@@ -172,7 +180,7 @@ export default {
       }
     },
     jump (hid, cname, tid, bool, states) {
-      if (bool == "T")
+      if (bool == "A")
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid

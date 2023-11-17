@@ -124,6 +124,11 @@ export const asyncRoutes = [
         path: 'submit',
         component: () => import('@/views/homework/edit/index'),
         hidden: true
+      },
+      {
+        path: 'record',
+        component: () => import('@/views/homework/record/index'),
+        hidden: true
       }
     ]
   },
@@ -218,6 +223,18 @@ export const asyncRoutes = [
         name: 'Email',
         component: () => import('@/views/email/email'),
         meta: { roles: ['5'], title: '信箱', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/semail',
+    component: Layout,
+    children: [
+      {
+        path: 'email',
+        name: 'Email',
+        component: () => import('@/views/email/email'),
+        meta: { roles: ['4'], title: '信箱', icon: 'form' }
       }
     ]
   },

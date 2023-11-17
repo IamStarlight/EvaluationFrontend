@@ -5,7 +5,7 @@
   -->
   <div class="container">
     <div class="container1">
-      <div class="notice">课程号:{{cid}}</div>
+      <div class="notice">课程号:{{ cid }}</div>
       <div class="notice">本课程为：{{ cname }}</div>
     </div>
 
@@ -17,7 +17,7 @@
       </div>
       <div class="date-time-container">
         <label for="endTime">截止日期:</label>
-        <input id="endTime" class="hom-info-input" type="datetime-local" >
+        <input id="endTime" class="hom-info-input" type="datetime-local">
       </div>
     </div>
 
@@ -43,7 +43,7 @@
       <el-form ref="importFormRef" :model="importForm" label-width="130px">
         <el-form-item label="上传文件:">
           <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"
-                     :on-exceed="handleExceed" :limit="1">
+            :on-exceed="handleExceed" :limit="1">
             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
             <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>
           </el-upload>
@@ -62,10 +62,10 @@ import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
-import {mapGetters} from "vuex";
-import 'vue-datetime/dist/vue-datetime.css';
-import {deliverHomework, intoDraft} from "@/api/homework";
-import {id} from "html-webpack-plugin/lib/chunksorter";
+import { mapGetters } from "vuex";
+//import 'vue-datetime/dist/vue-datetime.css';
+import { deliverHomework, intoDraft } from "@/api/homework";
+import { id } from "html-webpack-plugin/lib/chunksorter";
 export default {
   data () {
     return {
@@ -176,49 +176,49 @@ export default {
     },
     onSubmit () {
       //获取截止日期输入框元素
-      const endTimeInput= document.getElementById('endTime')
-     const endTimeValue = endTimeInput.value;
+      const endTimeInput = document.getElementById('endTime')
+      const endTimeValue = endTimeInput.value;
       const endTime = new Date(endTimeValue);
-        // 获取作业内容
-        const detail = 'eat';
+      // 获取作业内容
+      const detail = 'eat';
       const cid = this.cid
-        const wid = 5;
+      const wid = 5;
       const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
-        // 获取作业标题
-        const titleInput = document.getElementById('title');
-        const title = titleInput.value
+      // 获取作业标题
+      const titleInput = document.getElementById('title');
+      const title = titleInput.value
 
-        // 构造请求参数
-        const requestData = {
-          detail,
-          cid,
-          //tid,
-          title,
-          wid,
-          endTime,
-          status
-        };//wid是自动生成的吗
+      // 构造请求参数
+      const requestData = {
+        detail,
+        cid,
+        //tid,
+        title,
+        wid,
+        endTime,
+        status
+      };//wid是自动生成的吗
 
-        // 发送请求给后端，并传递请求参数
-        deliverHomework(requestData)
-          .then(response => {
-            console.log(response.data.message);
-            // 根据 API 返回的响应，进行相应的处理
-            // 可以给用户显示作业提交成功的消息
-            this.$message.success('作业发布成功');
-            // 其他操作
-          })
-          .catch(error => {
-            console.log(error);
-            // 错误处理
-            // 可以将错误信息提示给用户
-            this.$message.error('作业发布失败');
-          });
+      // 发送请求给后端，并传递请求参数
+      deliverHomework(requestData)
+        .then(response => {
+          console.log(response.data.message);
+          // 根据 API 返回的响应，进行相应的处理
+          // 可以给用户显示作业提交成功的消息
+          this.$message.success('作业发布成功');
+          // 其他操作
+        })
+        .catch(error => {
+          console.log(error);
+          // 错误处理
+          // 可以将错误信息提示给用户
+          this.$message.error('作业发布失败');
+        });
 
       this.$message('submit!')
     },
     toDraft () {
-      const endTimeInput= document.getElementById('endTime')
+      const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
       const endTime = new Date(endTimeValue);
       const detail = 'eat';
@@ -315,14 +315,16 @@ export default {
 
 
 //课程名称提示
-.notice{
-  color:grey
+.notice {
+  color: grey
 }
+
 //标题和DDL样式
 .hom-info-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 将子元素左对齐 */
+  align-items: flex-start;
+  /* 将子元素左对齐 */
   margin: 20px;
 }
 
@@ -424,7 +426,6 @@ export default {
   /* 居中显示 */
   border-radius: 10px;
 }
-
 </style>
 
 
