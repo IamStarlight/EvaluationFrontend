@@ -1,17 +1,27 @@
 <template>
   <div class="hom-container1">
-    <p>正在批改学号为：{{ this.$route.query.sid }} 同学的作业</p>
+    <p>正在批改学号为：{{this.$route.query.sid}} 同学的作业</p>
     <div class="hom-details">
-      <p>{{ sHomework.details }}</p>
+      <p>{{ sHomework[0].details }}</p>
     </div>
     <div class="hom-score" style="display: flex; flex-direction: column;">
-      <el-input v-model="sHomework.score" placeholder="请输入学生的分数" clearable style="width: 160px;"></el-input>
+      <el-input
+        v-model="sHomework.score"
+        placeholder="请输入学生的分数"
+        clearable
+        style="width: 160px;"
+      ></el-input>
       <div style="margin-bottom: 20px;"></div>
-      <el-input v-model="sHomework.comments" type="textarea" placeholder="请输入给学生的评语" style="width: 400px;"
-        :autosize="{ minRows: 4, maxRows: 8 }"></el-input>
+      <el-input
+        v-model="sHomework.comments"
+        type="textarea"
+        placeholder="请输入给学生的评语"
+        style="width: 400px;"
+        :autosize="{minRows: 4, maxRows: 8}"
+      ></el-input>
     </div>
     <div class="button-container">
-      <el-button type="primary" @click="updateScore(sHomework.score, sHomework.comments)">提交</el-button>
+      <el-button type="primary" @click="updateScore(sHomework.score,sHomework.comments)">提交</el-button>
       <el-button class="hom-back-btn" @click="back">返回</el-button>
     </div>
 
@@ -23,9 +33,9 @@ import { mapGetters } from "vuex";
 import { getStudentHomework, updateScore } from "@/api/homework";
 
 export default {
-  data () {
+  data() {
     return {
-      sHomework: {},
+      sHomework: [],
     };
   },
 
@@ -35,12 +45,12 @@ export default {
     ]),
   },
 
-  created () {
+  created() {
     this.fetchData();
   },
 
   methods: {
-    fetchData () {
+    fetchData() {
       const wid = this.$route.query.wid;
       const sid = this.$route.query.sid;
       const cid = this.cid;
@@ -56,18 +66,18 @@ export default {
       });
     },
 
-    updateScore (grade, comment) {
+    updateScore(grade,comment) {
       //const wid = this.$route.query.wid;
       const wid = this.$route.query.wid;
       // const sid = this.studentHomework.id;
       const sid = this.$route.query.sid;//学生id
-      const cid = this.cid;
+      const cid =this.cid;
       //const teacherGrade = this.studentHomework.teacher_grade;
       const teacherGrade = grade;
       //console.log(this.studentHomework.teacherGrade);
-      const teacherComments = comment;
+      const teacherComments =comment;
       //console.log(this.studentHomework.sid)
-      const data = {
+      const data={
         // sid:this.sid,
         // teacherGrade:this.teacherGrade,
         sid,
@@ -97,7 +107,7 @@ export default {
       console.log(data.teacherGrade);
     },
 
-    back () {
+    back() {
       this.$nextTick(() => {
         this.$router.push({
           name: "box",
@@ -138,7 +148,7 @@ export default {
   margin-bottom: 20px;
 }
 
-.el-input-group__append {
+.el-input-group__append{
   margin-left: 20px;
 }
 

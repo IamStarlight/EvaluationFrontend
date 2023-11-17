@@ -8,6 +8,15 @@ export function deliverHomework(data) {
     data
   });
 }
+
+export  function intoDraft(data){
+  return request({
+    url: '/homework/draft',
+    method: 'post',
+    data
+  });
+}
+
 //查看老师已经发布的所有作业(11)
 export function listHomework(cid) {
   return request({
@@ -53,3 +62,21 @@ export function updateScore(data) {
     data
   });
 }
+
+//展示未提交的作业
+export function listDraft (cid) {
+  return request({
+    url: '/homework/draft',
+    method: 'get',
+    params: {cid}
+  })
+}
+
+export function evaluate(wid){
+  return request({
+    url: '/homework/evaluate',
+    method: 'post',
+    params: wid
+  })
+}
+

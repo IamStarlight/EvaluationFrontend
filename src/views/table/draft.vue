@@ -1,14 +1,12 @@
-<template>
+<template><!--草稿箱列表，可以去继续编辑，删除草稿，必须继续编辑才能发布，编辑跳到新页面，这里把startTime信息去掉，因为没有发布的话就不会有startTime记录-->
   <div>
-    <h2>已发布作业</h2>
+    <h2>草稿箱</h2>
     <table>
       <thead>
-      <tr>
+      <tr><!--如果空呢-->
         <th>作业ID</th>
         <th>作业名称</th>
-        <th>开始时间</th>
         <th>截止时间</th>
-        <th>提交人数</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -16,20 +14,18 @@
       <tr v-for="assignment in assignments" :key="assignment.id">
         <td>{{ assignment.wid }}</td>
         <td>{{ assignment.title}}</td>
-        <td>{{ assignment.startTime}}</td>
         <td>{{ assignment.endTime }}</td>
-        <td>{{ assignment.submitNumber}}</td>
         <td>
-          <button class="btn1" @click="gotoGrading(assignment.wid)">
-            去批改
+          <button class="btn1" @click="handleModify(assignment.wid,assignment.title,assignment.endTime)">
+            继续编辑
           </button>
           <span style="margin: 10px;"></span>
+<!--          <button class="btn3" @click="handleSubmit(assignment.wid)">-->
+<!--            发布-->
+<!--          </button>-->
+<!--          <span style="margin: 10px;"></span>-->
           <button class="btn2" @click="deleteHom(assignment.wid)">
-            删除作业
-          </button>
-          <span style="margin: 10px;"></span>
-          <button class="btn3" @click="evaluation(assignment.wid)">
-            删除作业
+            发布
           </button>
         </td>
       </tr>
@@ -41,24 +37,18 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {deleteHomework, evaluate, listHomework} from "@/api/homework";
-
+import {deleteHomework, listDraft} from "@/api/homework";
 export default {
   data() {
     return {
-      cid:'1',
-      // assignments: [
-      //   { id: 1, name: '作业1', startTime: '2023-11-01', deadline: '2023-11-07' },
-      //   { id: 2, name: '作业2', startTime: '2023-11-03', deadline: '2023-11-10' },
-      //   { id: 3, name: '作业3', startTime: '2023-11-05', deadline: '2023-11-12' },
-      // ],
-      assignments:[],
-      listLoading: true
+      listLoading: true,
+      assignments:[]
     }
   },
   computed: {
     ...mapGetters([
-      'cid'
+      'cid',
+      'cname'
     ])
   },
   created() {
@@ -67,22 +57,28 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true;
-      // let cid;
-      // cid = 1
-      //console.log(cid)
-      listHomework(this.cid).then(response => {
+      listDraft(this.cid).then(response => {
         this.assignments = response.data
         console.log(response.data.wid)
         this.listLoading = false
       })
       //console.log(this.cid)
     },
-    gotoGrading(wid) {
+    handleModify(wid,title,endTime,detail){//cid,cname,title,endTime,detail
       this.$router.push({
-        name: 'box',
-        query: { wid: wid }
+        name: 'modify',
+        query:
+          {
+            wid:wid,
+          title:title,
+          endTime:endTime,
+            detail:detail
+         }
       });
     },
+    // handleSubmit(){
+    //
+    // },
     deleteHom(id){
       const wid = id;
       const cid = this.cid
@@ -93,23 +89,6 @@ export default {
       deleteHomework(data)
         .then(response => {
           this.$alert('删除成功', '提示', {
-            confirmButtonText: '确定',
-          });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    evaluation(id){
-      const wid = id;
-      const cid = this.cid;
-      const data = {
-        wid,
-        cid
-      }
-      evaluate(data)
-        .then(response => {
-          this.$alert('发布互评成功', '提示', {
             confirmButtonText: '确定',
           });
         })
@@ -154,11 +133,21 @@ td {
   color: white;
   cursor: pointer;
 }
+.btn3 {
+  padding: 6px 12px;
+  border: none;
+  background-color:darkslategrey;
+  color: white;
+  cursor: pointer;
+}
 
 .btn1:hover {
   background-color: black;
 }
 .btn2:hover {
+  background-color:grey;
+}
+.btn3:hover {
   background-color:grey;
 }
 </style>
