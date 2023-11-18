@@ -36,6 +36,7 @@
     <div class="button-container2">
       <el-button type="primary" @click="onSubmit">发布作业</el-button>
       <el-button type="info" @click=toDraft()>存入草稿</el-button>
+      <el-button type="info" @click=back()>返回</el-button>
     </div>
 
 
@@ -65,11 +66,12 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
 //import 'vue-datetime/dist/vue-datetime.css';
-import { deliverHomework, intoDraft } from "@/api/homework";
+import {listDraftDetail, deliverHomework, intoDraft} from "@/api/homework";
 import { id } from "html-webpack-plugin/lib/chunksorter";
 export default {
   data () {
     return {
+      listLoading: true,
       selectedDate: '',
       //对话框控制权
       dialogVisible: false,
@@ -107,7 +109,9 @@ export default {
       'teacher',
     ])
   },
-
+  created() {
+    this.fetchData();
+  },
   methods: {
     // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
     httpRequest (option) {
@@ -169,6 +173,21 @@ export default {
         this.fileList = []//集合清空
         this.dialogVisible1 = false//关闭对话框
       })
+    },
+
+
+    fetchData() {
+      this.listLoading = true;
+      const wid = this.$route.query.wid;
+      // const data = {
+      //   wid,
+      // };
+      listDraftDetail(wid).then(response => {
+        this.draft= response.data
+        console.log(response.data.wid)
+        this.listLoading = false
+      })
+      //console.log(this.cid)
     },
     onSubmit () {
       //获取截止日期输入框元素
@@ -249,7 +268,17 @@ export default {
         });
 
       this.$message('save!')
-    }
+    },
+    back() {
+      this.$nextTick(() => {
+        this.$router.push({
+          name: "draft",
+          query: {
+            wid: this.$route.query.wid,
+          },
+        });
+      });
+    },
   }
 }
 </script>

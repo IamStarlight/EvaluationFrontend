@@ -115,7 +115,7 @@ export default {
         end_time: currentTime,
         status: "A",//A是可以提交未提交,B是已经提交了,C是已截止未提交，D是截止提交了，E是不可以提交
         score: "11",//成绩
-        read: "是",//是否批阅
+        read: "否",//是否批阅
         bool: "A",//A是可以完成未完成,B是已经完成,C是已截止未完成，D是截止完成了，E是不可以互评
       }],
       dialogVisible: false,

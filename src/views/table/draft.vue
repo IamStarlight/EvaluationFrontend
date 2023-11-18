@@ -20,12 +20,12 @@
             继续编辑
           </button>
           <span style="margin: 10px;"></span>
-<!--          <button class="btn3" @click="handleSubmit(assignment.wid)">-->
-<!--            发布-->
-<!--          </button>-->
-<!--          <span style="margin: 10px;"></span>-->
+          <button class="btn3" @click="handleSubmit(assignment.wid)">
+            直接发布
+          </button>
+          <span style="margin: 10px;"></span>
           <button class="btn2" @click="deleteHom(assignment.wid)">
-            发布
+            删除作业
           </button>
         </td>
       </tr>
@@ -37,12 +37,17 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {deleteHomework, listDraft} from "@/api/homework";
+import {listDraft,deleteDraft,submitDirectly} from "@/api/homework";
 export default {
   data() {
     return {
       listLoading: true,
-      assignments:[]
+      assignments: [
+        { wid: 1, title: '作业1', endTime: '2023-11-07' },
+        { wid: 2, title: '作业2',  endTime: '2023-11-10' },
+        { wid: 3, title: '作业3', endTime: '2023-11-12' },
+      ],
+      //assignments:[]
     }
   },
   computed: {
@@ -76,9 +81,11 @@ export default {
          }
       });
     },
-    // handleSubmit(){
-    //
-    // },
+    handleSubmit(){
+      this.$alert('发布成功', '提示', {
+        confirmButtonText: '确定',
+      });
+    },
     deleteHom(id){
       const wid = id;
       const cid = this.cid
@@ -86,7 +93,7 @@ export default {
         wid,
         cid
       };
-      deleteHomework(data)
+      deleteDraft(data)
         .then(response => {
           this.$alert('删除成功', '提示', {
             confirmButtonText: '确定',
@@ -136,7 +143,7 @@ td {
 .btn3 {
   padding: 6px 12px;
   border: none;
-  background-color:darkslategrey;
+  background-color:cornflowerblue;
   color: white;
   cursor: pointer;
 }
