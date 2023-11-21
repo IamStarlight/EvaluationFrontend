@@ -42,12 +42,12 @@ export default {
   data() {
     return {
       listLoading: true,
-      assignments: [
-        { wid: 1, title: '作业1', endTime: '2023-11-07' },
-        { wid: 2, title: '作业2',  endTime: '2023-11-10' },
-        { wid: 3, title: '作业3', endTime: '2023-11-12' },
-      ],
-      //assignments:[]
+      // assignments: [
+      //   { wid: 1, title: '作业1', endTime: '2023-11-07' },
+      //   { wid: 2, title: '作业2',  endTime: '2023-11-10' },
+      //   { wid: 3, title: '作业3', endTime: '2023-11-12' },
+      // ],
+      assignments:[]
     }
   },
   computed: {

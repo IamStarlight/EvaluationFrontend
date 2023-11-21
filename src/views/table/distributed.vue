@@ -103,9 +103,11 @@ export default {
     evaluation(id){
       const wid = id;
       const cid = this.cid;
+      const status = 1;
       const data = {
         wid,
-        cid
+        cid,
+        status
       }
       evaluate(data)
         .then(response => {

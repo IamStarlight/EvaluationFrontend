@@ -12,7 +12,7 @@ export function deliverHomework(data) {
 //作业存入草稿
 export  function intoDraft(data){
   return request({
-    url: '/homework/draft',
+    url: '/homework/creat',
     method: 'post',
     data
   });
@@ -22,7 +22,7 @@ export  function intoDraft(data){
 //2.distributed界面
 export function listHomework(cid) {
   return request({
-    url: '/homework/bycourse',
+    url: '/homework/bycourse',//deal
     method: 'get',
     params: {cid}
   });
@@ -31,7 +31,7 @@ export function listHomework(cid) {
 //删除某门作业
 export function deleteHomework(data) {
   return request({
-    url: '/homework/delete',
+    url: '/homework/delete',//deal
     method: 'delete',
     params:data
   });
@@ -39,8 +39,8 @@ export function deleteHomework(data) {
 //发布互评
 export function evaluate(data){
   return request({
-    url: '/homework/startEvaluate',
-    method: 'post',
+    url: '/homework/open',//deal
+    method: 'put',
     params: data
   })
 }
@@ -51,7 +51,7 @@ export function evaluate(data){
 //获取某个作业中所有学生的作业
 export function getHomework (data) {
   return request({
-    url: '/homework/submitlist',
+    url: '/homework/submitlist',//deal
     method: 'get',
     params :data
   })
@@ -63,7 +63,7 @@ export function getHomework (data) {
 //获取一个学生一次作业的具体内容
 export function getStudentHomework (data) {
   return request({
-    url: '/homework/detail',
+    url: '/homework/detail',//deal
     method: 'get',
     params:data
   })
@@ -71,7 +71,7 @@ export function getStudentHomework (data) {
 //上传成绩和评语
 export function updateScore(data) {
   return request({
-    url: '/homework/evaluate',
+    url: '/homework/evaluate',//deal
     method: 'put',
     data
   });
@@ -82,52 +82,58 @@ export function updateScore(data) {
 //展示草稿
 export function listDraft (cid) {
   return request({
-    url: '/homework/draft',
+    url: '/homework/draft',//deal
     method: 'get',
     params: {cid}
   })
 }
-//删除一个草稿
-export function deleteDraft(data) {
-  return request({
-    url: '/homework/draft/delete',
-    method: 'delete',
-    params:data
-  });
-}
+//删除一个草稿,用删除作业那个
+// export function deleteDraft(data) {
+//   return request({
+//     url: '/homework/draft/delete',
+//     method: 'delete',
+//     params:data
+//   });
+// }
 //直接发布
-export function submitDirectly(data){
-  return request({
-    url: '/homework/draft/submit',
-    method: 'post',
-    params: data
-  })
-}
+// export function submitDirectly(data){
+//   return request({
+//     url: '/homework/draft/submit',
+//     method: 'post',
+//     params: data
+//   })
+// }
 
 
 //6.modify界面
 //获取一个草稿的具体内容
-export function listDraftDetail (wid) {
+export function listDraftDetail (data) {
   return request({
-    url: '/homework/draft/detail',
+    url: '/homework/list',//deal
     method: 'get',
-    params: {wid}
+    params: data
   })
 }
 //草稿发布，存入草稿，可以直接用1中的
-
+export function deliverDraft(data) {
+  return request({
+    url: '/homework/edit',
+    method: 'post',
+    data
+  });
+}
 
 
 //7.email界面
 //展示所有申诉
 export function listEmail (cid) {
   return request({
-    url: '/homework/email',
+    url: '/homework/check',//deal
     method: 'get',
     params: {cid}
   })
 }
-//删除一个申诉
+//删除一个申诉:再说吧
 export function deleteEmail(data) {
   return request({
     url: '/email/delete',
@@ -140,12 +146,12 @@ export function deleteEmail(data) {
 //一个申诉的具体内容
 export function listEmailDetail (data) {
   return request({
-    url: '/homework/email/detail',
+    url: '/homework/checkone',//deal
     method: 'get',
-    params: {data}
+    params: data
   })
 }
-//修改老师评分
+//修改老师评分,用之前那个
 export function updateTeacherGrade(data) {
   return request({
     url: '/homework/updateGrade',
@@ -153,7 +159,7 @@ export function updateTeacherGrade(data) {
     data
   });
 }
-//重发互评
+//重发互评，再说吧
 export function reEvaluate(data){
   return request({
     url: '/homework/reEvaluate',

@@ -65,7 +65,7 @@ import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
 //import 'vue-datetime/dist/vue-datetime.css';
 import { deliverHomework, intoDraft } from "@/api/homework";
-import { id } from "html-webpack-plugin/lib/chunksorter";
+
 export default {
   data () {
     return {
@@ -178,11 +178,13 @@ export default {
       //获取截止日期输入框元素
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
-      const endTime = new Date(endTimeValue);
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+
       // 获取作业内容
-      const detail = 'eat';
+      const details = 'eat';
       const cid = this.cid
-      const wid = 5;
       const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
       // 获取作业标题
       const titleInput = document.getElementById('title');
@@ -190,12 +192,11 @@ export default {
 
       // 构造请求参数
       const requestData = {
-        detail,
+        details,
         cid,
-        //tid,
         title,
-        wid,
         endTime,
+        //formattedEndTime,
         status
       };//wid是自动生成的吗
 
@@ -208,22 +209,24 @@ export default {
           this.$message.success('作业发布成功');
           // 其他操作
         })
-        .catch(error => {
-          console.log(error);
-          // 错误处理
-          // 可以将错误信息提示给用户
-          this.$message.error('作业发布失败');
-        });
+        // .catch(error => {
+        //   console.log(error);
+        //   // 错误处理
+        //   // 可以将错误信息提示给用户
+        //   this.$message.error('作业发布失败');
+        // });
 
       this.$message('submit!')
     },
     toDraft () {
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
-      const endTime = new Date(endTimeValue);
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+
       const detail = 'eat';
       const cid = this.cid
-      const wid = 5;
       const status = 1;//111111111111111111111111111111111111111111111111111111存入草稿
       // 获取作业标题
       const titleInput = document.getElementById('title');
@@ -231,13 +234,11 @@ export default {
       const requestData = {
         detail,
         cid,
-        //tid,
         title,
-        wid,
         endTime,
         status
       }
-      intoDraft(requestData)
+      deliverHomework(requestData)
         .then(response => {
           console.log(response.data.message);
           // 根据 API 返回的响应，进行相应的处理
@@ -245,12 +246,12 @@ export default {
           this.$message.success('存入草稿成功');
           // 其他操作
         })
-        .catch(error => {
-          console.log(error);
-          // 错误处理
-          // 可以将错误信息提示给用户
-          this.$message.error('存入草稿失败');
-        });
+        // .catch(error => {
+        //   console.log(error);
+        //   // 错误处理
+        //   // 可以将错误信息提示给用户
+        //   this.$message.error('存入草稿失败');
+        // });
 
       this.$message('save!')
     }

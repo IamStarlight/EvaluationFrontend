@@ -66,7 +66,7 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
 //import 'vue-datetime/dist/vue-datetime.css';
-import {listDraftDetail, deliverHomework, intoDraft} from "@/api/homework";
+import {listDraftDetail, deliverDraft, intoDraft} from "@/api/homework";
 import { id } from "html-webpack-plugin/lib/chunksorter";
 export default {
   data () {
@@ -179,10 +179,12 @@ export default {
     fetchData() {
       this.listLoading = true;
       const wid = this.$route.query.wid;
-      // const data = {
-      //   wid,
-      // };
-      listDraftDetail(wid).then(response => {
+      const cid = this.cid
+      const data = {
+        wid,
+        cid
+      };
+      listDraftDetail(data).then(response => {
         this.draft= response.data
         console.log(response.data.wid)
         this.listLoading = false
@@ -215,7 +217,7 @@ export default {
       };//wid是自动生成的吗
 
       // 发送请求给后端，并传递请求参数
-      deliverHomework(requestData)
+      deliverDraft(requestData)
         .then(response => {
           console.log(response.data.message);
           // 根据 API 返回的响应，进行相应的处理
@@ -235,10 +237,12 @@ export default {
     toDraft () {
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
-      const endTime = new Date(endTimeValue);
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+
       const detail = 'eat';
       const cid = this.cid
-      const wid = 5;
       const status = 1;//111111111111111111111111111111111111111111111111111111存入草稿
       // 获取作业标题
       const titleInput = document.getElementById('title');
@@ -246,9 +250,7 @@ export default {
       const requestData = {
         detail,
         cid,
-        //tid,
         title,
-        wid,
         endTime,
         status
       }

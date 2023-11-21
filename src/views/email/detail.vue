@@ -1,10 +1,13 @@
 <template>
   <div>
     <p>这里是申诉具体内容界面，展示互评分数，老师分数，作业内容，申诉原因</p>
-    <p>互评分数：{{score}}</p>
-    <p>老师分数：{{teacherScore}}</p>
-    <p>作业内容：{{homeworkContent}}</p>
-    <p>申诉原因：{{complainReason}}</p>
+<!--    <p>{{this.$route.query.sid}}</p>-->
+<!--    <p>{{this.$route.query.wid}}</p>-->
+    <p>互评分数：{{emailDetail.peer_grade}}</p>
+    <p>老师分数：{{emailDetail.teacher_grade}}</p>
+    <p>作业标题：{{emailDetail[0].title}}</p>
+    <p>作业内容：{{emailDetail.details}}</p>
+    <p>申诉原因：{{emailDetail[0].appeal_reason}}</p>
     <div class="button-container1">
       <el-button type="primary" @click="showUpdateScoreDialog">修改成绩</el-button>
       <el-button type="primary" @click="reEvaluate(id)">重发互评</el-button>
@@ -30,15 +33,10 @@ import {reEvaluate, listEmailDetail, updateTeacherGrade} from "@/api/homework";
 export default {
   data() {
     return {
-      score: 88,
-      teacherScore: 90,
-      homeworkContent: "作业内容",
-      complainReason: "申诉原因",
-      id: "作业ID",
-      showDialog: false,
-      newScore: "",
-
-
+      // emailDetail: [{
+      //   peer_grade:90,
+      //   teacher_grade:90,
+      // }],
       emailDetail: [],
     };
   },
@@ -78,6 +76,15 @@ export default {
     },
     confirmUpdateScore() {
       // 在这里处理修改成绩的逻辑
+      updateTeacherGrade(grade,sid,wid,cid)
+        .then(response => {
+          this.$alert('发布互评成功', '提示', {
+            confirmButtonText: '确定',
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
       console.log("新成绩：" + this.newScore);
       this.showDialog = false;
     },
@@ -88,7 +95,7 @@ export default {
         wid,
         cid
       }
-      evaluate(data)
+      reEvaluate(data)
         .then(response => {
           this.$alert('发布互评成功', '提示', {
             confirmButtonText: '确定',

@@ -12,12 +12,12 @@
       </thead>
       <tbody>
       <tr v-for="email in appealList" :key="email.sid">
-        <td>{{ email.studentName }}</td>
+        <td>{{ email.sname }}</td>
         <td>{{ email.title}}</td>
         <td>{{ email.reason }}</td>
-        <td>{{ email.submitTime }}</td>
+        <td>{{ email.submit_time }}</td>
         <td>
-          <button @click="viewDetail(email)">详情</button>
+          <button @click="viewDetail(email.wid,email.sid)">详情</button>
           <button @click="ignore(email.sid,email.wid)">忽略</button>
         </td>
       </tr>
@@ -33,33 +33,33 @@ import {listEmail, deleteEmail} from "@/api/homework";
 export default {
   data() {
     return {
-      appealList: [
-        {
-          sid: 1,
-          wid:1,
-          title:'haha1',
-          studentName: '张三',
-          reason: '作业批改有误',
-          submitTime: '2023-11-10 14:30:22'
-        },
-        {
-          sid: 2,
-          title:'haha2',
-          wid:2,
-          studentName: '李四',
-          reason: '分数计算有误',
-          submitTime: '2023-11-11 09:20:11'
-        },
-        {
-          sid: 3,
-          wid:3,
-          title:'haha3',
-          studentName: '王五',
-          reason: '作业未按时提交',
-          submitTime: '2023-11-11 10:05:58'
-        }
-      ],
-      //appealList:[]
+      // appealList: [
+      //   {
+      //     sid: 1,
+      //     wid:1,
+      //     title:'haha1',
+      //     studentName: '张三',
+      //     reason: '作业批改有误',
+      //     submitTime: '2023-11-10 14:30:22'
+      //   },
+      //   {
+      //     sid: 2,
+      //     title:'haha2',
+      //     wid:2,
+      //     studentName: '李四',
+      //     reason: '分数计算有误',
+      //     submitTime: '2023-11-11 09:20:11'
+      //   },
+      //   {
+      //     sid: 3,
+      //     wid:3,
+      //     title:'haha3',
+      //     studentName: '王五',
+      //     reason: '作业未按时提交',
+      //     submitTime: '2023-11-11 10:05:58'
+      //   }
+      // ],
+       appealList:[]
     }
   },
   computed: {
@@ -75,18 +75,18 @@ export default {
     fetchData() {
       this.listLoading = true;
       listEmail(this.cid).then(response => {
-        this.assignments = response.data
+        this.appealList = response.data
         console.log(response.data.wid)
         this.listLoading = false
       })
       //console.log(this.cid)
     },
 
-    viewDetail(wid) {
+    viewDetail(wid,sid) {
       // 显示申诉详情
       this.$router.push({
         name: 'detail',
-        query: { wid:wid }
+        query: { wid:wid ,sid:sid}
       });
     },
     ignore(sid,wid) {
