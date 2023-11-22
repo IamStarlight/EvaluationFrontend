@@ -17,15 +17,15 @@
         <td>{{ assignment.endTime }}</td>
         <td>
           <button class="btn1" @click="handleModify(assignment.wid,assignment.title,assignment.endTime)">
-            继续编辑
+            重新编辑
           </button>
-          <span style="margin: 10px;"></span>
-<!--          <button class="btn3" @click="handleSubmit(assignment.wid)">-->
-<!--            发布-->
-<!--          </button>-->
 <!--          <span style="margin: 10px;"></span>-->
+<!--          <button class="btn3" @click="handleSubmit(assignment.wid)">-->
+<!--            直接发布-->
+<!--          </button>-->
+          <span style="margin: 10px;"></span>
           <button class="btn2" @click="deleteHom(assignment.wid)">
-            发布
+            删除作业
           </button>
         </td>
       </tr>
@@ -37,7 +37,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {deleteHomework, listDraft} from "@/api/homework";
+import {listDraft,deleteHomework} from "@/api/homework";
 export default {
   data() {
     return {
@@ -76,9 +76,11 @@ export default {
          }
       });
     },
-    // handleSubmit(){
-    //
-    // },
+    handleSubmit(){
+      this.$alert('发布成功', '提示', {
+        confirmButtonText: '确定',
+      });
+    },
     deleteHom(id){
       const wid = id;
       const cid = this.cid
@@ -136,7 +138,7 @@ td {
 .btn3 {
   padding: 6px 12px;
   border: none;
-  background-color:darkslategrey;
+  background-color:cornflowerblue;
   color: white;
   cursor: pointer;
 }

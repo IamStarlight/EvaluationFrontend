@@ -1,46 +1,56 @@
+<!--<template>-->
+<!--  <div>-->
+<!--    &lt;!&ndash; 问候语 &ndash;&gt;-->
+<!--    <div class="greetings">-->
+<!--      <h1>{{ greeting }}</h1>-->
+<!--    </div>-->
+
 <template>
   <div>
-    <!-- 问候语 -->
-    <div class="greetings">
-      <h1>{{ greeting }}</h1>
-    </div>
-    <!-- 用户信息容器 -->
-    <div class="personal-info-container">
-      <h2>个人信息</h2>
-      <div class="personal-info">
-        <div class="info-item">
-          <label style="color: black;">用户名：</label>
-          <p style="color: purple;">{{ name }}</p>
+    <div class="grid-content bg-purple">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>个人中心</span>
         </div>
-        <div class="info-item">
-          <label style="color: black;">ID号：</label>
-          <p style="color: purple;">{{ id }}</p>
+        <div class="name-role">
+          <span class="sender">{{permission === 'ROLE_TEACHER' ? 'teacher' : permission === 'ROLE_STUDENT' ? 'student' : permission === 'ROLE_ADMIN' ? 'admin' : ''}} - {{name}}</span>
         </div>
-        <div class="info-item">
-          <label style="color: black;">permission：</label>
-          <p style="color: purple;">{{ permission }}</p>
+        <div class="registe-info">
+          <span class="registe-info">
+           <i class="fa fa-clock-o"></i>
+            登录时间：{{ formatDate(new Date()) }}
+           </span>
         </div>
-        <div class="info-item">
-          <label style="color: black;">邮箱：</label>
-          <p style="color: purple;">{{ email}}</p>
+        <div class="personal-relation">
+          <div class="relation-item">用户ID:  <div style="float: right; padding-right:20px;">{{id}}</div></div>
         </div>
-      </div>
-      <button class="change-password-btn" @click="showModal=true">修改密码</button>
-    </div>
-    <!-- 修改密码弹窗 -->
-    <div class="modal-wrapper">
-      <div class="modal" v-if="showModal">
-        <div class="modal-content">
-          <h3>修改密码</h3>
-          <input type="password" v-model="oldpwd" placeholder="请输入原密码" />
-          <input type="password" v-model="newpwd" placeholder="请输入新密码" />
-          <div class="modal-buttons">
-            <button class="confirm-btn" @click="changePassword">确认修改</button>
-            <button class="cancel-btn" @click="cancel">取消</button>
+        <div class="personal-relation">
+          <div class="relation-item">用户邮箱:  <div style="float: right; padding-right:20px;">{{email}}</div></div>
+        </div>
+        <div class="relation-item">role:
+          <div style="float: right; padding-right:20px;">
+            {{permission === 'ROLE_TEACHER' ? 'teacher' : permission === 'ROLE_STUDENT' ? 'student' : permission === 'ROLE_ADMIN' ? 'admin' : ''}}
           </div>
         </div>
-      </div>
+        <div class="button-container">
+          <el-button type="primary" @click="showModal=true">修改密码</el-button>
+        </div>
+      </el-card>
     </div>
+    <el-dialog :visible.sync="showModal" title="修改密码" width="30%" center>
+      <el-form :model="passwordForm" ref="passwordForm" label-width="80px" size="small">
+        <el-form-item label="旧密码" prop="oldPassword">
+          <el-input v-model="oldpwd" type="password"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input v-model="newpwd" type="password"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="changePassword">确定修改</el-button>
+        <el-button @click="cancel">取消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -144,7 +154,18 @@ export default {
             ['5']
           );
         }
-      }
+      },
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month =  (date.getMonth()+1).toString().padStart(2, '0');
+      const day = (date.getDate()).toString().padStart(2, '0');
+      const hour = (date.getHours()).toString().padStart(2, '0');
+      const minute = (date.getMinutes()).toString().padStart(2, '0');
+      const second = (date.getSeconds()).toString().padStart(2, '0');
+      return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
+    },
+
+
 
 
     }
@@ -152,104 +173,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.personal-info-container {
-  border: 1px solid #ccc;
-  background-color: #f5f5f5;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.personal-info-container h2 {
-  color: #333;
-}
-
-.personal-info .info-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.personal-info .info-item label {
-  color: white;
-}
-
-.personal-info .info-item p {
-  color: blue;
-  margin-left: 5px;
-}
-
-.change-password-btn {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: grey	;
-  color: black;
-}
-
-.modal-wrapper {
+.grid-content {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-.modal {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+//卡片样式
+.text {
+  font-size: 14px;
 }
 
-.modal-content {
-  width: 300px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  margin: 0 auto;
-  margin-top: 100px;
+.item {
+  margin-bottom: 18px;
 }
 
-.modal h3 {
-  margin-bottom: 10px;
-  color: #333;
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
 }
 
-.modal input[type="password"] {
-  width: 100%;
-  padding: 5px 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.modal-buttons button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  background-color: #ccc;
-  color: #333;
-}
-
-.dashboard-container {
-  padding: 10px;
+.box-card {
   margin-top: 10px;
+  width: 70%;
+}
+//文本样式区
+.name-role {
+  font-size: 16px;
+  padding: 5px;
+  text-align:center;
+}
+//.sender{
+//  text-align:center;
+//}
+.registe-info{
+  text-align: center;
+  padding-top:10px;
 }
 
-.dashboard-text {
-  color: #333;
-  font-weight: bold;
+.relation-item {
+  padding: 12px;
 }
-
-p {
-  font-size: 18px;
+.dialog-footer{
+  padding-top:10px ;
+  padding-left: 10%;
 }
-
-label{
-  font-size:18px
+//布局样式区
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple-light {
+  background: #e5e9f2;
 }
 </style>

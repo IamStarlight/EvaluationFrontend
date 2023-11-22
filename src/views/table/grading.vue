@@ -2,18 +2,19 @@
   <div class="hom-container1">
     <p>正在批改学号为：{{this.$route.query.sid}} 同学的作业</p>
     <div class="hom-details">
-      <p>{{ sHomework[0].details }}</p>
+      {{ sHomework[0].details }}
     </div>
     <div class="hom-score" style="display: flex; flex-direction: column;">
+      学生当前评分为：<p>{{sHomework[0].teacher_grade}}</p>
       <el-input
-        v-model="sHomework.score"
+        v-model="sHomework[0].teacher_grade"
         placeholder="请输入学生的分数"
         clearable
         style="width: 160px;"
       ></el-input>
       <div style="margin-bottom: 20px;"></div>
       <el-input
-        v-model="sHomework.comments"
+        v-model="sHomework[0].teacher_comments"
         type="textarea"
         placeholder="请输入给学生的评语"
         style="width: 400px;"
@@ -21,7 +22,8 @@
       ></el-input>
     </div>
     <div class="button-container">
-      <el-button type="primary" @click="updateScore(sHomework.score,sHomework.comments)">提交</el-button>
+<!--      <el-button type="primary" @click="updateScore(sHomework[0].teacher_grade,sHomework[0].teacher_comments)">提交</el-button>-->
+      <el-button type="primary" @click="updateScore(sHomework[0].teacher_grade,sHomework[0].teacher_comments)">提交</el-button>
       <el-button class="hom-back-btn" @click="back">返回</el-button>
     </div>
 
@@ -61,30 +63,25 @@ export default {
       };
       this.listLoading = true;
       getStudentHomework(data).then((response) => {
+        //console.log(response.data[0])
         this.sHomework = response.data;
         this.listLoading = false;
       });
     },
 
-    updateScore(grade,comment) {
-      //const wid = this.$route.query.wid;
+    updateScore(Grade,comment) {
+      //updateScore(grade,comment) {
       const wid = this.$route.query.wid;
-      // const sid = this.studentHomework.id;
       const sid = this.$route.query.sid;//学生id
       const cid =this.cid;
-      //const teacherGrade = this.studentHomework.teacher_grade;
-      const teacherGrade = grade;
-      //console.log(this.studentHomework.teacherGrade);
-      const teacherComments =comment;
-      //console.log(this.studentHomework.sid)
+      const grade = parseInt(Grade);
+      const teacher_comments =comment;
       const data={
-        // sid:this.sid,
-        // teacherGrade:this.teacherGrade,
         sid,
         wid,
         cid,
-        teacherGrade,
-        teacherComments
+        grade,
+        teacher_comments
       };
       // console.log(data.sid)
       // console.log(data.teacherGrade)
@@ -104,7 +101,7 @@ export default {
           console.log(error);
         });
       // 假设这里有一个网络请求将更新后的teacherGrade提交到后台数据库
-      console.log(data.teacherGrade);
+      console.log(data.grade);
     },
 
     back() {

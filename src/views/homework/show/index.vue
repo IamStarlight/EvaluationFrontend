@@ -211,7 +211,7 @@ export default {
     fetchData1 (b) {
       const a = { sid: this.sid, wid: b, cid: this.cid }
       getdetailmy(a).then(response => {
-        //console.log(response.data["title"])       
+        //console.log(response.data["title"])
         this.now = response.data[0]["details"]
         this.now1 = response.data[0]["url"]
       })
@@ -238,13 +238,13 @@ export default {
         );
         const a = { sid: this.sid, wid: hid, cid: this.cid }
         getdetailmy(a).then(response => {
-          //console.log(response.data["title"])       
+          //console.log(response.data["title"])
           this.now = response.data[0]["details"]
           this.now1 = response.data[0]["url"]
         })
         const b = { sid: this.sid, wid: hid, cid: this.cid }
         getoutcome(b).then(response => {
-          //console.log(response.data["title"])       
+          //console.log(response.data["title"])
           this.comment = response.data[0]["details"]
         })
         this.dialogVisible = true

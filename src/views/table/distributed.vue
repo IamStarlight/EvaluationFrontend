@@ -29,7 +29,7 @@
           </button>
           <span style="margin: 10px;"></span>
           <button class="btn3" @click="evaluation(assignment.wid)">
-            删除作业
+            发布互评
           </button>
         </td>
       </tr>
@@ -46,7 +46,7 @@ import {deleteHomework, evaluate, listHomework} from "@/api/homework";
 export default {
   data() {
     return {
-      cid:'1',
+     // cid:'1',
       // assignments: [
       //   { id: 1, name: '作业1', startTime: '2023-11-01', deadline: '2023-11-07' },
       //   { id: 2, name: '作业2', startTime: '2023-11-03', deadline: '2023-11-10' },
@@ -103,9 +103,11 @@ export default {
     evaluation(id){
       const wid = id;
       const cid = this.cid;
+      const status = 1;
       const data = {
         wid,
-        cid
+        cid,
+        status
       }
       evaluate(data)
         .then(response => {
@@ -150,7 +152,15 @@ td {
 .btn2 {
   padding: 6px 12px;
   border: none;
-  background-color:darkslategrey;
+  background-color:cornflowerblue;
+  color: white;
+  cursor: pointer;
+}
+
+.btn3 {
+  padding: 6px 12px;
+  border: none;
+  background-color:green;
   color: white;
   cursor: pointer;
 }
@@ -159,6 +169,9 @@ td {
   background-color: black;
 }
 .btn2:hover {
+  background-color:grey;
+}
+.btn3:hover {
   background-color:grey;
 }
 </style>

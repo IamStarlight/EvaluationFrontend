@@ -218,13 +218,19 @@ export const asyncRoutes = [
   {
     path: '/email',
     component: Layout,
+    meta: { roles: ['5'], title: '申诉接收', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'email',
         name: 'Email',
         component: () => import('@/views/email/email'),
         meta: { roles: ['5'], title: '信箱', icon: 'form' }
-      }
+      },
+      {
+        path: '/email/detail',
+        name: 'detail',
+        component: () => import('@/views/email/detail'),
+      },
     ]
   },
   {
@@ -239,6 +245,7 @@ export const asyncRoutes = [
       }
     ]
   },
+
   {
     path: '/Tgraph',
     component: Layout,
@@ -246,7 +253,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'Tgraph',
-        component: () => import('@/views/form/index'),
+        component: () => import('@/views/graph/graph'),
         meta: { roles: ['5'], title: '成绩统计图', icon: 'form' }
       }
     ]
