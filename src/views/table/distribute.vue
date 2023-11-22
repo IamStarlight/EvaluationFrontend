@@ -24,7 +24,7 @@
     <!--大文本输入框-->
     <div class="hom-info-container2">
       <label for="detail">作业内容:</label>
-      <tinymce v-model="content" style="width: 1200px;" />
+      <textarea v-model="content" style="width: 1200px; height: 300px;"></textarea>
     </div>
 
     <div class="button-container">
@@ -69,6 +69,7 @@ import { deliverHomework, intoDraft } from "@/api/homework";
 export default {
   data () {
     return {
+      content:'',
       selectedDate: '',
       //对话框控制权
       dialogVisible: false,
@@ -183,7 +184,7 @@ export default {
       const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
 
       // 获取作业内容
-      const details = 'eat';
+      const details = this.content;
       const cid = this.cid
       const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
       // 获取作业标题
@@ -225,7 +226,7 @@ export default {
       // 格式化为 "yyyy-MM-dd hh:mm" 格式
       const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
 
-      const detail = 'eat';
+      const detail = this.content;
       const cid = this.cid
       const status = 1;//111111111111111111111111111111111111111111111111111111存入草稿
       // 获取作业标题

@@ -13,18 +13,18 @@
     <div class="hom-info-container">
       <div class="hom-info">
         <label for="title">作业标题:</label>
-        <input id="title" class="hom-info-input" type="text" placeholder="请输入作业标题">
+        <input id="title" class="hom-info-input" type="text" placeholder="请输入作业标题" :value="draft[0].title">
       </div>
       <div class="date-time-container">
         <label for="endTime">截止日期:</label>
-        <input id="endTime" class="hom-info-input" type="datetime-local">
+        <input id="endTime" class="hom-info-input" type="datetime-local" :value="draft[0].endTime">
       </div>
     </div>
 
     <!--大文本输入框-->
     <div class="hom-info-container2">
       <label for="detail">作业内容:</label>
-      <tinymce v-model="content" style="width: 1200px;" />
+      <textarea v-model="content" style="width: 1200px; height: 300px;"></textarea>
     </div>
 
     <div class="button-container">
@@ -66,11 +66,13 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
 //import 'vue-datetime/dist/vue-datetime.css';
-import {listDraftDetail, deliverDraft, intoDraft} from "@/api/homework";
+import {listDraftDetail, deliverDraft} from "@/api/homework";
 import { id } from "html-webpack-plugin/lib/chunksorter";
 export default {
   data () {
     return {
+      draft:[],
+      content:'',
       listLoading: true,
       selectedDate: '',
       //对话框控制权
@@ -186,6 +188,7 @@ export default {
       };
       listDraftDetail(data).then(response => {
         this.draft= response.data
+        this.content = response.data.details
         console.log(response.data.wid)
         this.listLoading = false
       })
@@ -195,9 +198,12 @@ export default {
       //获取截止日期输入框元素
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
-      const endTime = new Date(endTimeValue);
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+
       // 获取作业内容
-      const detail = 'eat';
+      const detail = this.content;
       const cid = this.cid
       const wid = 5;
       const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
@@ -254,7 +260,7 @@ export default {
         endTime,
         status
       }
-      intoDraft(requestData)
+      deliverDraft(requestData)
         .then(response => {
           console.log(response.data.message);
           // 根据 API 返回的响应，进行相应的处理
