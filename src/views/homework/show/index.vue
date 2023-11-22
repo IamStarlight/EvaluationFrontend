@@ -85,7 +85,7 @@
             <h2>作业内容</h2>
           </div>
           <div class="left-body">
-            <p>{{ this.now }}</p>
+            <VueMarkdown :source="this.now" v-highlight></VueMarkdown>
             <a :href="this.now1">{{ this.now1 }}</a>
           </div>
         </div>
@@ -95,7 +95,7 @@
             <h2>教师反馈</h2>
           </div>
           <div class="left-body">
-            <p>{{ this.comment }}</p>
+            <VueMarkdown :source="comment" v-highlight></VueMarkdown>
           </div>
         </div>
       </div>
@@ -108,6 +108,7 @@
 import { getList, getAllhomework, getdetailmy, getoutcome } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
+import VueMarkdown from 'vue-markdown'
 import { mapGetters } from 'vuex'
 import { parseTime } from '@/utils/index'
 import PieChart from './components/PieChart'
@@ -115,6 +116,7 @@ const currentTime = parseTime(Date.now(), '{y}-{m}-{d} {h}:{i}')
 export default {
   components: {
     PieChart,
+    VueMarkdown,
   },
   computed: {
     ...mapGetters([
@@ -159,7 +161,7 @@ export default {
     }
   },
   created () {
-    //this.fetchData()
+    this.fetchData()
   },
 
   methods: {
@@ -190,7 +192,7 @@ export default {
           else if (this.list[i]["status"] == "已发布" && this.list[i]["submit"] == true) { this.list[i]["status"] = "B" }
           else if (this.list[i]["status"] == "已发布" && this.list[i]["submit"] == false) { this.list[i]["status"] = "A" }
           else if (this.list[i]["status"] == "已截止" && this.list[i]["submit"] == false) { this.list[i]["status"] = "C" }
-          else if (this.list[i]["status"] == "已截止" && this.list[i]["submit"] == true) { this.list[i]["status"] = "C" }
+          else if (this.list[i]["status"] == "已截止" && this.list[i]["submit"] == true) { this.list[i]["status"] = "D" }
 
 
         }

@@ -2,30 +2,25 @@
   <div class="ada">
     <div class='form'>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-        <el-table-column align="center" label="申诉号" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.hid }}
-          </template>
-        </el-table-column>
         <el-table-column label="课程号">
-          {{ this.teacher }}
+          {{ this.cid }}
         </el-table-column>
         <el-table-column label="作业名">
           <template slot-scope="scope">
             {{ scope.row.title }}
           </template>
         </el-table-column>
-        <el-table-column label="申诉结果" width="300" align="center">
+        <!-- <el-table-column label="申诉结果" width="300" align="center">
           <template slot-scope="scope">
             <span>{{ scope.row.end_time }}</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <span>
-              <el-button type="primary" size="mini" plain @click="search(scope.row.hid)">查看详情
+              <el-button type="primary" size="mini" plain @click="search(scope.row.wid)">查看详情
               </el-button>
-              <el-button type="danger" size="mini" @click="cancle(scope.row.hid)">撤销申诉
+              <el-button type="danger" size="mini" @click="cancle(scope.row.wid)">撤销申诉
               </el-button>
             </span>
           </template>
@@ -49,7 +44,7 @@
             <h2>教师反馈</h2>
           </div>
           <div class="left-body">
-            <VueMarkdown :source="point" v-highlight></VueMarkdown>
+            <VueMarkdown :source="outcome" v-highlight></VueMarkdown>
           </div>
         </div>
       </div>
@@ -93,37 +88,32 @@ export default {
   },
   data () {
     return {
-      list: [{
-        hid: "1",//学生的作业号
-        title: "第一次作业",//该作业名
-        end_time: currentTime,//该作业的截止日期
-        status: "A",//A是批改，B是已批改
-        sid: "21212121"
-      }],
+      list: [],
       dialogVisible: false,
       beg: true,
       listLoading: false,
       i: 0,
       searchKeyword: '', // 添加searchKeyword属性
       reason: "ssss",
-      point: "sssss",
+      outcome: "sssss",
     }
   },
   created () {
-    //this.fetchData()
+    this.fetchData()
   },
 
   methods: {
     fetchData () {
       this.listLoading = true
-      const a = { sid: this.sid, cid: this.cid, wid: this.homeworkid }
+      const a = { cid: this.cid }
       getappeal(a).then(response => {
         this.list = Array.from(response.data)
       })
+      this.listLoading = false
     },
 
     cancle (b) {
-      const a = { sid: this.sid, cid: this.cid, wid: this.homeworkid }
+      const a = { sid: this.sid, cid: this.cid, wid: b }
       getcancle(a).then(response => {
         this.$message({
           message: '删除成功',
@@ -134,14 +124,15 @@ export default {
 
     search (b) {
 
-      const a = { sid: this.sid, cid: this.cid, wid: this.homeworkid }
+      const a = { sid: this.sid, cid: this.cid, wid: b }
       getreason(a).then(response => {
-        this.reason = response.data[0][""]
+        this.reason = response.data[0]["appeal_reason"]
+        this.outcome = response.data[0]["appeal_reply"]
       })
-      const c = { sid: this.sid, cid: this.cid, wid: this.homeworkid }
-      getoutcome(a).then(response => {
-        this.outcome = response.data[0][""]
-      })
+      // const c = { sid: this.sid, cid: this.cid, wid: b }
+      // getoutcome(a).then(response => {
+      //   this.outcome = response.data[0]["appeal_reason"]
+      // })
       this.dialogVisible = true
     }
   }

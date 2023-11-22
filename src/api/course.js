@@ -88,7 +88,15 @@ export function getpdf (data) {
 
 export function getmhomework (data) {
   return request({
-    url: 'peer/Allwork',
+    url: 'peer/evaluating',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getmhomework1 (data) {
+  return request({
+    url: 'peer/deadline',
     method: 'get',
     params: data
   })
@@ -96,7 +104,7 @@ export function getmhomework (data) {
 
 export function getcomment (data) {
   return request({
-    url: 'homework/submit/update',
+    url: 'submit/update',
     method: 'put',
     data
   })
@@ -104,7 +112,7 @@ export function getcomment (data) {
 
 export function getemail (data) {
   return request({
-    url: 'homework/appeal',
+    url: 'appeal/homework',
     method: 'put',
     data
   })
@@ -120,7 +128,7 @@ export function getdetail (data) {
 
 export function getdetailmy (data) {
   return request({
-    url: 'homework/details',
+    url: 'submit/details',
     method: 'get',
     params: data
   })
@@ -128,15 +136,23 @@ export function getdetailmy (data) {
 
 export function getexhomework (data) {
   return request({
-    url: 'peer/updateEvaluation',
-    method: 'post',
+    url: 'peer/evaluate',
+    method: 'put',
     data
+  })
+}
+
+export function getexchomework (data) {
+  return request({
+    url: 'peer/one',
+    method: 'get',
+    params: data
   })
 }
 
 export function getdelete (data) {
   return request({
-    url: 'homework/delete/one',
+    url: 'submit/delete',
     method: 'delete',
     params: data
   })
@@ -152,7 +168,7 @@ export function getdata (data) {
 
 export function getoutcome (data) {
   return request({
-    url: 'homework/one',
+    url: 'submit/details',
     method: 'get',
     params: data
   })
@@ -160,7 +176,7 @@ export function getoutcome (data) {
 
 export function getreason (data) {
   return request({
-    url: 'homework/one',
+    url: 'appeal/one',
     method: 'get',
     params: data
   })
@@ -168,16 +184,16 @@ export function getreason (data) {
 
 export function getappeal (data) {
   return request({
-    url: 'homework/one',
+    url: 'appeal/all',
     method: 'get',
     params: data
   })
 }
 
-export function getcancel (data) {
+export function getcancle (data) {
   return request({
-    url: 'homework/one',
-    method: 'get',
+    url: 'appeal/cancel',
+    method: 'put',
     params: data
   })
 }

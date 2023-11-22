@@ -42,7 +42,7 @@ import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from 'vuex'
-import { getexhomework } from '@/api/course'
+import { getexhomework, getexchomework } from '@/api/course'
 export default {
   computed: {
     ...mapGetters([
@@ -91,8 +91,16 @@ export default {
     VueMarkdown, // 注入组件
     editorImage
   },
-
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      const a = { beEvaSid: this.exchangeid, wid: this.homeworkid, cid: this.cid }
+      getexchomework(a).then(response => {
+        this.blog = response.data
+      })
+    },
     onSubmit () {
       this.$refs.result.validate(valid => {
         if (valid)
