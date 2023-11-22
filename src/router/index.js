@@ -118,7 +118,7 @@ export const asyncRoutes = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/homework/show/index'),
-        meta: { title: '提交作业', icon: 'table' }
+        meta: { title: '课程作业', icon: 'table' }
       },
       {
         path: 'submit',
@@ -166,8 +166,9 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'graph',
-        component: () => import('@/views/form/index'),
-        meta: { roles: ['4'], title: '成绩统计图', icon: 'form' }
+        component: () => import('@/views/exchange/graph'),
+        meta: { roles: ['4'], title: '成绩统计图', icon: 'form' },
+        hidden: true
       }
     ]
   },
@@ -233,7 +234,7 @@ export const asyncRoutes = [
       {
         path: 'email',
         name: 'Email',
-        component: () => import('@/views/email/email'),
+        component: () => import('@/views/exchange/check'),
         meta: { roles: ['4'], title: '信箱', icon: 'form' }
       }
     ]

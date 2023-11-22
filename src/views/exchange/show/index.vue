@@ -18,15 +18,14 @@
       </div>
     </div>
     <div class="hom-container1">
-      <div class="hom-title">评分</div>
       <el-form :rules="Rules" :model="result" ref="result">
-        <el-form-item ref="grade" prop="grade">
+        <el-form-item ref="grade" prop="grade" label="评分">
           <el-input v-model="result.grade" placeholder="得分" type="number"></el-input>
         </el-form-item>
       </el-form>
     </div>
     <div class="hom-container2">
-      <div class="hom-title">评语</div>
+      <div class="hom-user">评语</div>
       <tinymce v-model="result.comments" />
     </div>
     <div class="hom-container3">

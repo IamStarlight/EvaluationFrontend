@@ -1,5 +1,8 @@
 <template>
   <div class="app-container">
+    <!-- <div class="image-container">
+      <img src="../../assets/background/c1.png" alt="Your Image">
+    </div> -->
     <div class='form'>
       <el-form class="search-form" inline>
         <el-form-item label="课程搜索">
@@ -15,7 +18,7 @@
             {{ scope.row.cid }}
           </template>
         </el-table-column>
-        <el-table-column label="课程名">
+        <el-table-column label="课程名" width="400">
           <template slot-scope="scope">
             {{ scope.row.cname }}
           </template>
@@ -25,7 +28,7 @@
             <span>{{ scope.row.tname }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="课程简介" width="500" align="center">
+        <el-table-column label="课程简介" align="center">
           <template slot-scope="scope">
             {{ scope.row.content }}
           </template>
@@ -140,5 +143,19 @@ export default {
 
 .lizi {
   position: absolute;
+}
+
+.image-container {
+  text-align: center;
+  /* 图片居中 */
+}
+
+.image-container img {
+  max-width: 100%;
+  /* 图片宽度最大为父容器宽度 */
+  width: 100%;
+  height: 100px;
+  /* 图片高度自适应 */
+  margin-bottom: 20px;
 }
 </style>

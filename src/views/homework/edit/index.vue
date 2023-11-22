@@ -8,8 +8,8 @@
     </div>
     <div class="hom-container">
       <div class="hom-title">{{ homework.title }}</div>
-      <div class="hom-user">Author: {{ this.teacher }}</div>
-      <div class="hom-user">publish-time: {{ homework.endTime }}</div>
+      <div class="hom-user">发布人: {{ this.teacher }}</div>
+      <div class="hom-user">截止日期: {{ homework.endTime }}</div>
       <div class="hom-content-container">
         <div class="hom-content">
           <div class="markdown-body">
@@ -33,12 +33,13 @@
             <div class="hom-user">{{ this.now }}</div>
             <div class="hom-user">{{ this.now1 }}</div>
           </div>
+          <el-button type="primary" @click=onCancel()>清空提交</el-button>
         </div>
       </div>
     </div>
     <div class="hom-container3">
       <el-button type="primary" @click=onPass()>完成提交</el-button>
-      <el-button type="info" @click=onCancel()>退出作业</el-button>
+      <el-button type="info" @click=onCancel1()>退出作业</el-button>
     </div>
 
 
@@ -62,7 +63,7 @@
 
 
     <el-dialog title="导入信息" :visible.sync="dialogVisible1">
-      <tinymce v-model="form.detail" />
+      <tinymce v-model="form.details" />
       <el-button type="primary" @click="onSubmit()">提交作业</el-button>
       <el-button type="info" @click="dialogVisible1 = false">关闭窗口</el-button>
     </el-dialog>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { getpdf, getcomment, getdetail } from '@/api/course'
+import { getpdf, getcomment, getdetail, getdelete } from '@/api/course'
 import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
@@ -109,7 +110,7 @@ export default {
       now1: "",
       form: {
         sid: "",
-        detail: "",
+        details: "",
         cid: "",
         wid: ""
       }
@@ -125,11 +126,7 @@ export default {
     fetchData () {
       const a = { wid: this.homeworkid, cid: this.cid }
       getdetail(a).then(response => {
-        this.homework.title = response.data["title"]
-        //console.log(response.data["title"])       
-        this.homework.details = response.data["details"]
-        this.homework.endTime = response.data["endTime"]
-        this.homeworl.url = response.data["url"]
+        this.homework = response.data[0]
       })
     },
 
@@ -242,8 +239,21 @@ export default {
 
     },
     onCancel () {
+      this.now = ""
+      this.now1 = ""
+      const a = { wid: this.homeworkid, cid: this.cid }
+      getdelete(a).then(response => {
+        this.$message({
+          message: '已清空',
+          type: 'warning'
+        })
+      }).catch(() => {
+      })
+
+    },
+    onCancel1 () {
       this.$message({
-        message: '已取消提交',
+        message: '已退出',
         type: 'warning'
       })
       this.$router.push({ path: '/example/table' })

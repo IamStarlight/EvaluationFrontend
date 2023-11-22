@@ -8,14 +8,14 @@
     </div>
     <div class="hom-container">
       <div class="hom-title">{{ homework.title }}</div>
-      <div class="hom-user">Author: {{ this.teacher }}</div>
-      <div class="hom-user">publish-time: {{ homework.endTime }}</div>
+      <div class="hom-user">发布人: {{ this.teacher }}</div>
+      <div class="hom-user">截止日期: {{ homework.endTime }}</div>
       <div class="hom-content-container">
         <div class="hom-content">
           <div class="markdown-body">
             <VueMarkdown :source="homework.details" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homework.url" target="_blank" class="buttonText">{{ homework.url }}</a>
+          <a color="blue" :href="homework.url" target="_blank" class="buttonText">下载附件：{{ homework.url }}</a>
         </div>
       </div>
     </div>
@@ -30,15 +30,16 @@
         <div class="hom-content">
           <div class="markdown-body">
             <div class="hom-user">只允许上传文字内容和一个附件:</div>
-            <div class="hom-user">{{ this.now }}</div>
-            <div class="hom-user">{{ this.now1 }}</div>
+            <div class="hom-user">文本内容：{{ this.now }}</div>
+            <a :href="this.now1" class="hom-user">下载附件：{{ this.now1 }}</a>
           </div>
+          <el-button type="primary" @click=onCancel()>清空提交</el-button>
         </div>
       </div>
     </div>
     <div class="hom-container3">
       <el-button type="primary" @click=onPass()>完成提交</el-button>
-      <el-button type="info" @click=onCancel()>退出作业</el-button>
+      <el-button type="info" @click=onCancel1()>退出作业</el-button>
     </div>
 
 
@@ -62,7 +63,7 @@
 
 
     <el-dialog title="导入信息" :visible.sync="dialogVisible1">
-      <tinymce v-model="form.detail" />
+      <tinymce v-model="form.details" />
       <el-button type="primary" @click="onSubmit()">提交作业</el-button>
       <el-button type="info" @click="dialogVisible1 = false">关闭窗口</el-button>
     </el-dialog>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { getpdf, getcomment, getdetail, getdetailmy } from '@/api/course'
+import { getpdf, getcomment, getdetail, getdetailmy, getdelete } from '@/api/course'
 import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
@@ -110,7 +111,7 @@ export default {
       now1: "",
       form: {
         sid: "",
-        detail: "",
+        details: "",
         cid: "",
         wid: ""
       }
@@ -126,19 +127,15 @@ export default {
     fetchData () {
       const a = { wid: this.homeworkid, cid: this.cid }
       getdetail(a).then(response => {
-        this.homework.title = response.data["title"]
-        //console.log(response.data["title"])       
-        this.homework.details = response.data["details"]
-        this.homework.endTime = response.data["endTime"]
-        this.homeworl.url = response.data["url"]
+        this.homework = response.data[0]
       })
     },
     fetchData1 () {
-      const a = { wid: this.homeworkid, cid: this.cid }
+      const a = { sid: this.sid, wid: this.homeworkid, cid: this.cid }
       getdetailmy(a).then(response => {
         //console.log(response.data["title"])       
-        this.now = response.data["details"]
-        this.now1 = response.data["url"]
+        this.now = response.data[0]["details"]
+        this.now1 = response.data[0]["url"]
       })
     },
     // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
@@ -250,8 +247,19 @@ export default {
 
     },
     onCancel () {
+      const a = { wid: this.homeworkid, cid: this.cid }
+      getdelete(a).then(response => {
+        this.$message({
+          message: '已取消提交',
+          type: 'warning'
+        })
+        this.$router.push({ path: '/example/table' })
+      }).catch(() => {
+      })
+    },
+    onCancel1 () {
       this.$message({
-        message: '已取消提交',
+        message: '已退出',
         type: 'warning'
       })
       this.$router.push({ path: '/example/table' })

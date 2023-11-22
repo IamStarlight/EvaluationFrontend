@@ -72,7 +72,7 @@ export function getAll () {
 
 export function getAllhomework (data) {
   return request({
-    url: 'homework/bycourse',
+    url: 'homework/info',
     method: 'get',
     params: data
   })
@@ -96,23 +96,23 @@ export function getmhomework (data) {
 
 export function getcomment (data) {
   return request({
-    url: 'homework/submit',
-    method: 'post',
+    url: 'homework/submit/update',
+    method: 'put',
     data
   })
 }
 
 export function getemail (data) {
   return request({
-    url: 'homework/submit',
-    method: 'post',
+    url: 'homework/appeal',
+    method: 'put',
     data
   })
 }
 
 export function getdetail (data) {
   return request({
-    url: 'homework/submit',
+    url: 'homework/one',
     method: 'get',
     params: data
   })
@@ -120,7 +120,7 @@ export function getdetail (data) {
 
 export function getdetailmy (data) {
   return request({
-    url: 'homework/submit',
+    url: 'homework/details',
     method: 'get',
     params: data
   })
@@ -134,4 +134,51 @@ export function getexhomework (data) {
   })
 }
 
+export function getdelete (data) {
+  return request({
+    url: 'homework/delete/one',
+    method: 'delete',
+    params: data
+  })
+}
+
+export function getdata (data) {
+  return request({
+    url: 'homework/one',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getoutcome (data) {
+  return request({
+    url: 'homework/one',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getreason (data) {
+  return request({
+    url: 'homework/one',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getappeal (data) {
+  return request({
+    url: 'homework/one',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getcancel (data) {
+  return request({
+    url: 'homework/one',
+    method: 'get',
+    params: data
+  })
+}
 
