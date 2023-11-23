@@ -9,13 +9,13 @@
     </div> -->
     <div class='ada'>
       <div class="left-content1">
-        <h1>互动提醒</h1>
+        <h1>l 互动提醒</h1>
         <p class="box-author">您有{{ number1 }}个作业未完成</p>
         <p class="box-author">您有{{ number2 }}个互评任务未完成</p>
         <p class="box-author">您有{{ number3 }}个互评任务未完成</p>
       </div>
       <div class='left-content2'>
-        <h1>课程列表</h1>
+        <h1>l 课程列表</h1>
         <div class='main'>
           <div class="courses_list">
             <el-row v-for="course in courses" :key="course.cid" class="course-item">

@@ -58,8 +58,9 @@
         <el-table-column align="center" prop="created_at" label="申诉" width="120">
           <template slot-scope="scope">
             <span>
-              <el-button :type="(scope.row.read == '是') ? 'success' : 'info'" plain
-                @click="change1(scope.row.wid, scope.row.tname, scope.row.date, scope.row.read, scope.row.status)">
+              <el-button
+                :type="(scope.row.read == '是' && scope.row.appeal == false) ? 'success' : (scope.row.read == '是') ? 'warning' : 'info'"
+                plain @click="change1(scope.row.wid, scope.row.tname, scope.row.date, scope.row.read, scope.row.appeal)">
                 {{ scope.row.read != '是' ? '不可申诉' : (scope.row.appeal == true ? '已申诉' : "申诉") }}
               </el-button>
             </span>
@@ -257,7 +258,7 @@ export default {
       }
     },
     change1 (hid, cname, tid, read, states) {
-      if (read == "是")
+      if (read == "是" && states == false)
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid
