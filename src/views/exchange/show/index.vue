@@ -18,15 +18,14 @@
       </div>
     </div>
     <div class="hom-container1">
-      <div class="hom-title">评分</div>
       <el-form :rules="Rules" :model="result" ref="result">
-        <el-form-item ref="grade" prop="grade">
+        <el-form-item ref="grade" prop="grade" label="评分">
           <el-input v-model="result.grade" placeholder="得分" type="number"></el-input>
         </el-form-item>
       </el-form>
     </div>
     <div class="hom-container2">
-      <div class="hom-title">评语</div>
+      <div class="hom-user">评语</div>
       <tinymce v-model="result.comments" />
     </div>
     <div class="hom-container3">
@@ -43,7 +42,7 @@ import editorImage from '@/components/Tinymce/components/EditorImage'
 import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from 'vuex'
-import { getexhomework } from '@/api/course'
+import { getexhomework, getexchomework } from '@/api/course'
 export default {
   computed: {
     ...mapGetters([
@@ -92,8 +91,16 @@ export default {
     VueMarkdown, // 注入组件
     editorImage
   },
-
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      const a = { beEvaSid: this.exchangeid, wid: this.homeworkid, cid: this.cid }
+      getexchomework(a).then(response => {
+        this.blog = response.data
+      })
+    },
     onSubmit () {
       this.$refs.result.validate(valid => {
         if (valid)

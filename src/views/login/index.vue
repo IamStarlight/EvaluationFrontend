@@ -1,13 +1,13 @@
 <template>
   <div class="login-container">
-    <div class="stars">
+    <!-- <div class="stars">
       <div v-for="(item, index) in starsCount" :key="index" class="star" ref="star"></div>
-    </div>
+    </div> -->
     <div class="a">
       <div class="b"></div>
       <div class="c">
         <div class="d">
-          <h1>吃饱吃好</h1>
+          <h1>ABC幼儿园</h1>
           <h2>Login</h2>
           <el-form :rules="loginRules" :model="loginForm" ref="loginForm" class="login-form" style="margin-top: 10px;"
                    autocomplete="on">
@@ -37,14 +37,15 @@ export default {
   name: 'Login',
   data () {
     const validateUsername = (rule, value, callback) => {
-      // if (value.length != 8)
-      // {
-      //   callback(new Error('请输入8位学号'))
-      // } else
-      // {
-      //   callback()
-      // }
-      callback()
+      if (value.length == 8 || value.length == 4 || value.length == 1)
+      {
+        callback()
+
+      } else
+      {
+        callback(new Error('请输入正确用户名'))
+      }
+
     }
     const validatePassword = (rule, value, callback) => {
       callback()
@@ -226,7 +227,9 @@ $light_gray: #eee;
   min-height: 100%;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(to bottom, #000000, #3cadeb);
+  //background-image: linear-gradient(to bottom, #000000, #FFC0CB);
+  background-image: url(../../assets/background/aa.jpg);
+  background-size: cover;
   display: flex;
   overflow: hidden;
   justify-content: center;
@@ -303,7 +306,7 @@ $light_gray: #eee;
 .b {
   width: 800px;
   height: 550px;
-  background-image: url(../../assets/background/BluePond.jpg);
+  background-image: url(../../assets/background/OIP.jpg);
   /* 让图片适应大小 */
   background-size: cover;
   font: 900 50px '';

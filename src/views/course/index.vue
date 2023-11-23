@@ -1,42 +1,52 @@
 <template>
-  <div class="app-container">
-    <div class='form'>
-      <el-form class="search-form" inline>
-        <el-form-item label="课程搜索">
-          <el-input v-model="searchKeyword" placeholder="输入课程名" style="width: 300px;"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="search">搜索</el-button>
-        </el-form-item>
-      </el-form>
-      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
-        <el-table-column align="center" label="课程号" width="100">
-          <template slot-scope="scope">
-            {{ scope.row.cid }}
-          </template>
-        </el-table-column>
-        <el-table-column label="课程名">
-          <template slot-scope="scope">
-            {{ scope.row.cname }}
-          </template>
-        </el-table-column>
-        <el-table-column label="任课老师" width="110" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.tname }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="课程简介" width="500" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.content }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" prop="created_at" label="进入课程" width="120">
-          <template slot-scope="scope">
-            <span><el-button type="primary" plain
-                @click="change(scope.row.cid, scope.row.cname, scope.row.tname, scope.row.content)">进入</el-button></span>
-          </template>
-        </el-table-column>
-      </el-table>
+  <div class="body">
+    <!-- <div class="image-container">
+      <img src="../../assets/background/c1.png" alt="Your Image">
+    </div> -->
+    <!-- <div class="left-content"> -->
+    <!-- <h1>{{ name }} , 欢迎进入课程</h1>
+      <p>亲爱的学生，欢迎来到我们的课程列表页面！在这里，你将发现丰富多彩的学习机会，覆盖各种感兴趣的主题。</p>
+    </div> -->
+    <div class='ada'>
+      <div class="left-content1">
+        <h1>课程通知</h1>
+        <p class="box-author">您有{{ number1 }}个作业未完成</p>
+        <p class="box-author">您有{{ number2 }}个互评任务未完成</p>
+        <p class="box-author">您有{{ number3 }}个互评任务未完成</p>
+      </div>
+      <div class='left-content2'>
+        <h1>课程列表</h1>
+        <div class='main'>
+          <div class="courses_list">
+            <el-row v-for="course in courses" :key="course.cid" class="course-item">
+              <el-col :span="24" class="course-item-box">
+                <el-row>
+                  <!--              这里需要一个图片，模仿mis上面的-->
+                  <el-col :span="12" class="course-item-left"><img src="../../assets/background/ada.png" alt=""
+                      style="max-width: 400px; height:200px;"></el-col>
+                  <el-col :span="12" class="course-item-right">
+                    <div class="course-title">
+                      <p class="box-title">{{ course.cname }}</p>
+                    </div>
+                    <div class="author">
+                      <p class="box-author">{{ course.tname }}</p>
+                      <!--                        <p class="lession">共xxx课时</p>-->
+                    </div>
+                    <el-row class="course-content">
+                      <el-col :span="12"><i class="el-icon-caret-right"></i>课程简介：{{ course.content }}</el-col>
+                    </el-row>
+                    <div class="enter">
+                      <el-button class="change" type="primary" plain
+                        @click="change(course.cid, course.cname, course.tname, course.content)">进入
+                      </el-button>
+                    </div>
+                  </el-col>
+                </el-row>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -67,11 +77,15 @@ export default {
   },
   data () {
     return {
-      list: [],
+      courses: [],
       beg: true,
       listLoading: false,
-      i: 0,
-      searchKeyword: '' // 添加searchKeyword属性
+      current_page: 1,
+      filter_price: false,
+      searchKeyword: '', // 添加searchKeyword属性
+      number1: "",
+      number2: "",
+      number3: ""
     }
   },
   created () {
@@ -82,7 +96,16 @@ export default {
     fetchData () {
       this.listLoading = true
       getAll().then(response => {
-        this.list = Array.from(response.data)
+        this.courses = response.data
+        console.log("Data" + this.list)
+        this.listLoading = false
+      })
+    },
+
+    fetchData1 () {
+      this.listLoading = true
+      getAllnotice().then(response => {
+        this.courses = response.data
         console.log("Data" + this.list)
         this.listLoading = false
       })
@@ -133,6 +156,60 @@ export default {
 </script>
 
 <style scoped>
+.body {
+  justify-content: space-between;
+  height: auto;
+  background-color: rgb(211, 240, 203);
+  /* 左右排列 */
+}
+
+.ada {
+  display: flex;
+}
+
+.left-content {
+  padding: 20px;
+  /* background-color: #c0f9b6; */
+  background-color: white;
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+h1 {
+  /* 设置字体样式为 Arial，如果 Arial 不可用，则使用 sans-serif 作为备用字体 */
+  font-family: 'Arial', sans-serif;
+  /* 设置字体大小为 24 像素 */
+  font-size: 24px;
+  /* 设置字体颜色为蓝色 */
+  color: black;
+}
+
+.left-content1 {
+  min-width: 200px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.left-content2 {
+  padding: 20px;
+  width: 80%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  min-height: 720px;
+  border-radius: 10px;
+}
+
 .form {
   position: relative;
   /* transform: translate(50%, 50%); */
@@ -140,5 +217,267 @@ export default {
 
 .lizi {
   position: absolute;
+}
+
+.image-container {
+  text-align: center;
+  /* 图片居中 */
+}
+
+.image-container img {
+  max-width: 100%;
+  /* 图片宽度最大为父容器宽度 */
+  width: 100%;
+  height: 100px;
+  /* 图片高度自适应 */
+  margin-bottom: 20px;
+}
+
+.courses {
+  padding-top: 80px;
+}
+
+.main {
+  width: auto;
+  height: 200px;
+  margin: 0 auto;
+  padding-top: 15px;
+}
+
+.main .filter {
+  width: 100%;
+  height: auto;
+  margin-bottom: 35px;
+  padding: 25px 0px 25px 0px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 #f0f0f0;
+}
+
+.filter .el-col {
+  text-align: center;
+  padding: 6px 0px;
+  line-height: 16px;
+  margin-left: 14px;
+  position: relative;
+  transition: all .3s ease;
+  cursor: pointer;
+  color: #4a4a4a;
+}
+
+.filter-el-row1 {
+  padding-bottom: 18px;
+  margin-bottom: 17px;
+}
+
+.filter .filter-text {
+  text-align: right;
+  font-size: 16px;
+  color: #888;
+}
+
+.filter .filter-text2 {}
+
+.filter .filter-el-row1 .current {
+  color: #ffc210;
+  border: 1px solid #ffc210 !important;
+  border-radius: 30px;
+}
+
+.filter .filter-el-row2 .current {
+  color: #ffc210;
+}
+
+.filter-price {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.filter-price .up,
+.filter-price .down {
+  display: block;
+  line-height: 8px;
+  font-size: 13px;
+  margin: -4px;
+  color: #d8d8d8;
+}
+
+.current .filter-price .active {
+  color: #ffc210;
+}
+
+.course-item {
+  margin-bottom: 15px;
+}
+
+.course-item .course-item-box {
+  padding: 10px 10px 10px 10px;
+}
+
+.course-item {
+  box-shadow: 2px 3px 16px rgba(0, 0, 0, .1);
+  transition: all .2s ease;
+}
+
+.course-item .course-item-left {
+  width: 423px;
+  height: 210px;
+  margin-right: 10px;
+}
+
+.course-title {
+  overflow: hidden;
+  /* 在父元素中使用可以清除子元素的浮动影响 */
+}
+
+.course-title .box-title {
+  font-size: 26px;
+  color: #333333;
+  float: left;
+  margin-bottom: 8px;
+}
+
+.course-title .box-number {
+  font-size: 14px;
+  color: #9b9b9b;
+  font-family: PingFangSC-Light;
+  float: right;
+  padding-top: 12px;
+}
+
+.course-item-right {
+  width: 56.6%;
+}
+
+.author {
+  font-size: 14px;
+  color: #9b9b9b;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  overflow: hidden;
+}
+
+.author .box-author {
+  float: left;
+}
+
+.author .lession {
+  float: right;
+}
+
+.course-content .el-icon-caret-right {
+  border: 1px solid #000;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.course-content .el-col {
+  font-size: 14px;
+  color: #666;
+  width: 50%;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.course-content .el-col:hover {
+  color: #ffc210;
+}
+
+.course-content .el-col:hover .el-icon-caret-right,
+.course-content .el-col:hover .free {
+  border-color: #ffc210;
+  color: #ffc210;
+}
+
+.hom-user {
+  font-size: 16px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.course-content .el-col .free {
+  width: 34px;
+  height: 20px;
+  color: #fd7b4d;
+  margin-left: 10px;
+  border: 1px solid #fd7b4d;
+  border-radius: 2px;
+  text-align: center;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.enter {
+  overflow: hidden;
+}
+
+.enter .enter-left {
+  float: left;
+}
+
+.enter .discount {
+  padding: 6px 10px;
+  display: inline-block;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  margin-right: 8px;
+  background: #fa6240;
+  border: 1px solid #fa6240;
+  border-radius: 10px 0 10px 0;
+}
+
+.enter .enter-left {
+  line-height: 22px;
+}
+
+.enter .count {
+  font-size: 24px;
+  color: #fa6240;
+}
+
+.enter .old_count {
+  font-size: 14px;
+  color: #9b9b9b;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.enter .change {
+  float: right;
+  width: 120px;
+  height: 38px;
+  font-size: 16px;
+  border-radius: 3px;
+  border: 1px solid #fd7b4d;
+  background: transparent;
+  /* 透明 */
+  color: #fa6240;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  /* css3新版本的样式中支持支持 jQuery里面的动画预设效果 */
+  /* all表示当前元素的所有样式  .2s表示改变样式完成的时间  ease-in-out */
+}
+
+.enter .change:hover {
+  color: #fff;
+  background: #ffc210;
+  border: 1px solid #ffc210;
+}
+
+.hom-container {
+  padding: 20px;
+  background-color: rgb(255, 255, 200);
+  width: auto;
+  max-height: 700px;
+  /* 设置最大高度 */
+  height: auto;
+  /* 自适应高度 */
+  /* 设置固定宽度 */
+  margin: 0px auto 0;
+  position: relative;
+  /* 居中显示 */
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 </style>

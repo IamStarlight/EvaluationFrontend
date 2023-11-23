@@ -8,8 +8,8 @@
     </div>
     <div class="hom-container">
       <div class="hom-title">{{ homework.title }}</div>
-      <div class="hom-user">Author: {{ this.teacher }}</div>
-      <div class="hom-user">publish-time: {{ homework.endTime }}</div>
+      <div class="hom-user">发布人: {{ this.teacher }}</div>
+      <div class="hom-user">截止日期: {{ homework.endTime }}</div>
       <div class="hom-content-container">
         <div class="hom-content">
           <div class="markdown-body">
@@ -36,7 +36,8 @@
       </div>
     </div>
     <div class="hom-container2">
-      <tinymce v-model="form.detail" style="width: 950px;" />
+      <div class="hom-title">申诉原因</div>
+      <tinymce v-model="form.reason" style="width:1150px" />
     </div>
     <div class="hom-container3">
       <el-button type="primary" @click=onSubmit()>提交申诉</el-button>
@@ -82,7 +83,7 @@ export default {
       },
       form: {
         sid: "",
-        detail: "",
+        reason: "",
         cid: "",
         wid: ""
       }
@@ -101,21 +102,15 @@ export default {
     fetchData () {
       const a = { wid: this.homeworkid, cid: this.cid }
       getdetail(a).then(response => {
-        this.homework.title = response.data["title"]
-        //console.log(response.data["title"])       
-        this.homework.details = response.data["details"]
-        this.homework.endTime = response.data["endTime"]
-        this.homework.url = response.data["url"]
+        this.homework = response.data[0]
       })
     },
     fetchData1 () {
-      const a = { wid: this.homeworkid, cid: this.cid }
+      const a = { sid: this.sid, wid: this.homeworkid, cid: this.cid }
       getdetailmy(a).then(response => {
-        this.homeworkmy.title = response.data["title"]
         //console.log(response.data["title"])       
-        this.homeworkmy.details = response.data["details"]
-        this.homeworkmy.time = response.data["endTime"]
-        this.homeworkmy.url = response.data["url"]
+        this.homeworkmy.details = response.data[0]["details"]
+        this.homeworkmy.url = response.data[0]["url"]
       })
     },
     onSubmit () {

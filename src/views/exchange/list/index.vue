@@ -4,20 +4,18 @@
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column align="center" label="id" width="100">
           <template slot-scope="scope">
-            {{ scope.row.hid }}
+            {{ scope.row.sname }}
           </template>
         </el-table-column>
         <el-table-column label="发布人">
           {{ this.teacher }}
         </el-table-column>
         <el-table-column label="作业名">
-          <template slot-scope="scope">
-            {{ scope.row.title }}
-          </template>
+          {{ this.homeworkid }}
         </el-table-column>
         <el-table-column label="互评截止日期" width="300" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.end_time }}</span>
+            <span>{{ scope.row.details }}</span>
           </template>
         </el-table-column>
         <!-- <el-table-column align="center" prop="created_at" label="提交作业" width="120">
@@ -34,7 +32,7 @@
             <span>
               <el-button
                 :type="(scope.row.status == 'A') ? 'success' : (scope.row.status === 'B' ? (scope.row.bool === 'T' ? 'warning' : 'info') : 'info')"
-                plain @click="change(scope.row.sid, scope.row.status)">
+                plain @click="change(scope.row.be_eva_sid, scope.row.status)">
                 {{ scope.row.status === 'A' ? '批改' : (scope.row.status === 'B' ? '已批改' : '未批改') }}
               </el-button>
             </span>
@@ -46,7 +44,7 @@
 </template>
 
 <script>
-import { getList, getmhomework } from '@/api/course'
+import { getList, getmhomework, getmhomework1 } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
@@ -76,13 +74,8 @@ export default {
   },
   data () {
     return {
-      list: [{
-        hid: "1",//学生的作业号
-        title: "第一次作业",//该作业名
-        end_time: currentTime,//该作业的截止日期
-        status: "A",//A是批改，B是已批改
-        sid: "21212121"
-      }],
+      list: [
+      ],
       beg: true,
       listLoading: false,
       i: 0,
@@ -90,24 +83,34 @@ export default {
     }
   },
   created () {
-    //this.fetchData()
+    this.fetchData()
   },
 
   methods: {
     fetchData () {
       this.listLoading = true
-      const a = { sid: this.sid, cid: this.cid, wid: this.homeworkid }
+      const a = { cid: this.cid, wid: this.homeworkid }
       getmhomework(a).then(response => {
-        this.list.title = response.data["title"]
-        this.list.hid = response.data["wid"]
-        this.list.end_time = response.data["endTime"]
-        this.list.sid = response.data["sid"]
+        this.list = Array.from(response.data)
+        console.log(this.list)
+        let ada = ""
+        getmhomework1(a).then(response => {
+          ada = response.data
+          console.log(ada)
+          for (let i = 0; i < this.list.length; i++)
+          {
+            this.list[i]["details"] = ada
+            this.list[i]["sname"] = i
+            console.log(this.list)
+          }
+        })
+
         this.listLoading = false
       })
     },
 
     change (sid, status) {
-      if (status == "A")
+      if (1)
       {
         this.$store.dispatch("course/setchangeexchangeid",
           sid
