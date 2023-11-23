@@ -4,6 +4,7 @@ const state = {
   tid: '',
   content: 'ssss',
   homeworkid: "",
+  homeworkname: "",
   exchangeid: "",
 }
 const mutations = {
@@ -24,6 +25,9 @@ const mutations = {
   },
   SET_EID: (state, content) => {
     state.exchangeid = content
+  },
+  SET_HNAME: (state, content) => {
+    state.homeworkname = content
   },
 }
 const actions = {
@@ -46,6 +50,9 @@ const actions = {
   },
   async setchangeexchangeid ({ commit, dispatch }, id) {
     commit('SET_EID', id)
+  },
+  async setchangehomeworkname ({ commit, dispatch }, id) {
+    commit('SET_HNAME', id)
   },
 }
 

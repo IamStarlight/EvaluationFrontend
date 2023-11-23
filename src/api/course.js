@@ -144,7 +144,7 @@ export function getexhomework (data) {
 
 export function getexchomework (data) {
   return request({
-    url: 'peer/one',
+    url: 'peer/evaluating/one',
     method: 'get',
     params: data
   })

@@ -7,12 +7,14 @@
     <div class="container1">
     </div>
     <div class="hom-container">
-      <div class="hom-title">{{ blog.title }}</div>
-      <div class="hom-user">publish-time: {{ blog.time }}</div>
+      <div class="hom-title">{{ homeworkname }}</div>
       <div class="hom-content-container">
         <div class="hom-content">
           <div class="markdown-body">
-            <VueMarkdown :source="blog.content" v-highlight></VueMarkdown>
+            <VueMarkdown :source="blog.details" v-highlight></VueMarkdown>
+          </div>
+          <div>
+            <a color="blue" :href="blog.url" target="_blank" class="buttonText">下载附件：{{ blog.url }}</a>
           </div>
         </div>
       </div>
@@ -52,7 +54,8 @@ export default {
       'teacher',
       'cid',
       'homeworkid',
-      'exchangeid'
+      'exchangeid',
+      'homeworkname'
     ])
   },
   data () {
@@ -98,7 +101,7 @@ export default {
     fetchData () {
       const a = { beEvaSid: this.exchangeid, wid: this.homeworkid, cid: this.cid }
       getexchomework(a).then(response => {
-        this.blog = response.data
+        this.blog = response.data[0]
       })
     },
     onSubmit () {

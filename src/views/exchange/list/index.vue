@@ -11,7 +11,7 @@
           {{ this.teacher }}
         </el-table-column>
         <el-table-column label="作业名">
-          {{ this.homeworkid }}
+          {{ this.homeworkname }}
         </el-table-column>
         <el-table-column label="互评截止日期" width="300" align="center">
           <template slot-scope="scope">
@@ -30,10 +30,9 @@
         <el-table-column align="center" prop="created_at" label="互评作业" width="200">
           <template slot-scope="scope">
             <span>
-              <el-button
-                :type="(scope.row.status == 'A') ? 'success' : (scope.row.status === 'B' ? (scope.row.bool === 'T' ? 'warning' : 'info') : 'info')"
-                plain @click="change(scope.row.be_eva_sid, scope.row.status)">
-                {{ scope.row.status === 'A' ? '批改' : (scope.row.status === 'B' ? '已批改' : '未批改') }}
+              <el-button :type="(scope.row.is_eva == true) ? 'success' : 'info'" plain
+                @click="change(scope.row.be_eva_sid, scope.row.status)">
+                {{ scope.row.status === true ? '已批改' : '未批改' }}
               </el-button>
             </span>
           </template>
@@ -59,7 +58,8 @@ export default {
       'teacher',
       'cid',
       'homeworkid',
-      'exchangeid'
+      'exchangeid',
+      'homeworkname'
     ])
   },
   filters: {
