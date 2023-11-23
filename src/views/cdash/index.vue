@@ -3,10 +3,9 @@
     <!-- <div class="image-container">
       <img src="../../assets/background/c1.png" alt="Your Image">
     </div> -->
-    <!-- <div class="left-content"> -->
-    <!-- <h1>{{ name }} , 欢迎进入课程</h1>
-      <p>亲爱的学生，欢迎来到我们的课程列表页面！在这里，你将发现丰富多彩的学习机会，覆盖各种感兴趣的主题。</p>
-    </div> -->
+    <div class="left-content">
+      <h1>{{ cname }}课</h1>
+    </div>
     <div class='ada'>
       <div class="left-content1">
         <el-card class="box-card-component" style="margin-left:8px;">
@@ -17,23 +16,12 @@
             <pan-thumb :image="avatar" class="panThumb" />
             <mallki class-name="mallki-text" text="vue-element-admin" />
             <div style="padding-top:35px;" class="progress-item">
-              <span>aaaa</span>
+              <span>学习进度</span>
               <el-progress :percentage="70" />
-            </div>
-            <div class="progress-item">
-              <span>bbbb</span>
-              <el-progress :percentage="18" />
-            </div>
-            <div class="progress-item">
-              <span>ccc</span>
-              <el-progress :percentage="12" />
-            </div>
-            <div class="progress-item">
-              <span>ddd</span>
-              <el-progress :percentage="100" status="success" />
             </div>
           </div>
         </el-card>
+        <el-button type="info" @click="change()" style="margin-top:20px;margin-left:10px">返回课程</el-button>
       </div>
       <div class='left-content2'>
         <div class='main'>
@@ -177,7 +165,7 @@ export default {
 .left-content {
   padding: 20px;
   /* background-color: #c0f9b6; */
-  background-color: white;
+  background-color: rgb(253, 248, 166);
   box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
   margin-left: 20px;
   margin-right: 20px;

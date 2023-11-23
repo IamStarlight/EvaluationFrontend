@@ -9,7 +9,7 @@
     </div> -->
     <div class='ada'>
       <div class="left-content1">
-        <h1>课程通知</h1>
+        <h1>互动提醒</h1>
         <p class="box-author">您有{{ number1 }}个作业未完成</p>
         <p class="box-author">您有{{ number2 }}个互评任务未完成</p>
         <p class="box-author">您有{{ number3 }}个互评任务未完成</p>
@@ -241,7 +241,7 @@ h1 {
   width: auto;
   height: 200px;
   margin: 0 auto;
-  padding-top: 15px;
+  padding-top: 0px;
 }
 
 .main .filter {
@@ -334,7 +334,7 @@ h1 {
   font-size: 26px;
   color: #333333;
   float: left;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .course-title .box-number {
@@ -346,19 +346,20 @@ h1 {
 }
 
 .course-item-right {
-  width: 56.6%;
+  width: 300px;
 }
 
 .author {
   font-size: 14px;
   color: #9b9b9b;
-  margin-bottom: 14px;
-  padding-bottom: 14px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
   overflow: hidden;
 }
 
 .author .box-author {
   float: left;
+  margin-top: 10px
 }
 
 .author .lession {

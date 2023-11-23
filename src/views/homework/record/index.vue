@@ -221,6 +221,7 @@ export default {
       getcomment(this.form).then(response => {
         this.$message('submit!')
         this.now = "已上传一份文本"
+        this.dialogVisible1 = false
       }).catch(() => {
         this.$message({
           message: "导入失败",

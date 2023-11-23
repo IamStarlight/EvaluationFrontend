@@ -1,6 +1,10 @@
 <template>
-  <div class="ada">
+  <div class="body">
+    <div class="left-content1">
+      <h1>{{ cname }}课</h1>
+    </div>
     <div class='form'>
+      <h1> l 申诉列表</h1>
       <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column label="课程号">
           {{ this.cid }}
@@ -69,6 +73,7 @@ export default {
       'sid',
       'teacher',
       'cid',
+      'cname',
       'homeworkid',
       'exchangeid'
     ])
@@ -140,11 +145,23 @@ export default {
 </script>
 
 <style scoped>
+.body {
+  justify-content: space-between;
+  height: auto;
+  background-color: rgb(211, 240, 203);
+  /* 左右排列 */
+}
+
 .form {
-  position: relative;
-  margin-top: 100px;
-  width: 1100px;
-  /* transform: translate(50%, 50%); */
+  padding: 20px;
+  width: 90%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 40px;
+  margin-right: 20px;
+  margin-top: 20px;
+  min-height: 720px;
+  border-radius: 10px;
 }
 
 .ada {
@@ -190,5 +207,22 @@ export default {
 
 .left-body p {
   margin: 0;
+}
+
+.left-content1 {
+  padding: 20px;
+  /* background-color: #c0f9b6; */
+  background-color: rgb(253, 248, 166);
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h1 {
+  /* 设置字体样式为 Arial，如果 Arial 不可用，则使用 sans-serif 作为备用字体 */
+  font-family: 'Arial', sans-serif;
+  /* 设置字体大小为 24 像素 */
+  font-size: 24px;
+  /* 设置字体颜色为蓝色 */
+  color: black;
 }
 </style>
