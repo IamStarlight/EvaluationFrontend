@@ -168,7 +168,8 @@ export default {
       });
       // 将输入表单数据添加到params表单中
       paramsData.append('cid', this.cid)
-      paramsData.append('wid', this.wid)
+      paramsData.append('wid', this.homeworkid)
+      paramsData.append('sid', this.sid)
       getpdf(paramsData).then(response => {
         this.$message({
           message: "导入成功",

@@ -80,7 +80,7 @@ export function getAllhomework (data) {
 
 export function getpdf (data) {
   return request({
-    url: 'file/upload',
+    url: 'file/upload/student',
     method: 'post',
     data
   })
