@@ -253,7 +253,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'Tgraph',
-        component: () => import('@/views/graph/graph'),
+        component: () => import('@/views/exchange/check'),
         meta: { roles: ['5'], title: '成绩统计图', icon: 'form' }
       }
     ]
