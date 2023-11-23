@@ -20,7 +20,7 @@
           <el-col :span="24" class="course-item-box">
              <el-row>
             <!--              这里需要一个图片，模仿mis上面的-->
-                <el-col :span="12" class="course-item-left"><img src="src/assets/course.png" alt=""></el-col>
+                <el-col :span="12" class="course-item-left"><img src="../../assets/course/img.png" alt=""></el-col>
                    <el-col :span="12" class="course-item-right">
                       <div class="course-title">
                          <p class="box-title">{{ course.cname }}</p>

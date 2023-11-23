@@ -14,8 +14,8 @@
       <tr v-for="email in appealList" :key="email.sid">
         <td>{{ email.sname }}</td>
         <td>{{ email.title}}</td>
-        <td>{{ email.reason }}</td>
-        <td>{{ email.submit_time }}</td>
+        <td>{{ email.appeal_reason }}</td>
+        <td>{{ email.appeal_time }}</td>
         <td>
           <button @click="viewDetail(email.wid,email.sid)">详情</button>
           <button @click="ignore(email.sid,email.wid)">忽略</button>
@@ -38,25 +38,25 @@ export default {
       //     sid: 1,
       //     wid:1,
       //     title:'haha1',
-      //     studentName: '张三',
+      //     sname: '张三',
       //     reason: '作业批改有误',
-      //     submitTime: '2023-11-10 14:30:22'
+      //     submit_time: '2023-11-10 14:30:22'
       //   },
       //   {
       //     sid: 2,
       //     title:'haha2',
       //     wid:2,
-      //     studentName: '李四',
+      //     sname: '李四',
       //     reason: '分数计算有误',
-      //     submitTime: '2023-11-11 09:20:11'
+      //     submit_time: '2023-11-11 09:20:11'
       //   },
       //   {
       //     sid: 3,
       //     wid:3,
       //     title:'haha3',
-      //     studentName: '王五',
+      //     sname: '王五',
       //     reason: '作业未按时提交',
-      //     submitTime: '2023-11-11 10:05:58'
+      //     submit_time: '2023-11-11 10:05:58'
       //   }
       // ],
        appealList:[]
@@ -73,7 +73,13 @@ export default {
   },
   methods: {
     fetchData() {
-      this.listLoading = true;
+      // this.listLoading = true;
+      // const cid = this.cid;
+      // const tid =
+      // const data={
+      //   cid,
+      //   tid
+      // }
       listEmail(this.cid).then(response => {
         this.appealList = response.data
         console.log(response.data.wid)

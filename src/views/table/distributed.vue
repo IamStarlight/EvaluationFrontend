@@ -28,13 +28,26 @@
             删除作业
           </button>
           <span style="margin: 10px;"></span>
-          <button class="btn3" @click="evaluation(assignment.wid)">
+<!--          <button class="btn3" @click="evaluation(assignment.wid)">-->
+<!--            发布互评-->
+<!--          </button>-->
+          <button class="btn3" @click="showDia">
             发布互评
           </button>
         </td>
       </tr>
       </tbody>
     </table>
+
+    <el-dialog :visible.sync="showDialog" title="互评截止日期">
+      <div class="date-time-container">
+        <label for="endTime">截止日期:</label>
+        <input id="endTime" class="hom-info-input" type="datetime-local">
+      </div>
+      <el-button type="primary" @click="evaluation(assignments.wid)">确定</el-button>
+      <el-button @click="cancel">取消</el-button>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -53,7 +66,8 @@ export default {
       //   { id: 3, name: '作业3', startTime: '2023-11-05', deadline: '2023-11-12' },
       // ],
       assignments:[],
-      listLoading: true
+      listLoading: true,
+      showDialog:false
     }
   },
   computed: {
@@ -100,14 +114,28 @@ export default {
           console.log(error);
         });
     },
+    showDia() {
+      this.showDialog = true;
+    },
+    cancel() {
+      this.showDialog = false;
+    },
     evaluation(id){
+      const endTimeInput = document.getElementById('endTime')
+      const endTimeValue = endTimeInput.value;
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const ddl= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+
       const wid = id;
+      console.log(wid);
       const cid = this.cid;
       const status = 1;
       const data = {
         wid,
         cid,
-        status
+        status,
+        ddl
       }
       evaluate(data)
         .then(response => {
