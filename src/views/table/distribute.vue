@@ -15,10 +15,26 @@
         <label for="title">作业标题:</label>
         <input id="title" class="hom-info-input" type="text" placeholder="请输入作业标题">
       </div>
+      <div>
+        <label for="publishSwitch">是否定时发布:</label>
+        <input id="publishSwitch" class="hom-info-input" type="checkbox" v-model="isScheduled">
+      </div>
+
+      <div v-if="isScheduled" class="date-time-container">
+        <label for="startTime">定时发布:</label>
+        <input id="startTime" class="hom-info-input" type="datetime-local">
+      </div>
+<!--      <div class="date-time-container">-->
+<!--        <label for="startTime">定时发布:</label>-->
+<!--        <input id="startTime" class="hom-info-input" type="datetime-local">-->
+<!--      </div>-->
+      <span style="margin: 8px;"></span>
       <div class="date-time-container">
         <label for="endTime">截止日期:</label>
         <input id="endTime" class="hom-info-input" type="datetime-local">
       </div>
+
+
     </div>
 
     <!--大文本输入框-->
@@ -33,8 +49,13 @@
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
     </div>
 
-    <div class="button-container2">
+    <div v-if="!isScheduled"class="button-container2">
       <el-button type="primary" @click="onSubmit">发布作业</el-button>
+      <el-button type="info" @click=toDraft()>存入草稿</el-button>
+    </div>
+
+    <div v-if="isScheduled" class="button-container3">
+      <el-button type="primary" @click="onTime">定时发布</el-button>
       <el-button type="info" @click=toDraft()>存入草稿</el-button>
     </div>
 
@@ -64,13 +85,14 @@ import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
 //import 'vue-datetime/dist/vue-datetime.css';
-import { deliverHomework, intoDraft } from "@/api/homework";
+import { deliverHomework } from "@/api/homework";
 
 export default {
   data () {
     return {
       content:'',
       selectedDate: '',
+      isScheduled: false,
       //对话框控制权
       dialogVisible: false,
       //导入表单数据
@@ -182,6 +204,12 @@ export default {
       const endTime1 = new Date(endTimeValue);
       // 格式化为 "yyyy-MM-dd hh:mm" 格式
       const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+      // const startTimeInput = document.getElementById('startTime')
+      // const startTimeValue = startTimeInput.value;
+      // const startTime1 = new Date(startTimeValue);
+      // // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      // const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
+
 
       // 获取作业内容
       const details = this.content;
@@ -197,6 +225,7 @@ export default {
         cid,
         title,
         endTime,
+        // startTime,
         //formattedEndTime,
         status
       };//wid是自动生成的吗
@@ -225,6 +254,11 @@ export default {
       const endTime1 = new Date(endTimeValue);
       // 格式化为 "yyyy-MM-dd hh:mm" 格式
       const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+      const startTimeInput = document.getElementById('startTime')
+      const startTimeValue = startTimeInput.value;
+      const startTime1 = new Date(startTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
 
       const detail = this.content;
       const cid = this.cid
@@ -237,7 +271,8 @@ export default {
         cid,
         title,
         endTime,
-        status
+        status,
+        startTime
       }
       deliverHomework(requestData)
         .then(response => {
@@ -255,7 +290,45 @@ export default {
         // });
 
       this.$message('save!')
-    }
+    },
+    onTime () {
+      const endTimeInput = document.getElementById('endTime')
+      const endTimeValue = endTimeInput.value;
+      const endTime1 = new Date(endTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
+      const startTimeInput = document.getElementById('startTime')
+      const startTimeValue = startTimeInput.value;
+      const startTime1 = new Date(startTimeValue);
+      // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
+
+      const detail = this.content;
+      const cid = this.cid
+      const status = 4;//111111111111111111111111111111111111111111111111111111定时
+      // 获取作业标题
+      const titleInput = document.getElementById('title');
+      const title = titleInput.value
+      const requestData = {
+        detail,
+        cid,
+        title,
+        endTime,
+        status,
+        startTime
+      }
+      deliverHomework(requestData)
+        .then(response => {
+          console.log(response.data.message);
+          // 根据 API 返回的响应，进行相应的处理
+          // 可以给用户显示作业提交成功的消息
+          this.$message.success('存入草稿成功');
+          // 其他操作
+        })
+      this.$message('save!')
+    },
+
+
   }
 }
 </script>
@@ -412,6 +485,29 @@ export default {
 }
 
 .button-container2 {
+  padding: 20px;
+  align-items: center;
+  display: flex;
+  /* 使用Flexbox布局 */
+  /* 水平居中 */
+  width: auto;
+  //max-height: 700px;
+  /* 设置最大高度 */
+  height: auto;
+  /* 自适应高度 */
+  /* 设置固定宽度 */
+  margin: 0px auto 0;
+  position: relative;
+  /* 居中显示 */
+  border-radius: 10px;
+}
+//上传作业按钮
+.button-container3 .inner-element {
+  margin: 10px;
+  /* 设置间距为10px，根据需要调整间距大小 */
+}
+
+.button-container3 {
   padding: 20px;
   align-items: center;
   display: flex;

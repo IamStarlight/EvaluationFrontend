@@ -30,13 +30,11 @@ export function deleteHomework(data) {
 //发布互评
 export function evaluate(data){
   return request({
-    url: '/homework/open',//deal
+    url: '/peer/open',//deal
     method: 'put',
     params: data
   })
 }
-
-
 
 //3.box界面
 //获取某个作业中所有学生的作业
@@ -47,8 +45,6 @@ export function getHomework (data) {
     params :data
   })
 }
-
-
 
 //4.grading界面
 //获取一个学生一次作业的具体内容
@@ -89,7 +85,7 @@ export function listDraftDetail (data) {
     params: data
   })
 }
-//草稿发布，存入草稿，可以直接用1中的
+//草稿发布，存入草稿
 export function deliverDraft(data) {
   return request({
     url: '/homework/edit',
@@ -102,7 +98,7 @@ export function deliverDraft(data) {
 //展示所有申诉
 export function listEmail (cid) {
   return request({
-    url: '/homework/check',//deal
+    url: '/appeal/all',//deal
     method: 'get',
     params: {cid}
   })
@@ -120,19 +116,19 @@ export function deleteEmail(data) {
 //一个申诉的具体内容
 export function listEmailDetail (data) {
   return request({
-    url: '/homework/checkone',//deal
+    url: '/appeal/one',//deal
     method: 'get',
     params: data
   })
 }
 //修改老师评分,用之前那个
-export function updateTeacherGrade(data) {
-  return request({
-    url: '/homework/evaluate',
-    method: 'put',
-    data
-  });
-}
+// export function updateTeacherGrade(data) {
+//   return request({
+//     url: '/homework/evaluate',
+//     method: 'put',
+//     data
+//   });
+// }
 //重发互评，再说吧
 export function reEvaluate(data){
   return request({
