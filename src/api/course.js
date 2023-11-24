@@ -80,7 +80,7 @@ export function getAllhomework (data) {
 
 export function getpdf (data) {
   return request({
-    url: 'file/upload',
+    url: 'file/upload/student',
     method: 'post',
     data
   })
@@ -144,7 +144,7 @@ export function getexhomework (data) {
 
 export function getexchomework (data) {
   return request({
-    url: 'peer/one',
+    url: 'peer/evaluating/one',
     method: 'get',
     params: data
   })

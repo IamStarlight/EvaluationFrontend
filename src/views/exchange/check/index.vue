@@ -125,6 +125,7 @@ export default {
           type: 'sucess'
         })
       })
+      this.fetchData()
     },
 
     search (b) {

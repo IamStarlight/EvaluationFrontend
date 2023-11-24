@@ -70,11 +70,13 @@
           <template slot-scope="scope">
             <span>
               <el-button
-                :type="(scope.row.eva == 'A') ? 'success' : (scope.row.eva === 'B' || scope.row.eva === 'D' ? 'warning' : 'info')"
-                plain @click="jump(scope.row.wid, scope.row.tname, scope.row.end_time, scope.row.eva, scope.row.status)">
+                :type="(scope.row.evaStatus == 'A') ? 'success' : (scope.row.evaStatus === 'B' || scope.row.evaStatus === 'D' ? 'warning' : 'info')"
+                plain
+                @click="jump(scope.row.wid, scope.row.title, scope.row.end_time, scope.row.evaStatus, scope.row.status)">
                 {{
-                  scope.row.eva === 'A' ? '互评' : (scope.row.eva === 'B' || scope.row.eva === 'D' ? '已完成' :
-                    (scope.row.eva == 'C' ? '未完成' : '未发布')) }}
+                  scope.row.evaStatus === 'A' ? '互评' : (scope.row.evaStatus === 'B' || scope.row.evaStatus === 'D' ?
+                    '已完成' :
+                    (scope.row.evaStatus == 'C' ? '未完成' : '未发布')) }}
               </el-button>
             </span>
           </template>
@@ -131,7 +133,8 @@ export default {
       'cname',
       'teacher',
       'cid',
-      'homeworkid'
+      'homeworkid',
+      'homeworkname'
     ])
   },
   filters: {
@@ -185,10 +188,9 @@ export default {
           if (this.list[i]["endTime"] == null) { this.list[i]["endTime"] = "\\" }
 
 
-          if (this.list[i]["eva"] == false && this.list[i]["overEvaDdl"] == true) { this.list[i]["eva"] = "C" }
-          else if (this.list[i]["eva"] == false && this.list[i]["overEvaDdl"] == false) { this.list[i]["eva"] = "A" }
-          else if (this.list[i]["eva"] == true && this.list[i]["overEvaDdl"] == false) { this.list[i]["eva"] = "B" }
-          else if (this.list[i]["eva"] == true && this.list[i]["overEvaDdl"] == true) { this.list[i]["eva"] = "D" }
+          if (this.list[i]["evaStatus"] == "已发布互评") { this.list[i]["evaStatus"] = "A" }
+          else if (this.list[i]["evaStatus"] == "未发布互评") { this.list[i]["evaStatus"] = "C" }
+          else if (this.list[i]["evaStatus"] == "互评已截止") { this.list[i]["evaStatus"] = "R" }
 
 
         }
@@ -270,11 +272,18 @@ export default {
       }
     },
     jump (hid, cname, tid, bool, states) {
+
       if (bool == "A")
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid
         );
+
+        this.$store.dispatch("course/setchangehomeworkname",
+          cname
+        );
+        console.log(cname)
+        console.log(this.homeworkname)
         this.$router.push({ path: '/evaluation/index' })
       } else
       {
