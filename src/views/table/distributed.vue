@@ -1,43 +1,49 @@
 <template>
   <div>
     <h2>已发布作业</h2>
-    <table>
-      <thead>
-      <tr>
-        <th>作业ID</th>
-        <th>作业名称</th>
-        <th>开始时间</th>
-        <th>截止时间</th>
-        <th>提交人数</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="assignment in assignments" :key="assignment.id">
-        <td>{{ assignment.wid }}</td>
-        <td>{{ assignment.title}}</td>
-        <td>{{ assignment.startTime}}</td>
-        <td>{{ assignment.endTime }}</td>
-        <td>{{ assignment.submitNumber}}</td>
-        <td>
-          <button class="btn1" @click="gotoGrading(assignment.wid)">
+    <el-table :data="assignments">
+      <!-- 表头 -->
+      <el-table-column label="作业ID" width="80px">
+        <template slot-scope="scope">
+          {{ scope.row.wid }}
+        </template>
+      </el-table-column>
+      <el-table-column label="作业名称">
+        <template slot-scope="scope">
+          {{ scope.row.title }}
+        </template>
+      </el-table-column>
+      <el-table-column label="开始时间">
+        <template slot-scope="scope">
+          {{ scope.row.startTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="截止时间">
+        <template slot-scope="scope">
+          {{ scope.row.endTime }}
+        </template>
+      </el-table-column>
+      <el-table-column label="提交人数" width="100px">
+        <template slot-scope="scope">
+          {{ scope.row.submitNumber }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="300px">
+        <template slot-scope="scope">
+          <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
             去批改
-          </button>
+          </el-button>
           <span style="margin: 10px;"></span>
-          <button class="btn2" @click="deleteHom(assignment.wid)">
+          <el-button class="btn2" @click="deleteHom(scope.row.wid)">
             删除作业
-          </button>
+          </el-button>
           <span style="margin: 10px;"></span>
-<!--          <button class="btn3" @click="evaluation(assignment.wid)">-->
-<!--            发布互评-->
-<!--          </button>-->
-          <button class="btn3" @click="showDia(assignment.wid)">
+          <el-button class="btn3" @click="showDia(scope.row.wid)">
             发布互评
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
 
     <el-dialog :visible.sync="showDialog" title="互评截止日期">
       <div class="date-time-container">
@@ -163,7 +169,7 @@ export default {
 
 
 <style scoped>
-table {
+el-table {
   margin-left: 20px;
   width: 95%;
   border-collapse: collapse;
@@ -174,11 +180,6 @@ thead {
   background-color: #f0f0f0;
 }
 
-th,
-td {
-  padding: 8px;
-  border: 1px solid #ccc;
-}
 
 .btn1 {
   padding: 6px 12px;
@@ -212,4 +213,5 @@ td {
 .btn3:hover {
   background-color:grey;
 }
+
 </style>

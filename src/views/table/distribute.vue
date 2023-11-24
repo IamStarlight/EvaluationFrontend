@@ -43,21 +43,21 @@
       <textarea v-model="content" style="width: 1200px; height: 300px;"></textarea>
     </div>
 
-    <div class="button-container">
-      <label for="plugin">选择附件:</label>
-<!--      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>-->
-<!--      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />-->
-      <el-form :model="upform" :rules="uprules" style="width:100%;" ref="upform" label-width="100px">
-        <el-form-item label="上传附件:">
-          <el-button type="primary"
-                     @click="upLoad()"
-                     size="mini"
-                     class="form-btn"
-          >点击上传</el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-
+<!--    <div class="button-container">-->
+<!--      <label for="plugin">选择附件:</label>-->
+<!--&lt;!&ndash;      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>&ndash;&gt;-->
+<!--&lt;!&ndash;      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />&ndash;&gt;-->
+<!--      -->
+<!--    </div>-->
+<!--    <el-form :model="upform" :rules="uprules" style="width:100%;" ref="upform" label-width="100px">-->
+<!--      <el-form-item label="上传附件:">-->
+<!--        <el-button type="primary"-->
+<!--                   @click="upLoad()"-->
+<!--                   size="mini"-->
+<!--                   class="form-btn"-->
+<!--        >点击上传</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
 
     <div v-if="!isScheduled"class="button-container2">

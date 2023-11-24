@@ -201,6 +201,7 @@ export default {
 .box-card {
   margin-top: 10px;
   width: 70%;
+  background-color: rgb(211, 240, 203);
 }
 //文本样式区
 .name-role {
@@ -230,5 +231,6 @@ export default {
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 
 </style>

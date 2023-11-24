@@ -1,28 +1,37 @@
 <template>
   <div class="appeal-list">
-    <table>
-      <thead>
-      <tr>
-        <th>学生姓名</th>
-        <th>作业名称</th>
-        <th>申诉理由</th>
-        <th>提交时间</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="email in appealList" :key="email.sid">
-        <td>{{ email.sname }}</td>
-        <td>{{ email.title}}</td>
-        <td>{{ email.appeal_reason }}</td>
-        <td>{{ email.appeal_time }}</td>
-        <td>
-          <button @click="viewDetail(email.wid,email.sid)">详情</button>
-          <button @click="ignore(email.sid,email.wid)">忽略</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <el-table :data="appealList">
+      <el-table-column label="学生姓名">
+        <template slot-scope="scope">
+          {{ scope.row.sname }}
+        </template>
+      </el-table-column>
+      <el-table-column label="作业名称">
+        <template slot-scope="scope">
+          {{ scope.row.title }}
+        </template>
+      </el-table-column>
+      <el-table-column label="申诉理由">
+        <template slot-scope="scope">
+          {{ scope.row.appeal_reason }}
+        </template>
+      </el-table-column>
+      <el-table-column label="提交时间">
+        <template slot-scope="scope">
+          {{ scope.row.appeal_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button @click="viewDetail(scope.row.wid, scope.row.sid)">
+            详情
+          </el-button>
+          <el-button @click="ignore(scope.row.sid, scope.row.wid)">
+            忽略
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
