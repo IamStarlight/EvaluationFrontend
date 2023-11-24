@@ -1,6 +1,7 @@
 const state = {
   cid: 1,
   cname: '',
+  teacher: '',
   tid: '',
   content: 'ssss',
   homeworkid: "",

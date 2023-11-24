@@ -35,9 +35,13 @@
         </div>
       </div>
     </div>
+
+    <div class="container1">
+    </div>
+
     <div class="hom-container2">
       <div class="hom-title">申诉原因</div>
-      <tinymce v-model="form.reason" style="width:1150px" />
+      <tinymce v-model="form.reason" />
     </div>
     <div class="hom-container3">
       <el-button type="primary" @click=onSubmit()>提交申诉</el-button>
@@ -144,6 +148,7 @@ export default {
 }
 
 .container {
+  //background-color: rgb(211, 240, 203);
   display: flex;
   // justify-content: center;
   flex-direction: column;
@@ -159,6 +164,7 @@ export default {
 
 
 .hom-container {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   background-color: rgb(220, 220, 220);
   width: 80%;
@@ -174,9 +180,7 @@ export default {
 }
 
 .hom-container1 {
-  display: flex;
-  /* 使用Flexbox布局 */
-  padding: 0px;
+  padding: 20px;
   background-color: rgb(255, 255, 255);
   width: 80%;
   //max-height: 700px;
@@ -197,14 +201,16 @@ export default {
 }
 
 .hom-container2 {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  background-color: rgb (255, 255, 255);
-  width: auto;
+  background-color: white;
+  width: 80%;
   //max-height: 700px;
   /* 设置最大高度 */
   height: auto;
   /* 自适应高度 */
   /* 设置固定宽度 */
+  margin-top: 20px;
   margin: 0px auto 0;
   position: relative;
   /* 居中显示 */
