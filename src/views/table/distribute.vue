@@ -45,9 +45,20 @@
 
     <div class="button-container">
       <label for="plugin">选择附件:</label>
-      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+<!--      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>-->
+<!--      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />-->
+      <el-form :model="upform" :rules="uprules" style="width:100%;" ref="upform" label-width="100px">
+        <el-form-item label="上传附件:">
+          <el-button type="primary"
+                     @click="upLoad()"
+                     size="mini"
+                     class="form-btn"
+          >点击上传</el-button>
+        </el-form-item>
+      </el-form>
     </div>
+
+
 
     <div v-if="!isScheduled"class="button-container2">
       <el-button type="primary" @click="onSubmit">发布作业</el-button>
@@ -60,31 +71,29 @@
     </div>
 
 
-    <el-dialog title="导入信息" :visible.sync="dialogVisible">
-      <el-form ref="importFormRef" :model="importForm" label-width="130px">
-        <el-form-item label="上传文件:">
-          <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"
-            :on-exceed="handleExceed" :limit="1">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>
-          </el-upload>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitImportForm">开始导入</el-button>
-          <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+<!--    <el-dialog title="导入信息" :visible.sync="dialogVisible">-->
+<!--      <el-form ref="importFormRef" :model="importForm" label-width="130px">-->
+<!--        <el-form-item label="上传文件:">-->
+<!--          <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"-->
+<!--            :on-exceed="handleExceed" :limit="1">-->
+<!--            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>-->
+<!--            <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>-->
+<!--          </el-upload>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button type="primary" @click="submitImportForm">开始导入</el-button>-->
+<!--          <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 
 <script>
 import VueMarkdown from 'vue-markdown'
 import editorImage from '@/components/Tinymce/components/EditorImage'
-import MarkdownEditor from '@/components/MarkdownEditor'
 import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
-//import 'vue-datetime/dist/vue-datetime.css';
 import { deliverHomework } from "@/api/homework";
 
 export default {

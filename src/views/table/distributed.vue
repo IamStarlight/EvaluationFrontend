@@ -31,7 +31,7 @@
 <!--          <button class="btn3" @click="evaluation(assignment.wid)">-->
 <!--            发布互评-->
 <!--          </button>-->
-          <button class="btn3" @click="showDia">
+          <button class="btn3" @click="showDia(assignment.wid)">
             发布互评
           </button>
         </td>
@@ -44,7 +44,7 @@
         <label for="endTime">截止日期:</label>
         <input id="endTime" class="hom-info-input" type="datetime-local">
       </div>
-      <el-button type="primary" @click="evaluation(assignments.wid)">确定</el-button>
+      <el-button type="primary" @click="evaluation()">确定</el-button>
       <el-button @click="cancel">取消</el-button>
     </el-dialog>
 
@@ -67,12 +67,14 @@ export default {
       // ],
       assignments:[],
       listLoading: true,
-      showDialog:false
+      showDialog:false,
+      wwid:1,
     }
   },
   computed: {
     ...mapGetters([
-      'cid'
+      'cid',
+      'homeworkid'
     ])
   },
   created() {
@@ -114,23 +116,31 @@ export default {
           console.log(error);
         });
     },
-    showDia() {
+    showDia(wid) {
       this.showDialog = true;
+      //this.wwid = wid;
+      console.log(wid);
+      //console.log(this.wwid);
+      this.$store.dispatch("course/setchangehomeworkid",
+        wid
+      );
+      console.log(this.homeworkid)
     },
     cancel() {
       this.showDialog = false;
     },
-    evaluation(id){
+    evaluation(){
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
       const endTime1 = new Date(endTimeValue);
       // 格式化为 "yyyy-MM-dd hh:mm" 格式
       const ddl= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
 
-      const wid = id;
+      //const wid = this.homeworkid;
+      const wid = this.wwid;
       console.log(wid);
       const cid = this.cid;
-      const status = 1;
+      const status = 2;
       const data = {
         wid,
         cid,

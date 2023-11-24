@@ -32,7 +32,7 @@ export function evaluate(data){
   return request({
     url: '/peer/open',//deal
     method: 'put',
-    params: data
+    data
   })
 }
 

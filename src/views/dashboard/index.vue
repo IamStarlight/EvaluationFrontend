@@ -37,6 +37,7 @@
         </div>
       </el-card>
     </div>
+<!--    <p>{{this.}}</p>-->
     <el-dialog :visible.sync="showModal" title="修改密码" width="30%" center>
       <el-form :model="passwordForm" ref="passwordForm" label-width="80px" size="small">
         <el-form-item label="旧密码" prop="oldPassword">
@@ -72,7 +73,7 @@ export default {
       email:'',
       showModal: false,
       newpwd: '',
-      oldpwd: ''
+      oldpwd: '',
     };
   },
   mounted() {
@@ -83,7 +84,8 @@ export default {
      ...mapGetters([
        'name',
        'roles',
-       'sid'
+       'sid',
+       'teacher'
      ]),
     // 根据当前时间返回不同的问候语
     greeting() {
@@ -228,4 +230,5 @@ export default {
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 </style>
