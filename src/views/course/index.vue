@@ -9,6 +9,19 @@
     </div> -->
     <div class='ada'>
       <div class="left-content1">
+        <!-- <el-card class="box-card-component" style="margin-left:8px;">
+          <div slot="header" class="box-card-header">
+            <img src="../../assets/background/aa.jpg">
+          </div>
+          <div style="position:relative;">
+            <pan-thumb :image="avatar" class="panThumb" />
+            <mallki class-name="mallki-text" text="" />
+            <div style="padding-top:35px;" class="progress-item">
+              <span>学习进度</span>
+              <el-progress :percentage="70" />
+            </div>
+          </div>
+        </el-card> -->
         <h1>l 互动提醒</h1>
         <p class="box-author">您有{{ number1 }}个作业未完成</p>
         <p class="box-author">您有{{ number2 }}个互评任务未完成</p>
@@ -56,13 +69,17 @@ import { getList, getAll } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
+import PanThumb from '@/components/PanThumb'
+import Mallki from '@/components/TextHoverEffect/Mallki'
 
 export default {
+  components: { PanThumb, Mallki },
   computed: {
     ...mapGetters([
       'name',
       'roles',
-      'sid'
+      'sid',
+      'teacher'
     ])
   },
   filters: {
@@ -83,9 +100,10 @@ export default {
       current_page: 1,
       filter_price: false,
       searchKeyword: '', // 添加searchKeyword属性
-      number1: "",
-      number2: "",
-      number3: ""
+      number1: "1",
+      number2: "1",
+      number3: "1",
+      avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
     }
   },
   created () {
@@ -124,6 +142,7 @@ export default {
         );
 
       }
+      console.log(tid)
       this.$store.dispatch("course/setchangeid",
         cid
       );
@@ -133,6 +152,7 @@ export default {
       this.$store.dispatch("course/setchangeteacher",
         tid
       );
+      console.log(this.teacher)
       this.$store.dispatch("course/setchangeintro",
         content
       );
@@ -480,5 +500,70 @@ h1 {
   /* 居中显示 */
   border-radius: 10px;
   margin-bottom: 20px;
+}
+
+.box-card-component {
+  .box-card-header {
+    position: relative;
+    height: 220px;
+
+    img {
+      width: 200px;
+      height: 200px;
+      transition: all 0.2s linear;
+
+      &:hover {
+        transform: scale(1.1, 1.1);
+        filter: contrast(130%);
+      }
+    }
+  }
+
+  .mallki-text {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .panThumb {
+    z-index: 100;
+    height: 70px !important;
+    width: 70px !important;
+    position: absolute !important;
+    top: -45px;
+    left: 0px;
+    border: 5px solid #ffffff;
+    background-color: #fff;
+    margin: auto;
+    box-shadow: none !important;
+
+    ::v-deep .pan-info {
+      box-shadow: none !important;
+    }
+  }
+
+  .progress-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  @media only screen and (max-width: 1510px) {
+    .mallki-text {
+      display: none;
+    }
+  }
+}
+
+.dashboard {
+  &-container {
+    margin: 30px;
+  }
+
+  &-text {
+    font-size: 30px;
+    line-height: 46px;
+  }
 }
 </style>

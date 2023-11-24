@@ -14,7 +14,7 @@
           </div>
           <div style="position:relative;">
             <pan-thumb :image="avatar" class="panThumb" />
-            <mallki class-name="mallki-text" text="vue-element-admin" />
+            <mallki class-name="mallki-text" text=""/>
             <div style="padding-top:35px;" class="progress-item">
               <span>学习进度</span>
               <el-progress :percentage="70" />
