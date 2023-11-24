@@ -36,7 +36,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import {reEvaluate, listEmailDetail, updateTeacherGrade} from "@/api/homework";
+import {reEvaluate, listEmailDetail, updateScore} from "@/api/homework";
 
 export default {
   data() {
@@ -102,9 +102,9 @@ export default {
         comments
       };
       // 在这里处理修改成绩的逻辑
-      updateTeacherGrade(data)
+      updateScore(data)
         .then(response => {
-          this.$alert('发布互评成功', '提示', {
+          this.$alert('修改成绩成功', '提示', {
             confirmButtonText: '确定',
           });
         })

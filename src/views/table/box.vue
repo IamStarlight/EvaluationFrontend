@@ -3,40 +3,49 @@
     <h2>批改作业</h2>
     <p>正在批改作业id为：{{ this.$route.query.wid }}</p>
     <!--    <p>正在批改作业id为：{{studentHomework.wid}}</p>-->
-    <table>
-      <thead>
-        <tr>
-          <th>学生ID</th>
-          <th>学生姓名</th>
-          <th>提交时间</th>
-          <th>老师评分</th>
-          <th>总分</th>
-          <!--        <th>状态</th>-->
-          <th>是否迟交</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="studentHomework in studentHomework" :key="studentHomework.id">
-          <td>{{ studentHomework.id }}</td>
-          <td>{{ studentHomework.name }}</td>
-          <td>{{ studentHomework.submit_time }}</td>
-          <td>{{ studentHomework.teacher_grade }}</td>
-          <td>{{ studentHomework.total_grade }}</td>
-          <!--        <td>{{ studentHomework.status}}</td>-->
-          <td>{{ studentHomework.is_late }}</td>
-          <td>
-            <button class="btn1" @click="handleClick(studentHomework.id)">
-              详情
-            </button>
-            <span style="margin: 10px;"></span>
-            <!--           <button class="btn2" @click="handleSave(studentHomework.id)">-->
-            <!--             评论-->
-            <!--           </button>-->
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <el-table :data="studentHomework">
+      <!-- 表头 -->
+      <el-table-column label="学生ID">
+        <template slot-scope="scope">
+          {{ scope.row.id }}
+        </template>
+      </el-table-column>
+      <el-table-column label="学生姓名">
+        <template slot-scope="scope">
+          {{ scope.row.name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="提交时间">
+        <template slot-scope="scope">
+          {{ scope.row.submit_time }}
+        </template>
+      </el-table-column>
+      <el-table-column label="老师评分">
+        <template slot-scope="scope">
+          {{ scope.row.teacher_grade }}
+        </template>
+      </el-table-column>
+      <el-table-column label="总分">
+        <template slot-scope="scope">
+          {{ scope.row.total_grade }}
+        </template>
+      </el-table-column>
+      <el-table-column label="是否迟交">
+        <template slot-scope="scope">
+          {{ scope.row.is_late }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button class="btn1" @click="handleClick(scope.row.id)">
+            详情
+          </el-button>
+<!--          <el-button class="btn2" @click="handleSave(scope.row.id)">-->
+<!--            评论-->
+<!--          </el-button>-->
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
