@@ -23,9 +23,22 @@
           </div>
         </el-card> -->
         <h1>l 互动提醒</h1>
-        <p class="box-author">您有{{ number1 }}个作业未完成</p>
-        <p class="box-author">您有{{ number2 }}个互评任务未完成</p>
-        <p class="box-author">您有{{ number3 }}个互评任务未完成</p>
+        <div class="list-item" v-for="(item, index) in list" :key="index" @click="toggleChildren(index)">
+          <div class="item-name">
+            <span>{{ item.name }}</span>
+          </div>
+          <div v-if="item.showChildren" class="children-item">
+            <list :list="item.children"></list>
+          </div>
+        </div>
+        <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
+          <div class="item-name">
+            <span>{{ item.name }}</span>
+          </div>
+          <div v-if="item.showChildren" class="children-item">
+            <list :list="item.children"></list>
+          </div>
+        </div>
       </div>
       <div class='left-content2'>
         <h1>l 课程列表</h1>
@@ -71,9 +84,10 @@ import vue from 'vue'
 import { mapGetters } from 'vuex'
 import PanThumb from '@/components/PanThumb'
 import Mallki from '@/components/TextHoverEffect/Mallki'
+import List from "@/components/List";
 
 export default {
-  components: { PanThumb, Mallki },
+  components: { PanThumb, Mallki, List },
   computed: {
     ...mapGetters([
       'name',
@@ -94,6 +108,28 @@ export default {
   },
   data () {
     return {
+      list: [{
+        name: "您有两个未交作业",
+        showChildren: false,
+        children: [{
+          name: "UI设计",
+          showChildren: false,
+        }, {
+          name: "java程序设计",
+          showChildren: false,
+        }]
+      }],
+      list1: [{
+        name: "您有两个课程通知",
+        showChildren: false,
+        children: [{
+          name: "UI设计",
+          showChildren: false,
+        }, {
+          name: "java程序设计",
+          showChildren: false,
+        }]
+      }],
       courses: [],
       beg: true,
       listLoading: false,
@@ -112,6 +148,24 @@ export default {
 
   methods: {
     fetchData () {
+      this.listLoading = true
+      getAll().then(response => {
+        this.courses = response.data
+        console.log("Data" + this.list)
+        this.listLoading = false
+      })
+    },
+    //获取未交作业的信息
+    fetchhomenotice () {
+      this.listLoading = true
+      getAll().then(response => {
+        this.courses = response.data
+        console.log("Data" + this.list)
+        this.listLoading = false
+      })
+    },
+    //获取课程通知的的信息
+    fetchclassnotice () {
       this.listLoading = true
       getAll().then(response => {
         this.courses = response.data
@@ -157,6 +211,23 @@ export default {
         content
       );
       this.$router.push({ path: '/cdash/show' })
+    },
+
+    toggleChildren (index) {
+      // 切换子项的显示状态
+      this.$set(this.list, index, {
+        ...this.list[index],
+        showChildren: !this.list[index].showChildren,
+      });
+      console.log(this.list[index].showChildren)
+    },
+    toggleChildren1 (index) {
+      // 切换子项的显示状态
+      this.$set(this.list1, index, {
+        ...this.list1[index],
+        showChildren: !this.list1[index].showChildren,
+      });
+      console.log(this.list1[index].showChildren)
     },
 
     search () {
@@ -565,5 +636,33 @@ h1 {
     font-size: 30px;
     line-height: 46px;
   }
+}
+
+.div {
+  padding: 10px;
+}
+
+/* 列表项样式 */
+.list-item {
+  margin-bottom: 7px;
+  cursor: pointer;
+  margin-left: 10px;
+  /* 添加手型光标，表示可点击 */
+}
+
+/* 项名称样式 */
+.item-name {
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 7px;
+  font-size: 16px;
+
+}
+
+/* 子项样式 */
+.children-item {
+  font-family: 'Arial', sans-serif;
+  margin-bottom: 7px;
+  font-size: 10px;
+  margin-left: 20px;
 }
 </style>
