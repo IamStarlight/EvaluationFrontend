@@ -6,8 +6,8 @@
     <div class="dashboard-text">任课老师是 : {{ teacher }}</div>
     <div class="dashboard-text">课程简介是 : {{ cintroduction }}</div>
     <div class="filter-container">
-      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"
-        @keyup.enter.native="handleFilter" />
+<!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
+<!--        @keyup.enter.native="handleFilter" />-->
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button> -->

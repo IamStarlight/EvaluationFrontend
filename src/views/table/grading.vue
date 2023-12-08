@@ -75,13 +75,13 @@ export default {
       const sid = this.$route.query.sid;//学生id
       const cid =this.cid;
       const grade = parseInt(Grade);
-      const teacher_comments =comment;
+      const comments =comment;
       const data={
         sid,
         wid,
         cid,
         grade,
-        teacher_comments
+        comments
       };
       // console.log(data.sid)
       // console.log(data.teacherGrade)

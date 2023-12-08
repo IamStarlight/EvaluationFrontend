@@ -89,7 +89,7 @@ export function listDraftDetail (data) {
 export function deliverDraft(data) {
   return request({
     url: '/homework/edit',
-    method: 'post',
+    method: 'put',
     data
   });
 }
@@ -137,4 +137,10 @@ export function reEvaluate(data){
     params: data
   })
 }
+
+//9.统计图相关
+//TODO:各个作业平均分柱状图，需要获取所有wid,每一个wid下的总分平均分，互评平均分，老师平均分，发送cid
+
+//TODO:一门课的具体情况，返回sid对应的成绩分布，0-10，11-20，21-30这种，发送wid,cid，
+
 

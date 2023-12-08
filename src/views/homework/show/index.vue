@@ -76,7 +76,7 @@
                 {{
                   scope.row.evaStatus === 'A' ? '互评' : (scope.row.evaStatus === 'B' || scope.row.evaStatus === 'D' ?
                     '已完成' :
-                    (scope.row.evaStatus == 'C' ? '未完成' : '未发布')) }}
+                    (scope.row.evaStatus == 'C' ? '未发布' : '已截止')) }}
               </el-button>
             </span>
           </template>

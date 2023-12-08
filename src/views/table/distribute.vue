@@ -43,21 +43,6 @@
       <textarea v-model="content" style="width: 1200px; height: 300px;"></textarea>
     </div>
 
-<!--    <div class="button-container">-->
-<!--      <label for="plugin">选择附件:</label>-->
-<!--&lt;!&ndash;      <el-button type="info" @click="dialogVisible = true">选择pdf</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />&ndash;&gt;-->
-<!--      -->
-<!--    </div>-->
-<!--    <el-form :model="upform" :rules="uprules" style="width:100%;" ref="upform" label-width="100px">-->
-<!--      <el-form-item label="上传附件:">-->
-<!--        <el-button type="primary"-->
-<!--                   @click="upLoad()"-->
-<!--                   size="mini"-->
-<!--                   class="form-btn"-->
-<!--        >点击上传</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
 
 
     <div v-if="!isScheduled"class="button-container2">
@@ -67,27 +52,12 @@
 
     <div v-if="isScheduled" class="button-container3">
       <el-button type="primary" @click="onTime">定时发布</el-button>
-      <el-button type="info" @click=toDraft()>存入草稿</el-button>
+<!--      <el-button type="info" @click=toDraft()>存入草稿</el-button>-->
     </div>
 
-
-<!--    <el-dialog title="导入信息" :visible.sync="dialogVisible">-->
-<!--      <el-form ref="importFormRef" :model="importForm" label-width="130px">-->
-<!--        <el-form-item label="上传文件:">-->
-<!--          <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"-->
-<!--            :on-exceed="handleExceed" :limit="1">-->
-<!--            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>-->
-<!--            <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>-->
-<!--          </el-upload>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item>-->
-<!--          <el-button type="primary" @click="submitImportForm">开始导入</el-button>-->
-<!--          <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--    </el-dialog>-->
   </div>
 </template>
+
 
 <script>
 import VueMarkdown from 'vue-markdown'
@@ -263,11 +233,11 @@ export default {
       const endTime1 = new Date(endTimeValue);
       // 格式化为 "yyyy-MM-dd hh:mm" 格式
       const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
-      const startTimeInput = document.getElementById('startTime')
-      const startTimeValue = startTimeInput.value;
-      const startTime1 = new Date(startTimeValue);
-      // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
+      // const startTimeInput = document.getElementById('startTime')
+      // const startTimeValue = startTimeInput.value;
+      // const startTime1 = new Date(startTimeValue);
+      // // 格式化为 "yyyy-MM-dd hh:mm" 格式
+      // const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
 
       const detail = this.content;
       const cid = this.cid
@@ -281,7 +251,7 @@ export default {
         title,
         endTime,
         status,
-        startTime
+        //startTime
       }
       deliverHomework(requestData)
         .then(response => {

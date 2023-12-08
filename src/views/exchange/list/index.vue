@@ -31,8 +31,8 @@
           <template slot-scope="scope">
             <span>
               <el-button :type="(scope.row.is_eva == true) ? 'success' : 'info'" plain
-                @click="change(scope.row.be_eva_sid, scope.row.status)">
-                {{ scope.row.status === true ? '已批改' : '未批改' }}
+                @click="change(scope.row.be_eva_sid, scope.row.is_eva)">
+                {{ scope.row.is_eva  == true ? '已批改' : '未批改' }}
               </el-button>
             </span>
           </template>

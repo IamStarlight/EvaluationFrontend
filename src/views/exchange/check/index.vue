@@ -124,8 +124,12 @@ export default {
           message: '删除成功',
           type: 'sucess'
         })
+        // setTimeout(() => {
+        //   this.listLoading = false
+        // }, 1.5 * 1000)
+        this.fetchData()
       })
-      this.fetchData()
+
     },
 
     search (b) {

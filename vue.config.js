@@ -17,6 +17,7 @@ const port = process.env.port || process.env.npm_config_port || 8080 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
+
   /**
    * You will need to set publicPath if you plan to deploy your site under a sub path,
    * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
@@ -79,7 +80,14 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    config.module
+      .rule('vue-chartjs')
+      .test(/\.js$/)
+      .include.add(/vue-chartjs/)
+      .end()
+      .use('babel')
+      .loader('babel-loader')
+      .end();
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
@@ -120,6 +128,7 @@ module.exports = {
         }
       )
   }
+
 }
 // module.exports = {
 //   devServer: {

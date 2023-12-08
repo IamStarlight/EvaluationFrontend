@@ -60,7 +60,7 @@ export default {
   },
   data () {
     const validateInput = (rule, value, callback) => {
-      if (value > 100 || value < 0)
+      if (value > 100 || value < 0 )
       {
         callback(new Error('请输入正确的分数'))
       } else
@@ -117,6 +117,7 @@ export default {
               message: '提交成功',
               type: 'sucess'
             })
+            this.$router.push({ path: '/evaluation/index' })
           })
 
         }

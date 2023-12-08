@@ -231,12 +231,12 @@ export default {
           this.$message.success('作业发布成功');
           // 其他操作
         })
-        .catch(error => {
-          console.log(error);
-          // 错误处理
-          // 可以将错误信息提示给用户
-          this.$message.error('作业发布失败');
-        });
+        // .catch(error => {
+        //   console.log(error);
+        //   // 错误处理
+        //   // 可以将错误信息提示给用户
+        //   this.$message.error('作业发布失败');
+        // });
 
       this.$message('submit!')
     },
