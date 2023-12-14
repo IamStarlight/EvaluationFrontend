@@ -84,7 +84,7 @@
       </el-table>
     </div>
 
-    <el-dialog title="提交作业信息" :visible.sync="dialogVisible" :width="3000">
+    <el-dialog title="提交作业信息" :visible.sync="dialogVisible">
       <div class="split-container">
         <div class="split-line"></div>
         <div class="content left-content">

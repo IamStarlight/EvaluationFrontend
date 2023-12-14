@@ -31,14 +31,14 @@
             <list :list="item.children"></list>
           </div>
         </div>
-        <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
+        <!-- <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
           <div class="item-name">
             <span>{{ item.name }}</span>
           </div>
           <div v-if="item.showChildren" class="children-item">
             <list :list="item.children"></list>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class='left-content2'>
         <h1>l 课程列表</h1>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { getList, getAll } from '@/api/course'
+import { getList, getAll, gethomenotice } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
@@ -109,27 +109,23 @@ export default {
   data () {
     return {
       list: [{
-        name: "您有两个未交作业",
+        name: "",
         showChildren: false,
-        children: [{
-          name: "UI设计",
-          showChildren: false,
-        }, {
-          name: "java程序设计",
-          showChildren: false,
-        }]
+        children: []
       }],
-      list1: [{
-        name: "您有两个课程通知",
-        showChildren: false,
-        children: [{
-          name: "UI设计",
-          showChildren: false,
-        }, {
-          name: "java程序设计",
-          showChildren: false,
-        }]
-      }],
+      // list1: [{
+      //   name: "您有两个课程通知",
+      //   showChildren: false,
+      //   children: [{
+      //     name: "UI设计",
+      //     showChildren: false,
+      //   }, {
+      //     name: "java程序设计",
+      //     showChildren: false,
+      //   }]
+      // }],
+      momo: [],
+      momo1: [],
       courses: [],
       beg: true,
       listLoading: false,
@@ -144,6 +140,7 @@ export default {
   },
   created () {
     this.fetchData()
+    this.fetchhomenotice()
   },
 
   methods: {
@@ -157,22 +154,31 @@ export default {
     },
     //获取未交作业的信息
     fetchhomenotice () {
-      this.listLoading = true
-      getAll().then(response => {
-        this.courses = response.data
-        console.log("Data" + this.list)
-        this.listLoading = false
+      gethomenotice().then(response => {
+        this.momo = response.data
+        console.log(new Set(this.momo).size)
+        let number = 0
+        for (let i = 0; i < new Set(this.momo).size; i++)
+        {
+          number = this.momo[i].cnt + number
+          this.list[0].children.push({ name: this.momo[i].cname + "---" + "有" + number + "个未交作业", showChildren: false });
+        }
+        this.list[0].name = "您有" + new Set(this.momo).size + "个未交作业"//获取有未交作业的课程的数量
       })
     },
-    //获取课程通知的的信息
-    fetchclassnotice () {
-      this.listLoading = true
-      getAll().then(response => {
-        this.courses = response.data
-        console.log("Data" + this.list)
-        this.listLoading = false
-      })
-    },
+    // //获取课程通知的的信息
+    // fetchclassnotice () {
+    //   this.listLoading = true
+    //   getclassnotice().then(response => {
+    //     this.momo1 = Array.from(response.data)
+    //     this.list.name = "您有" + this.momo1.number + "个未交作业"//获取有通知的课程的数量
+    //     this.list.children = this.momo1.class//获取有通知的课程名
+    //     for (let i = 0; i < this.list.children.length; i++)
+    //     {
+
+    //     }
+    //   })
+    // },
 
     fetchData1 () {
       this.listLoading = true
@@ -214,21 +220,32 @@ export default {
     },
 
     toggleChildren (index) {
-      // 切换子项的显示状态
-      this.$set(this.list, index, {
-        ...this.list[index],
-        showChildren: !this.list[index].showChildren,
-      });
-      console.log(this.list[index].showChildren)
+      if (index === 0)
+      {
+        this.$set(this.list, index, {
+          ...this.list[index],
+          showChildren: !this.list[index].showChildren,
+        });
+      } else if (index > 0 && index - 1 < this.momo.length)
+      {
+        const cid = this.momo[index - 1].cid;
+        const resultArray = this.courses.filter(item => item.cid === cid);
+        console.log("在");
+        console.log(resultArray);
+      } else
+      {
+        console.warn("Invalid index:", index);
+      }
+
     },
-    toggleChildren1 (index) {
-      // 切换子项的显示状态
-      this.$set(this.list1, index, {
-        ...this.list1[index],
-        showChildren: !this.list1[index].showChildren,
-      });
-      console.log(this.list1[index].showChildren)
-    },
+    // toggleChildren1 (index) {
+    //   // 切换子项的显示状态
+    //   this.$set(this.list1, index, {
+    //     ...this.list1[index],
+    //     showChildren: !this.list1[index].showChildren,
+    //   });
+    //   console.log(this.list1[index].showChildren)
+    // },
 
     search () {
       this.listLoading = true
@@ -664,5 +681,4 @@ h1 {
   margin-bottom: 7px;
   font-size: 10px;
   margin-left: 20px;
-}
-</style>
+}</style>

@@ -19,10 +19,11 @@ export default {
   methods: {
     toggleChildren (index) {
       // 切换子项的显示状态
-      this.$set(this.list, index, {
-        ...this.list[index],
-        showChildren: !this.list[index].showChildren,
-      });
+      // this.$set(this.list, index, {
+      //   ...this.list[index],
+      //   showChildren: !this.list[index].showChildren,
+      // });
+      // console.log('哈哈哈哈');
     },
   },
 };
