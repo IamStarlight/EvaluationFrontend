@@ -104,9 +104,35 @@
           <div class="left-body">
             <VueMarkdown :source="comment" v-highlight></VueMarkdown>
           </div>
+          <el-button @click="dialogVisible = false, dialogVisible1 = true">查看评分详情</el-button>
         </div>
       </div>
       <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>
+    </el-dialog>
+
+
+    <el-dialog title="评分详情" :visible.sync="dialogVisible1">
+      <div class="split-container">
+        <div class="split-line"></div>
+        <div class="content left-content">
+          <div class="left-header">
+            <h2>同学评分</h2>
+          </div>
+          <div class="left-body">
+            <VueMarkdown :source="this.now" v-highlight></VueMarkdown>
+            <a :href="this.now1">{{ this.now1 }}</a>
+          </div>
+        </div>
+        <div class="content right-content">
+          <div class="left-header">
+            <h2>同学评语</h2>
+          </div>
+          <div class="left-body">
+            <VueMarkdown :source="comment" v-highlight></VueMarkdown>
+          </div>
+        </div>
+      </div>
+      <el-button type="info" @click="dialogVisible1 = false">关闭窗口</el-button>
     </el-dialog>
   </div>
 </template>
@@ -160,6 +186,7 @@ export default {
         eva: "A",
       }],
       dialogVisible: false,
+      dialogVisible1: false,
       beg: true,
       listLoading: false,
       i: 0,

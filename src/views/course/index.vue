@@ -220,8 +220,10 @@ export default {
     },
 
     toggleChildren (index) {
+
       if (index === 0)
       {
+        console.log(this.list)
         this.$set(this.list, index, {
           ...this.list[index],
           showChildren: !this.list[index].showChildren,
@@ -681,4 +683,5 @@ h1 {
   margin-bottom: 7px;
   font-size: 10px;
   margin-left: 20px;
-}</style>
+}
+</style>
