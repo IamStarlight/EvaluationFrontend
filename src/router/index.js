@@ -233,6 +233,19 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/stuInfo',
+    component: Layout,
+    meta: { roles: ['5'], title: '学生信息', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'stuInfo',
+        name: 'stuInfo',
+        component: () => import('@/views/stuInfo/index'),
+        meta: { roles: ['5'], title: '学生信息', icon: 'table' }
+      },
+    ]
+  },
+  {
     path: '/semail',
     component: Layout,
     children: [
