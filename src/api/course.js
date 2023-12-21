@@ -157,10 +157,41 @@ export function getdelete (data) {
     params: data
   })
 }
-
-export function getdata (data) {
+//统计图
+export function getdata90 (data) {
   return request({
-    url: 'homework/one',
+    url: 'statistics/nighties',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getdata80 (data) {
+  return request({
+    url: 'statistics/eighties',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getdata70 (data) {
+  return request({
+    url: 'statistics/seventies',
+    method: 'get',
+    params: data
+  })
+}
+export function getdata60 (data) {
+  return request({
+    url: 'statistics/sixties',
+    method: 'get',
+    params: data
+  })
+}
+
+export function getdatadown (data) {
+  return request({
+    url: 'statistics/failed',
     method: 'get',
     params: data
   })
@@ -198,3 +229,9 @@ export function getcancle (data) {
   })
 }
 
+export function gethomenotice (data) {
+  return request({
+    url: 'statistics/all/missed',
+    method: 'get',
+  })
+}

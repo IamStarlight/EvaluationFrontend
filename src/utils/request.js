@@ -27,6 +27,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
+    console.log("在这里哦4")
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -35,28 +36,19 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-   */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
   response => {
+    console.log("在这里哦0")
     const res = response.data
-    // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 200)
     {
+      console.log("在这里哦1")
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 4000)
+      if (res.code === 400)
       {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
@@ -72,16 +64,29 @@ service.interceptors.response.use(
       return Promise.reject(new Error(res.message || 'Error'))
     } else
     {
+      console.log("在这里哦2")
+      // Message({
+      //   message: res.message,
+      //   type: 'success',
+      //   duration: 5 * 1000
+      // })
       return res
     }
   },
   error => {
+    console.log("在这里哦5")
     console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    if (error.response && error.response.status === 403)
+    {
+      console.log(error.response)
+      Message({
+        message: error.response.data.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(error.response);
+    }
+
     return Promise.reject(error)
   }
 )
