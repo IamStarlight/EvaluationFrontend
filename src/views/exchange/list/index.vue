@@ -136,7 +136,14 @@ export default {
 
 
         }
-        this.percentage = count / all1 * 100
+        if (all1 == 0)
+        {
+          this.percentage = 0
+        } else
+        {
+          this.percentage = count / all1 * 100
+        }
+
 
         getmhomework1(a).then(response => {
           ada = response.data

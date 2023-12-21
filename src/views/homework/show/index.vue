@@ -108,7 +108,7 @@
           </div>
           <div class="left-body">
             <VueMarkdown :source="this.now" v-highlight></VueMarkdown>
-            <a :href="this.now1">{{ this.now1 }}</a>
+            <a :href="this.now1" class="hom-user1">{{ this.now1 }}</a>
           </div>
         </div>
         <div class="content right-content">
