@@ -124,7 +124,27 @@ export default {
         this.list[0].name = "您有" + new Set(this.momo).size + "个未交作业"//获取有未交作业的课程的数量
       })
     },
+    toggleChildren (index) {
 
+      if (index === 0)
+      {
+        console.log(this.list)
+        this.$set(this.list, index, {
+          ...this.list[index],
+          showChildren: !this.list[index].showChildren,
+        });
+      } else if (index > 0 && index - 1 < this.momo.length)
+      {
+        const cid = this.momo[index - 1].cid;
+        const resultArray = this.courses.filter(item => item.cid === cid);
+        console.log("在");
+        console.log(resultArray);
+      } else
+      {
+        console.warn("Invalid index:", index);
+      }
+
+    },
     fetchData () {
       this.listLoading = true
       getTList().then(response => {
