@@ -2,6 +2,9 @@
   <div>
     <h2>批改作业</h2>
     <p>正在批改作业id为：{{ this.$route.query.wid }}</p>
+    <el-button  @click="back()">
+      返回
+    </el-button>
     <!--    <p>正在批改作业id为：{{studentHomework.wid}}</p>-->
     <el-table :data="studentHomework">
       <!-- 表头 -->
@@ -112,6 +115,11 @@ export default {
     handleSave (studentId) {
       // 假设这里有一个网络请求删除该学生的评语
       console.log(studentId);
+    },
+    back() {
+      this.$router.push({
+        name: 'Distributed',
+      });
     }
   }
 };
