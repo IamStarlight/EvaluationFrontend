@@ -12,15 +12,15 @@
 <!--          </el-form-item>-->
 <!--        </el-form>-->
 <!--      </div>-->
-      <div class="info_list">
-        <h1>TODO</h1>
-        <el-card class="box-card" style="height: 100%">
-          <p class="box-author">您有{{1}}个作业待发布</p>
-          <p class="box-author">您有{{ 2 }}份作业待批改</p>
-          <p class="box-author">您有{{3 }}个申诉待处理</p>
-        </el-card>
+<!--      <div class="info_list">-->
+<!--        <h1>TODO</h1>-->
+<!--        <el-card class="box-card" style="height: 100%">-->
+<!--          <p class="box-author">您有{{1}}个作业待发布</p>-->
+<!--          <p class="box-author">您有{{ 2 }}份作业待批改</p>-->
+<!--          <p class="box-author">您有{{3 }}个申诉待处理</p>-->
+<!--        </el-card>-->
 
-      </div>
+<!--      </div>-->
 <!--      以下是课程列表-->
       <div class="courses_list">
         <h1>课程列表</h1>

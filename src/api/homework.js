@@ -9,6 +9,13 @@ export function deliverHomework(data) {
     data
   });
 }
+export function deliverpdf(data) {
+  return request({
+    url: '/file/upload/teacher',//deal
+    method: 'post',
+    data
+  });
+}
 
 //2.distributed界面
 export function listHomework(cid) {
@@ -63,7 +70,14 @@ export function updateScore(data) {
     data
   });
 }
-
+//下载学生上传的附件
+export function download (data) {
+  return request({
+    url: '/file/download',//deal
+    method: 'get',
+    params:data
+  })
+}
 
 //5.draft界面
 //展示草稿
@@ -140,7 +154,15 @@ export function reEvaluate(data){
 
 //9.统计图相关
 //TODO:各个作业平均分柱状图，需要获取所有wid,每一个wid下的总分平均分，互评平均分，老师平均分，发送cid
-
+export function getAvg (cid) {
+  return request({
+    url: '/statistics/homework/average',//deal
+    method: 'get',
+    params:{cid}
+  })
+}
 //TODO:一门课的具体情况，返回sid对应的成绩分布，0-10，11-20，21-30这种，发送wid,cid，
+
+
 
 

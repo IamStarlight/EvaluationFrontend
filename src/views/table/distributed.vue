@@ -30,17 +30,35 @@
       </el-table-column>
       <el-table-column label="操作" width="300px">
         <template slot-scope="scope">
-          <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
-            去批改
-          </el-button>
-          <span style="margin: 10px;"></span>
-          <el-button class="btn2" @click="deleteHom(scope.row.wid)">
-            删除作业
-          </el-button>
-          <span style="margin: 10px;"></span>
-          <el-button class="btn3" @click="showDia(scope.row.wid)">
-            发布互评
-          </el-button>
+          <template v-if="new Date(scope.row.endTime) > new Date()">
+            <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
+              去批改
+            </el-button>
+            <span style="margin: 10px;"></span>
+            <el-button class="btn2" @click="deleteHom(scope.row.wid)">
+              删除作业
+            </el-button>
+            <span style="margin: 10px;"></span>
+            <el-button class="btn3" @click="showDia(scope.row.wid)"
+                       :disabled="false" type="primary">
+              发布互评
+            </el-button>
+          </template>
+          <template v-else>
+            <el-button class="btn4" @click="gotoDetail(scope.row.wid)"
+                       :disabled="false" type="warning">
+              查看详情
+            </el-button>
+            <span style="margin: 10px;"></span>
+            <el-button class="btn2" @click="deleteHom(scope.row.wid)">
+              删除作业
+            </el-button>
+            <span style="margin: 10px;"></span>
+            <el-button class="btn3" @click="showDia(scope.row.wid)"
+                       :disabled="true">
+              发布互评
+            </el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -105,6 +123,12 @@ export default {
         query: { wid: wid }
       });
     },
+    gotoDetail(wid) {
+      this.$router.push({
+        name: 'detail',
+        query: { wid: wid }
+      });
+    },
     deleteHom(id){
       const wid = id;
       const cid = this.cid
@@ -162,7 +186,8 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
+    },
+
   }
 }
 </script>
@@ -191,7 +216,7 @@ thead {
 .btn2 {
   padding: 6px 12px;
   border: none;
-  background-color:cornflowerblue;
+  background-color:darkred;
   color: white;
   cursor: pointer;
 }
@@ -203,6 +228,15 @@ thead {
   color: white;
   cursor: pointer;
 }
+
+.btn4 {
+  padding: 6px 12px;
+  border: none;
+  background-color:darkslategrey;
+  color: white;
+  cursor: pointer;
+}
+
 
 .btn1:hover {
   background-color: black;

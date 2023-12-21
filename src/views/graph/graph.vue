@@ -17,6 +17,7 @@
 <script>
 import * as echarts from 'echarts'
 import {mapGetters} from "vuex";
+import {getAvg} from "@/api/homework";
 //echarts超过5.xx版本要用这个引入方式
 export default {
   computed: {
@@ -28,17 +29,13 @@ export default {
   },
   data() {
     return {
-      scores: [
-        { assignment: '作业1', score: 90 },
-        { assignment: '作业2', score: 80 },
-        { assignment: '作业3', score: 70 },
-        { assignment: '作业4', score: 80 },
-        // { assignment: '作业5', score: 60 },
-        // { assignment: '作业6', score: 70 },
-        // { assignment: '作业7', score: 80 },
-        // { assignment: '作业8', score: 83 },
-        // { assignment: '作业9', score: 77 },
-      ],
+      // scores: [
+      //   { assignment: '作业1', score: 90 },
+      //   { assignment: '作业2', score: 80 },
+      //   { assignment: '作业3', score: 70 },
+      //   { assignment: '作业4', score: 80 },
+      // ],
+      scores:[],
       selectHomework:'',
       homeworks:[
         { wid: 1, title: '语文' },
@@ -119,6 +116,11 @@ export default {
       });
     },
     renderBarChart() {
+      const cid = this.cid
+      getAvg(cid).then((response) => {
+        //console.log(response.data[0])
+        this.scores= response.data;
+      });
       const barChartElement = document.getElementById('barChart');
       const barChart = echarts.init(barChartElement);
 
@@ -132,7 +134,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: this.scores.map((item) => item.assignment),
+          data: this.scores.map((item) => item.wid),
           axisTick: {
             alignWithLabel: true,
           },
@@ -145,7 +147,7 @@ export default {
             name: '作业成绩',
             type: 'bar',
             barWidth: '60%',
-            data: this.scores.map((item) => item.score),
+            data: this.scores.map((item) => item.avg),
           },
         ],
       };

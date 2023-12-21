@@ -3,107 +3,98 @@
     npm install highlight.js
     npm install github-markdown-css
   -->
-  <div class="container">
-    <div class="container1">
-      <div class="notice">课程号:{{ cid }}</div>
-      <div class="notice">本课程为：{{ cname }}</div>
-    </div>
+  <el-form ref="homeworkForm" :model="form" label-width="100px" style="margin-top: 40px;">
 
+    <el-form-item label="作业标题" required>
+      <el-input v-model="form.title" placeholder="请输入作业标题"></el-input>
+    </el-form-item>
 
-    <div class="hom-info-container">
-      <div class="hom-info">
-        <label for="title">作业标题:</label>
-        <input id="title" class="hom-info-input" type="text" placeholder="请输入作业标题">
-      </div>
-      <div>
-        <label for="publishSwitch">是否定时发布:</label>
-        <input id="publishSwitch" class="hom-info-input" type="checkbox" v-model="isScheduled">
-      </div>
+    <el-form-item label="是否定时发布">
+      <el-switch v-model="form.isScheduled"></el-switch>
+    </el-form-item>
 
-      <div v-if="isScheduled" class="date-time-container">
-        <label for="startTime">定时发布:</label>
-        <input id="startTime" class="hom-info-input" type="datetime-local">
-      </div>
-<!--      <div class="date-time-container">-->
-<!--        <label for="startTime">定时发布:</label>-->
-<!--        <input id="startTime" class="hom-info-input" type="datetime-local">-->
-<!--      </div>-->
-      <span style="margin: 8px;"></span>
-      <div class="date-time-container">
-        <label for="endTime">截止日期:</label>
-        <input id="endTime" class="hom-info-input" type="datetime-local">
-      </div>
+    <el-form-item v-if="form.isScheduled" label="定时发布">
+      <el-date-picker type="datetime" v-model="form.startTime" :picker-options="pickerOptions" placeholder="选择日期时间"></el-date-picker>
+    </el-form-item>
 
+    <el-form-item label="截止日期" required>
+      <el-date-picker type="datetime" v-model="form.endTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd hh:mm" ></el-date-picker>
+    </el-form-item>
 
-    </div>
+    <el-form-item label="上传附件">
+      <el-button type="primary" @click="dialogVisible = true" style="margin-right: 20px;">选择上传pdf</el-button>
+      <el-dialog title="导入信息" :visible.sync="dialogVisible">
+        <el-form ref="importFormRef" label-width="130px">
+          <el-form-item label="上传文件:">
+            <el-upload class="upload-demo" ref="upload" :http-request="httpRequest" :before-upload="beforeUpload"
+                       :on-exceed="handleExceed" :limit="1">
+              <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传.pdf文件,且不超过5M</div>
+            </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="submitImportForm">开始导入</el-button>
+            <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+    </el-form-item>
 
-    <!--大文本输入框-->
-    <div class="hom-info-container2">
-      <label for="detail">作业内容:</label>
-      <textarea v-model="content" style="width: 1200px; height: 300px;"></textarea>
-    </div>
+    <el-form-item label="作业内容" required>
+      <el-input v-model="form.details" type="textarea" :rows="6" placeholder="请输入作业内容"></el-input>
+    </el-form-item>
 
+    <el-form-item label="评分占比" required>
+      <el-select v-model="form.rate" placeholder="请选择占比">
+        <el-option label="30" value="30"></el-option>
+        <el-option label="50" value="50"></el-option>
+        <el-option label="70" value="70"></el-option>
+      </el-select>
+    </el-form-item>
 
-
-    <div v-if="!isScheduled"class="button-container2">
+    <div v-if="!form.isScheduled" style="margin-left: 100px;">
       <el-button type="primary" @click="onSubmit">发布作业</el-button>
-      <el-button type="info" @click=toDraft()>存入草稿</el-button>
+      <el-button type="info" @click="toDraft">存入草稿</el-button>
     </div>
 
-    <div v-if="isScheduled" class="button-container3">
+    <div v-if="form.isScheduled" style="margin-left: 100px;">
       <el-button type="primary" @click="onTime">定时发布</el-button>
-<!--      <el-button type="info" @click=toDraft()>存入草稿</el-button>-->
     </div>
-
-  </div>
+  </el-form>
 </template>
 
 
 <script>
-import VueMarkdown from 'vue-markdown'
-import editorImage from '@/components/Tinymce/components/EditorImage'
-import Tinymce from '@/components/Tinymce'
 import { mapGetters } from "vuex";
-import { deliverHomework } from "@/api/homework";
+import { deliverHomework,deliverpdf } from "@/api/homework";
+
 
 export default {
   data () {
     return {
-      content:'',
-      selectedDate: '',
-      isScheduled: false,
+      // content:'',
+      // selectedDate: '',
+      // isScheduled: false,
       //对话框控制权
       dialogVisible: false,
-      //导入表单数据
-      importForm: {
-        kgCode: '',
-        targetUrl: '',
-        targetUsername: '',
-        targetPassword: '',
-      },
+      dialogVisible1: false,
       //存放上传文件
       fileList: [],
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        cid:this.cid,
+        title: '',
+        isScheduled: false,
+        startTime: null,
+        endTime: null,
+        details: '',
+        status:'',
+        wid:'',//如果后端有传回一个wid那么把这个存起来，每次提交都传一个wid，如果有那么写在一起，如果为空那么新增一个
+        rate:''
       },
-      // endTime,
-      // tid:'',
-      // cid:'',
-      // detail: '',
-      // title: ''
     }
   },
   components: {
-    Tinymce,
-    VueMarkdown, // 注入组件
-    editorImage
+
   },
 
   computed: {
@@ -115,6 +106,142 @@ export default {
   },
 
   methods: {
+
+    submitImportForm () {
+      // 使用form表单的数据格式
+      const paramsData = new FormData()
+      // 将上传文件数组依次添加到参数paramsData中
+      this.fileList.forEach((x) => {
+        paramsData.append('file', x.file)
+      });
+      // 将输入表单数据添加到params表单中
+      paramsData.append('cid', this.cid)
+      deliverpdf(paramsData).then(response => {
+        this.form.wid = response.data.wid
+        this.$message({
+          message: "导入成功",
+          type: "success"
+        })
+        this.now1 = "已上传一个文件"
+      }).catch(() => {
+        this.$message({
+          message: "导入失败",
+          type: "error"
+        })
+      })
+      this.fileList = []//集合清空
+      this.dialogVisible = false//关闭对话框
+    },
+
+    onSubmit () {
+      console.log(this.form)
+      this.$refs.homeworkForm.validate(valid => {
+        if (valid) {
+          this.form.status = 2
+          const details = this.form.details;
+          const cid = this.cid
+          const title = this.form.title;
+          const endTime = this.form.endTime
+          const status = this.form.status
+          const wid = this.form.wid
+          // 构造请求参数
+          const requestData = {
+            details,
+            cid,
+            title,
+            endTime,
+            status,
+            wid
+          };
+          // 发送请求给后端，并传递请求参数
+          deliverHomework(requestData)
+            .then(response => {
+              console.log(response.data.message);
+              // 根据 API 返回的响应，进行相应的处理
+              // 可以给用户显示作业提交成功的消息
+              this.$message.success('作业发布成功');
+              // 其他操作
+            })
+          this.$message('submit!')
+        } else {
+          this.$message.error('请正确填写表单信息');
+          return false;
+        }
+      });
+    },
+    toDraft () {
+      console.log(this.form)
+      this.$refs.homeworkForm.validate(valid => {
+        if (valid) {
+          this.form.status = 1
+          const details = this.form.details;
+          const cid = this.cid
+          const title = this.form.title;
+          const endTime = this.form.endTime
+          const status = this.form.status
+          const wid = this.form.wid
+          // 构造请求参数
+          const requestData = {
+            details,
+            cid,
+            title,
+            endTime,
+            status,
+          };
+          // 发送请求给后端，并传递请求参数
+          deliverHomework(requestData)
+            .then(response => {
+              console.log(response.data.message);
+              // 根据 API 返回的响应，进行相应的处理
+              // 可以给用户显示作业提交成功的消息
+              this.$message.success('作业发布成功');
+              // 其他操作
+            })
+          this.$message('save!')
+        } else {
+          this.$message.error('请正确填写表单信息');
+          return false;
+        }
+      });
+    },
+    onTime () {
+      console.log(this.form)
+      this.$refs.homeworkForm.validate(valid => {
+        if (valid) {
+          this.form.status = 4
+          const details = this.form.details;
+          const cid = this.cid
+          const title = this.form.title;
+          const endTime = this.form.endTime
+          const status = this.form.status
+          const startTime = this.form.startTime
+          const wid = this.form.wid
+          // 构造请求参数
+          const requestData = {
+            details,
+            cid,
+            title,
+            endTime,
+            status,
+            startTime,
+            wid
+          };
+          // 发送请求给后端，并传递请求参数
+          deliverHomework(requestData)
+            .then(response => {
+              console.log(response.data.message);
+              // 根据 API 返回的响应，进行相应的处理
+              // 可以给用户显示作业提交成功的消息
+              this.$message.success('作业发布成功');
+              // 其他操作
+            })
+          this.$message('submit!')
+        } else {
+          this.$message.error('请正确填写表单信息');
+          return false;
+        }
+      });
+    },
     // 覆盖默认的上传行为，可以自定义上传的实现，将上传的文件依次添加到fileList数组中,支持多个文件
     httpRequest (option) {
       this.fileList.push(option)
@@ -129,7 +256,7 @@ export default {
         this.$message.error("最大上传5M")
         return false
       }
-      //判断文件类型，必须是xlsx格式
+      //判断文件类型，必须是pdf格式
       let fileName = file.name
       let reg = /^.+(\.pdf)$/
       if (!reg.test(fileName))
@@ -143,171 +270,6 @@ export default {
     handleExceed () {
       this.$message({ type: 'error', message: '最多支持1个附件上传' })
     },
-    //导入Excel病种信息数据
-    submitImportForm () {
-      // 使用form表单的数据格式
-      const params = new FormData()
-      // 将上传文件数组依次添加到参数paramsData中
-      this.fileList.forEach((x) => {
-        paramsData.append('file', x.file)
-      });
-      // 将输入表单数据添加到params表单中
-      params.append('kgCode', this.importForm.kgCode)
-      params.append('targetUrl', this.importForm.targetUrl)
-      params.append('targetUsername', this.importForm.targetUsername)
-      params.append('targetPassword', this.importForm.targetPassword)
-
-      //这里根据自己封装的axios来进行调用后端接口
-      this.httpPostWithLoading(IMPORT_URL, paramsData).then(match => {
-        if (match.success)
-        {
-          this.$message({
-            message: "导入成功",
-            type: "success"
-          })
-        } else
-        {
-          this.$message({
-            message: "导入失败",
-            type: "error"
-          })
-        }
-        this.fileList = []//集合清空
-        this.dialogVisible1 = false//关闭对话框
-      })
-    },
-    onSubmit () {
-      //获取截止日期输入框元素
-      const endTimeInput = document.getElementById('endTime')
-      const endTimeValue = endTimeInput.value;
-      const endTime1 = new Date(endTimeValue);
-      // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
-      // const startTimeInput = document.getElementById('startTime')
-      // const startTimeValue = startTimeInput.value;
-      // const startTime1 = new Date(startTimeValue);
-      // // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      // const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
-
-
-      // 获取作业内容
-      const details = this.content;
-      const cid = this.cid
-      const status = 2;//111111111111111111111111111111111111111111111111111111直接发布
-      // 获取作业标题
-      const titleInput = document.getElementById('title');
-      const title = titleInput.value
-
-      // 构造请求参数
-      const requestData = {
-        details,
-        cid,
-        title,
-        endTime,
-        // startTime,
-        //formattedEndTime,
-        status
-      };//wid是自动生成的吗
-
-      // 发送请求给后端，并传递请求参数
-      deliverHomework(requestData)
-        .then(response => {
-          console.log(response.data.message);
-          // 根据 API 返回的响应，进行相应的处理
-          // 可以给用户显示作业提交成功的消息
-          this.$message.success('作业发布成功');
-          // 其他操作
-        })
-        // .catch(error => {
-        //   console.log(error);
-        //   // 错误处理
-        //   // 可以将错误信息提示给用户
-        //   this.$message.error('作业发布失败');
-        // });
-
-      this.$message('submit!')
-    },
-    toDraft () {
-      const endTimeInput = document.getElementById('endTime')
-      const endTimeValue = endTimeInput.value;
-      const endTime1 = new Date(endTimeValue);
-      // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
-      // const startTimeInput = document.getElementById('startTime')
-      // const startTimeValue = startTimeInput.value;
-      // const startTime1 = new Date(startTimeValue);
-      // // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      // const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
-
-      const detail = this.content;
-      const cid = this.cid
-      const status = 1;//111111111111111111111111111111111111111111111111111111存入草稿
-      // 获取作业标题
-      const titleInput = document.getElementById('title');
-      const title = titleInput.value
-      const requestData = {
-        detail,
-        cid,
-        title,
-        endTime,
-        status,
-        //startTime
-      }
-      deliverHomework(requestData)
-        .then(response => {
-          console.log(response.data.message);
-          // 根据 API 返回的响应，进行相应的处理
-          // 可以给用户显示作业提交成功的消息
-          this.$message.success('存入草稿成功');
-          // 其他操作
-        })
-        // .catch(error => {
-        //   console.log(error);
-        //   // 错误处理
-        //   // 可以将错误信息提示给用户
-        //   this.$message.error('存入草稿失败');
-        // });
-
-      this.$message('save!')
-    },
-    onTime () {
-      const endTimeInput = document.getElementById('endTime')
-      const endTimeValue = endTimeInput.value;
-      const endTime1 = new Date(endTimeValue);
-      // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      const endTime= `${endTime1.getFullYear()}-${(endTime1.getMonth() + 1).toString().padStart(2, '0')}-${endTime1.getDate().toString().padStart(2, '0')} ${endTime1.getHours().toString().padStart(2, '0')}:${endTime1.getMinutes().toString().padStart(2, '0')}`;
-      const startTimeInput = document.getElementById('startTime')
-      const startTimeValue = startTimeInput.value;
-      const startTime1 = new Date(startTimeValue);
-      // 格式化为 "yyyy-MM-dd hh:mm" 格式
-      const startTime= `${startTime1.getFullYear()}-${(startTime1.getMonth() + 1).toString().padStart(2, '0')}-${startTime1.getDate().toString().padStart(2, '0')} ${startTime1.getHours().toString().padStart(2, '0')}:${startTime1.getMinutes().toString().padStart(2, '0')}`;
-
-      const detail = this.content;
-      const cid = this.cid
-      const status = 4;//111111111111111111111111111111111111111111111111111111定时
-      // 获取作业标题
-      const titleInput = document.getElementById('title');
-      const title = titleInput.value
-      const requestData = {
-        detail,
-        cid,
-        title,
-        endTime,
-        status,
-        startTime
-      }
-      deliverHomework(requestData)
-        .then(response => {
-          console.log(response.data.message);
-          // 根据 API 返回的响应，进行相应的处理
-          // 可以给用户显示作业提交成功的消息
-          this.$message.success('存入草稿成功');
-          // 其他操作
-        })
-      this.$message('save!')
-    },
-
-
   }
 }
 </script>

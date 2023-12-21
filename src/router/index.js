@@ -196,6 +196,12 @@ export const asyncRoutes = [
         // meta: { title: '批改作业', icon: 'table' }
       },
       {
+        path: 'detail',
+        name: 'detail',
+        component: () => import('@/views/table/detail'),
+        //meta: { title: '作业详情', icon: 'table' }
+      },
+      {
         path: 'grading',
         name: 'grading',
         component: () => import('@/views/table/grading'),
@@ -229,6 +235,19 @@ export const asyncRoutes = [
         path: '/email/detail',
         name: 'detail',
         component: () => import('@/views/email/detail'),
+      },
+    ]
+  },
+  {
+    path: '/stuInfo',
+    component: Layout,
+    meta: { roles: ['5'], title: '学生信息', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'stuInfo',
+        name: 'stuInfo',
+        component: () => import('@/views/stuInfo/index'),
+        meta: { roles: ['5'], title: '学生信息', icon: 'table' }
       },
     ]
   },
