@@ -70,7 +70,14 @@ export function updateScore(data) {
     data
   });
 }
-
+//下载学生上传的附件
+export function download (data) {
+  return request({
+    url: '/file/download',//deal
+    method: 'get',
+    params:data
+  })
+}
 
 //5.draft界面
 //展示草稿

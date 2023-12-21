@@ -1,9 +1,12 @@
 <template>
   <div class="hom-container1">
     <p>正在批改学号为：{{this.$route.query.sid}} 同学的作业</p>
-    <div class="hom-details">
+    <div class="hom-container1">
+      <p>文字内容：</p>
       {{ sHomework[0].details }}
     </div>
+    <el-button @click="download">下载附件</el-button>
+    <a href="sHomework[0].url" download>下载</a>
     <div class="hom-score" style="display: flex; flex-direction: column;">
       学生当前评分为：<p>{{sHomework[0].teacher_grade}}</p>
       <el-input
@@ -32,7 +35,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getStudentHomework, updateScore } from "@/api/homework";
+import {download, getStudentHomework, updateScore} from "@/api/homework";
 
 export default {
   data() {
@@ -68,7 +71,20 @@ export default {
         this.listLoading = false;
       });
     },
-
+    download(){
+      const wid = this.$route.query.wid;
+      const sid = this.$route.query.sid;
+      const cid = this.cid;
+      const data = {
+        sid,
+        wid,
+        cid,
+      };
+      download(data).then((response)=> {
+        const file = response.data
+        console.log(response.data)
+      })
+    },
     updateScore(Grade,comment) {
       //updateScore(grade,comment) {
       const wid = this.$route.query.wid;

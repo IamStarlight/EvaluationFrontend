@@ -196,6 +196,12 @@ export const asyncRoutes = [
         // meta: { title: '批改作业', icon: 'table' }
       },
       {
+        path: 'detail',
+        name: 'detail',
+        component: () => import('@/views/table/detail'),
+        //meta: { title: '作业详情', icon: 'table' }
+      },
+      {
         path: 'grading',
         name: 'grading',
         component: () => import('@/views/table/grading'),
