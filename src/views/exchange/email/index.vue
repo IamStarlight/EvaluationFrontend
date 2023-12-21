@@ -15,7 +15,8 @@
           <div class="markdown-body">
             <VueMarkdown :source="homework.details" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homework.url" target="_blank" class="buttonText">下载附件：{{ homework.url }}</a>
+          <a class="hom-user2">下载附件：</a>
+          <a :href="homework.url" target="_blank" class="hom-user1">{{ homework.url }}</a>
         </div>
       </div>
     </div>
@@ -31,7 +32,8 @@
           <div class="markdown-body">
             <VueMarkdown :source="homeworkmy.details" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homeworkmy.url" target="_blank" class="buttonText">下载附件：{{ homeworkmy.url }}</a>
+          <a class="hom-user2">下载附件：</a>
+          <a :href="homework.url" target="_blank" class="hom-user1">{{ homeworkmy.url }}</a>
         </div>
       </div>
     </div>
@@ -333,6 +335,19 @@ export default {
   width: 100px;
   height: 10px;
   /* 设置按钮宽度为100px，根据需要调整宽度 */
+}
+
+.hom-user2 {
+  font-size: 16px;
+  color: #181717;
+  margin-bottom: 10px;
+}
+
+.hom-user1 {
+  font-size: 16px;
+  color: #1146e5;
+  margin-bottom: 10px;
+  text-decoration: underline;
 }
 </style>
 

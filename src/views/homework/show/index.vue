@@ -5,7 +5,7 @@
     </div>
     <div class='left-content2'>
       <h1> l 课程作业</h1>
-      <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
+      <el-table v-loading="listLoading" :data="pagedList" element-loading-text="Loading" border fit highlight-current-row>
         <el-table-column align="center" label="作业号" width="100">
           <template slot-scope="scope">
             {{ scope.row.wid }}
@@ -61,7 +61,7 @@
               <el-button
                 :type="(scope.row.read == '是' && scope.row.appeal == false) ? 'success' : (scope.row.read == '是') ? 'warning' : 'info'"
                 plain @click="change1(scope.row.wid, scope.row.tname, scope.row.date, scope.row.read, scope.row.appeal)">
-                {{ scope.row.read != '是' ? '不可申诉' : (scope.row.appeal == true ? '已申诉' : "申诉") }}
+                {{ scope.row.read != '是' ? '未开始' : (scope.row.appeal == true ? '已申诉' : "申诉") }}
               </el-button>
             </span>
           </template>
@@ -76,12 +76,27 @@
                 {{
                   scope.row.evaStatus === 'A' ? '互评' : (scope.row.evaStatus === 'B' || scope.row.evaStatus === 'D' ?
                     '已完成' :
-                    (scope.row.evaStatus == 'C' ? '未发布' : '已截止')) }}
+                    (scope.row.evaStatus == 'C' ? '未开始' : '已截止')) }}
               </el-button>
             </span>
           </template>
         </el-table-column>
       </el-table>
+      <div class="custom-pagination">
+        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50, 100]"
+          :page-size="pageSize" :total="total" layout="sizes, prev, pager, next, jumper">
+          <!-- 自定义每页显示大小样式 -->
+          <span slot="sizes" class="custom-sizes">
+            每页显示：
+            <el-select v-model="pageSize" @change="handleSizeChange">
+              <el-option label="10" value="10"></el-option>
+              <el-option label="20" value="20"></el-option>
+              <el-option label="50" value="50"></el-option>
+              <el-option label="100" value="100"></el-option>
+            </el-select>
+          </span>
+        </el-pagination>
+      </div>
     </div>
 
     <el-dialog title="提交作业信息" :visible.sync="dialogVisible">
@@ -185,6 +200,10 @@ export default {
         bool: "A",//A是可以完成未完成,B是已经完成,C是已截止未完成，D是截止完成了，E是不可以互评
         eva: "A",
       }],
+      pagedList: [], // 当前页显示的数据
+      currentPage: 1, // 当前页码
+      pageSize: 10, // 每页显示条目数
+      total: 0, // 总条目数
       dialogVisible: false,
       dialogVisible1: false,
       beg: true,
@@ -206,6 +225,7 @@ export default {
       const a = { cid: this.cid }
       getAllhomework(a).then(response => {
         this.list = Array.from(response.data)
+        this.total = this.list.length;
         for (let i = 0; i < this.list.length; i++)
         {
           if (this.list[i]["read"] == true) { this.list[i]["read"] = "是" }
@@ -239,8 +259,16 @@ export default {
         // this.list.score = response.data["title"]
         // this.list.read = response.data["title"]
         // this.list.bool = response.data["title"]
+        this.handleCurrentChange(this.currentPage);
         this.listLoading = false
       })
+    },
+    handleCurrentChange (val) {
+      // 用户改变当前页码时触发的方法
+      this.currentPage = val;
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      this.pagedList = this.list.slice(startIndex, endIndex > this.list.length ? this.list.length : endIndex);
     },
 
     fetchData1 (b) {
@@ -338,7 +366,7 @@ export default {
 .body {
   justify-content: space-between;
   height: auto;
-  background-color: rgb(211, 240, 203);
+  /* background-color: rgb(211, 240, 203); */
   /* 左右排列 */
 }
 
@@ -370,8 +398,8 @@ export default {
   width: 90%;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-left: 40px;
-  margin-right: 20px;
+  margin-left: 70px;
+  margin-right: 10px;
   margin-top: 20px;
   min-height: 720px;
   border-radius: 10px;
@@ -418,8 +446,41 @@ h1 {
 .left-content1 {
   padding: 20px;
   /* background-color: #c0f9b6; */
-  background-color: rgb(253, 248, 166);
+  /* background-color: rgb(253, 248, 166); */
+  background-color: rgb(198, 222, 243);
   box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+}
+
+.custom-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.custom-pagination .el-pagination {
+  display: inline-block;
+}
+
+.custom-pagination .el-pagination .el-pagination-button {
+  border-color: #409EFF;
+  color: #409EFF;
+}
+
+.custom-pagination .el-pagination .el-pagination-button.is-current {
+  background-color: #409EFF;
+  border-color: #409EFF;
+  color: #fff;
+}
+
+/* 自定义每页显示大小样式 */
+.custom-sizes {
+  margin-right: 10px;
+}
+
+.hom-user1 {
+  font-size: 16px;
+  color: #1146e5;
+  margin-bottom: 10px;
+  text-decoration: underline;
 }
 </style>

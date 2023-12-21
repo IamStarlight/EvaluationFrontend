@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
-<!--        @keyup.enter.native="handleFilter" />-->
+      <!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
+      <!--        @keyup.enter.native="handleFilter" />-->
       <el-select v-model="listQuery.importance" placeholder="等级" clearable style="width: 90px" class="filter-item">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
       </el-select>
@@ -17,41 +17,60 @@
         Export
       </el-button> -->
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column label="学号" min-width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="姓名" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="职位" width="80px">
-        <template>
-          <span>{{ this.nowpermission }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="邮箱" width="200px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.email }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handlepassword(row)">
-            Reset
-          </el-button>
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row)">
-            Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class='left-content2'>
+      <h1> l 人员管理</h1>
+      <el-table :key="tableKey" v-loading="listLoading" :data="pagedList" border fit highlight-current-row
+        style="width: 100%;">
+        <el-table-column label="学号" width="400px">
+          <template slot-scope="{row}">
+            <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="姓名" width="300px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="职位" width="80px">
+          <template>
+            <span>{{ this.nowpermission }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="邮箱" width="300px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.email }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Actions" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="{row,$index}">
+            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handlepassword(row)">
+              Reset
+            </el-button>
+            <el-button type="primary" size="mini" @click="handleUpdate(row)">
+              Edit
+            </el-button>
+            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row)">
+              Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="custom-pagination">
+        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50, 100]"
+          :page-size="pageSize" :total="total" layout="sizes, prev, pager, next, jumper">
+          <!-- 自定义每页显示大小样式 -->
+          <span slot="sizes" class="custom-sizes">
+            每页显示：
+            <el-select v-model="pageSize" @change="handleSizeChange">
+              <el-option label="10" value="10"></el-option>
+              <el-option label="20" value="20"></el-option>
+              <el-option label="50" value="50"></el-option>
+              <el-option label="100" value="100"></el-option>
+            </el-select>
+          </span>
+        </el-pagination>
+      </div>
+    </div>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px"
@@ -115,6 +134,10 @@ export default {
   directives: { waves },
   data () {
     return {
+      pagedList: [], // 当前页显示的数据
+      currentPage: 1, // 当前页码
+      pageSize: 10, // 每页显示条目数
+      total: 0, // 总条目数
       tableKey: 0,
       list: [{
         id: '',
@@ -170,6 +193,13 @@ export default {
     this.getList()
   },
   methods: {
+    handleCurrentChange (val) {
+      // 用户改变当前页码时触发的方法
+      this.currentPage = val;
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      this.pagedList = this.list.slice(startIndex, endIndex > this.list.length ? this.list.length : endIndex);
+    },
     changeType (a) {
       if (typeof a === 'object')
       {
@@ -199,6 +229,8 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+        this.total = this.list.length;
+        this.handleCurrentChange(this.currentPage);
       })
     },
     handleModifyStatus (row, status) {
@@ -236,6 +268,8 @@ export default {
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
+          this.total = this.list.length;
+          this.handleCurrentChange(this.currentPage);
         })
       } else if (this.listQuery.importance === '' && this.listQuery.title != '')
       {
@@ -265,6 +299,8 @@ export default {
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
+          this.total = this.list.length;
+          this.handleCurrentChange(this.currentPage);
         })
 
       } else
@@ -290,6 +326,8 @@ export default {
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
+          this.total = this.list.length;
+          this.handleCurrentChange(this.currentPage);
         })
       }
     },
@@ -423,3 +461,50 @@ export default {
   }
 }
 </script>
+<style>
+.custom-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.custom-pagination .el-pagination {
+  display: inline-block;
+}
+
+.custom-pagination .el-pagination .el-pagination-button {
+  border-color: #409EFF;
+  color: #409EFF;
+}
+
+.custom-pagination .el-pagination .el-pagination-button.is-current {
+  background-color: #409EFF;
+  border-color: #409EFF;
+  color: #fff;
+}
+
+/* 自定义每页显示大小样式 */
+.custom-sizes {
+  margin-right: 10px;
+}
+
+.left-content2 {
+  padding: 20px;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  min-height: 720px;
+  border-radius: 10px;
+}
+
+h1 {
+  /* 设置字体样式为 Arial，如果 Arial 不可用，则使用 sans-serif 作为备用字体 */
+  font-family: 'Arial', sans-serif;
+  /* 设置字体大小为 24 像素 */
+  font-size: 24px;
+  /* 设置字体颜色为蓝色 */
+  color: black;
+}
+</style>

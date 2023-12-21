@@ -31,14 +31,14 @@
             <list :list="item.children"></list>
           </div>
         </div>
-        <!-- <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
+        <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
           <div class="item-name">
             <span>{{ item.name }}</span>
           </div>
           <div v-if="item.showChildren" class="children-item">
             <list :list="item.children"></list>
           </div>
-        </div> -->
+        </div>
       </div>
       <div class='left-content2'>
         <h1>l 课程列表</h1>
@@ -113,6 +113,11 @@ export default {
         showChildren: false,
         children: []
       }],
+      list1: [{
+        name: "",
+        showChildren: false,
+        children: []
+      }],
       // list1: [{
       //   name: "您有两个课程通知",
       //   showChildren: false,
@@ -141,6 +146,7 @@ export default {
   created () {
     this.fetchData()
     this.fetchhomenotice()
+    this.fetchhomenotice1()
   },
 
   methods: {
@@ -164,6 +170,20 @@ export default {
           this.list[0].children.push({ name: this.momo[i].cname + "---" + "有" + number + "个未交作业", showChildren: false });
         }
         this.list[0].name = "您有" + new Set(this.momo).size + "个未交作业"//获取有未交作业的课程的数量
+      })
+    },
+    //获取互评作业的信息
+    fetchhomenotice1 () {
+      gethomenotice().then(response => {
+        this.momo1 = response.data
+        console.log(new Set(this.momo1).size)
+        let number = 0
+        for (let i = 0; i < new Set(this.momo1).size; i++)
+        {
+          number = this.momo1[i].cnt + number
+          this.list1[0].children.push({ name: this.momo1[i].cname + "---" + "有" + number + "个互评作业", showChildren: false });
+        }
+        this.list1[0].name = "您有" + new Set(this.momo1).size + "个互评作业"//获取有未交作业的课程的数量
       })
     },
     // //获取课程通知的的信息
@@ -240,14 +260,14 @@ export default {
       }
 
     },
-    // toggleChildren1 (index) {
-    //   // 切换子项的显示状态
-    //   this.$set(this.list1, index, {
-    //     ...this.list1[index],
-    //     showChildren: !this.list1[index].showChildren,
-    //   });
-    //   console.log(this.list1[index].showChildren)
-    // },
+    toggleChildren1 (index) {
+      // 切换子项的显示状态
+      this.$set(this.list1, index, {
+        ...this.list1[index],
+        showChildren: !this.list1[index].showChildren,
+      });
+      console.log(this.list1[index].showChildren)
+    },
 
     search () {
       this.listLoading = true
@@ -269,7 +289,7 @@ export default {
 .body {
   justify-content: space-between;
   height: auto;
-  background-color: rgb(211, 240, 203);
+  background-color: rgb(243, 246, 243);
   /* 左右排列 */
 }
 
