@@ -1,27 +1,7 @@
 <template>
   <div class="body">
-    <!-- <div class="image-container">
-      <img src="../../assets/background/c1.png" alt="Your Image">
-    </div> -->
-    <!-- <div class="left-content"> -->
-    <!-- <h1>{{ name }} , 欢迎进入课程</h1>
-      <p>亲爱的学生，欢迎来到我们的课程列表页面！在这里，你将发现丰富多彩的学习机会，覆盖各种感兴趣的主题。</p>
-    </div> -->
     <div class='ada'>
       <div class="left-content1">
-        <!-- <el-card class="box-card-component" style="margin-left:8px;">
-          <div slot="header" class="box-card-header">
-            <img src="../../assets/background/aa.jpg">
-          </div>
-          <div style="position:relative;">
-            <pan-thumb :image="avatar" class="panThumb" />
-            <mallki class-name="mallki-text" text="" />
-            <div style="padding-top:35px;" class="progress-item">
-              <span>学习进度</span>
-              <el-progress :percentage="70" />
-            </div>
-          </div>
-        </el-card> -->
         <h1>l 互动提醒</h1>
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="toggleChildren(index)">
           <div class="item-name">
@@ -78,7 +58,7 @@
 </template>
 
 <script>
-import { getList, getAll, gethomenotice } from '@/api/course'
+import { getList, getAll, gethomenotice, gethomenotice1 } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
@@ -174,7 +154,7 @@ export default {
     },
     //获取互评作业的信息
     fetchhomenotice1 () {
-      gethomenotice().then(response => {
+      gethomenotice1().then(response => {
         this.momo1 = response.data
         console.log(new Set(this.momo1).size)
         let number = 0

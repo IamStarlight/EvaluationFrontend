@@ -114,12 +114,16 @@
         <div class="content right-content">
           <div class="left-header">
             <PieChart></PieChart>
+            <div style="height: 10px;"></div>
+            <h2>教师评分：{{ this.grade }}</h2>
+            <div style="height: 10px;"></div>
             <h2>教师反馈</h2>
           </div>
           <div class="left-body">
             <VueMarkdown :source="comment" v-highlight></VueMarkdown>
           </div>
-          <el-button @click="dialogVisible = false, dialogVisible1 = true">查看评分详情</el-button>
+          <el-button @click="dialogVisible = false, dialogVisible1 = true" :disabled="this.buttonLocked">{{ this.ada
+          }}</el-button>
         </div>
       </div>
       <el-button type="info" @click="dialogVisible = false">关闭窗口</el-button>
@@ -128,32 +132,32 @@
 
     <el-dialog title="评分详情" :visible.sync="dialogVisible1">
       <div class="split-container">
-        <div class="split-line"></div>
-        <div class="content left-content">
-          <div class="left-header">
-            <h2>同学评分</h2>
-          </div>
-          <div class="left-body">
-            <VueMarkdown :source="this.now" v-highlight></VueMarkdown>
-            <a :href="this.now1">{{ this.now1 }}</a>
-          </div>
-        </div>
-        <div class="content right-content">
-          <div class="left-header">
-            <h2>同学评语</h2>
-          </div>
-          <div class="left-body">
-            <VueMarkdown :source="comment" v-highlight></VueMarkdown>
-          </div>
-        </div>
+        <el-table v-loading="listLoading" :data="getgrade" element-loading-text="Loading" border fit
+          highlight-current-row>
+          <el-table-column align="center" label="学生" width="100">
+            <template slot-scope="scope">
+              {{ scope.row.id }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="评分" width="100">
+            <template slot-scope="scope">
+              {{ scope.row.grade }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="评语">
+            <template slot-scope="scope">
+              <VueMarkdown :source="scope.row.comment" v-highlight></VueMarkdown>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
-      <el-button type="info" @click="dialogVisible1 = false">关闭窗口</el-button>
+      <div style="height:10px"></div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getList, getAllhomework, getdetailmy, getoutcome } from '@/api/course'
+import { getList, getAllhomework, getdetailmy, getoutcome, getallcome } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import VueMarkdown from 'vue-markdown'
@@ -200,6 +204,9 @@ export default {
         bool: "A",//A是可以完成未完成,B是已经完成,C是已截止未完成，D是截止完成了，E是不可以互评
         eva: "A",
       }],
+      getgrade: [],
+      ada: "",
+      buttonLocked: false,
       pagedList: [], // 当前页显示的数据
       currentPage: 1, // 当前页码
       pageSize: 10, // 每页显示条目数
@@ -212,7 +219,8 @@ export default {
       searchKeyword: '', // 添加searchKeyword属性
       now: "",
       now1: "",
-      comment: ""
+      comment: "",
+      grade: "",
     }
   },
   created () {
@@ -277,8 +285,12 @@ export default {
         //console.log(response.data["title"])
         this.now = response.data[0]["details"]
         this.now1 = response.data[0]["url"]
+
       })
     },
+
+
+
 
     change (hid, cname, tid, bool, states) {
       if (states == 'A')
@@ -306,9 +318,32 @@ export default {
           this.now1 = response.data[0]["url"]
         })
         const b = { sid: this.sid, wid: hid, cid: this.cid }
+        const c = { wid: hid, cid: this.cid }
         getoutcome(b).then(response => {
           //console.log(response.data["title"])
-          this.comment = response.data[0]["details"]
+          this.grade = response.data[0]["teacher_grade"]
+          this.comment = response.data[0]["teacher_comments"]
+          console.log("hahahah")
+          this.buttonLocked = false
+          this.ada = "查看互评详情"
+          getallcome(c).then(response => {
+            console.log(response.data)
+            if (response.data.length == 0)
+            {
+              this.buttonLocked = true
+              this.ada = "没有发起互评"
+            } else
+            {
+              this.getgrade = []
+              for (let i = 0; i < response.data.length; i++)
+              {
+                console.log("hahahah")
+                this.getgrade.push({ "id": i + 1, "grade": response.data[i]["eva_grade"], "comment": response.data[i]["eva_comments"] })
+                console.log(this.getgrade)
+              }
+            }
+
+          })
         })
         this.dialogVisible = true
 
