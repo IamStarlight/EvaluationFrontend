@@ -15,13 +15,33 @@
           <div class="markdown-body">
             <VueMarkdown :source="homework.details" v-highlight></VueMarkdown>
           </div>
-          <a color="blue" :href="homework.url" target="_blank" class="buttonText">下载附件：{{ homework.url }}</a>
+          <a class="hom-user2">下载附件：</a>
+          <a :href="homework.url" target="_blank" class="hom-user1">{{ homework.url }}</a>
         </div>
       </div>
     </div>
     <div class="hom-container3">
       <el-button type="primary" @click="dialogVisible = true" style="margin-right: 20px;">选择上传pdf</el-button>
-      <editorImage color="#1890ff" class="editor-upload-btn" style="margin-right: 20px;" />
+      <!-- <editorImage color="#1890ff" class="editor-upload-btn" style="margin-right: 20px;" /> -->
+      <div class="upload-container">
+        <el-button icon="el-icon-upload" type="primary" @click=" dialogVisible3 = true" style="margin-right: 20px;">
+          上传图片
+        </el-button>
+        <el-dialog :visible.sync="dialogVisible3">
+          <el-upload :multiple="true" :http-request="httpRequest" :before-upload="beforeUpload"
+            class="editor-slide-upload" :limit="1" list-type="picture-card">
+            <el-button size="small" type="primary">
+              Click upload
+            </el-button>
+          </el-upload>
+          <el-button @click="dialogVisible3 = false">
+            Cancel
+          </el-button>
+          <el-button type="primary" @click="handleSubmit">
+            Confirm
+          </el-button>
+        </el-dialog>
+      </div>
       <el-button type="primary" @click="dialogVisible1 = true" style="margin-right: 20px;">选择输入文字</el-button>
     </div>
     <div class="hom-container">
@@ -33,7 +53,6 @@
             <div class="hom-user">{{ this.now }}</div>
             <div class="hom-user">{{ this.now1 }}</div>
           </div>
-          <el-button type="primary" @click=onCancel()>清空提交</el-button>
         </div>
       </div>
     </div>
@@ -96,6 +115,9 @@ export default {
   data () {
     return {
       //对话框控制权
+      dialogVisible3: false,
+      listObj: {},
+      fileList1: [],
       dialogVisible: false,
       dialogVisible1: false,
       //存放上传文件
@@ -259,6 +281,88 @@ export default {
         type: 'warning'
       })
       this.$router.push({ path: '/example/table' })
+    },
+    //图片
+    httpRequest (option) {
+      this.fileList.push(option)
+    },
+    handleExceed () {
+      this.$message({ type: 'error', message: '最多支持1个附件上传' })
+    },
+    checkAllSuccess () {
+      return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
+    },
+
+    handleSubmit () {
+      if (this.fileList.length === 0)
+      {
+        this.$alert("请选择图片再进行上传操作");
+        return;
+      }
+      // 使用form表单的数据格式
+      const paramsData = new FormData()
+      // 将上传文件数组依次添加到参数paramsData中
+      this.fileList.forEach((x) => {
+        paramsData.append('file', x.file)
+      });
+      // 将输入表单数据添加到params表单中
+      paramsData.append('cid', this.cid)
+      paramsData.append('wid', this.homeworkid)
+      paramsData.append('sid', this.sid)
+      getpdf(paramsData).then(response => {
+        this.$message({
+          message: "提交成功",
+          type: "success"
+        })
+        this.now1 = "已上传一个图片"
+      }).catch(() => {
+        this.$message({
+          message: "导入失败",
+          type: "error"
+        })
+      })
+      this.listObj = {}
+      this.fileList1 = []
+      this.dialogVisible3 = false
+    },
+    handleSuccess (response, file) {
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
+      for (let i = 0, len = objKeyArr.length; i < len; i++)
+      {
+        if (this.listObj[objKeyArr[i]].uid === uid)
+        {
+          this.listObj[objKeyArr[i]].url = response.files.file
+          this.listObj[objKeyArr[i]].hasSuccess = true
+          return
+        }
+      }
+    },
+    handleRemove (file) {
+      const uid = file.uid
+      const objKeyArr = Object.keys(this.listObj)
+      for (let i = 0, len = objKeyArr.length; i < len; i++)
+      {
+        if (this.listObj[objKeyArr[i]].uid === uid)
+        {
+          delete this.listObj[objKeyArr[i]]
+          return
+        }
+      }
+    },
+    beforeUpload (file) {
+      const _self = this
+      const _URL = window.URL || window.webkitURL
+      const fileName = file.uid
+      this.listObj[fileName] = {}
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.src = _URL.createObjectURL(file)
+        img.onload = function () {
+          _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
+        }
+        resolve(true)
+      })
     }
   }
 }
@@ -453,6 +557,27 @@ export default {
   width: 100px;
   height: 10px;
   /* 设置按钮宽度为100px，根据需要调整宽度 */
+}
+
+.editor-slide-upload {
+  margin-bottom: 20px;
+
+  ::v-deep .el-upload--picture-card {
+    width: 100%;
+  }
+}
+
+.hom-user2 {
+  font-size: 16px;
+  color: #181717;
+  margin-bottom: 10px;
+}
+
+.hom-user1 {
+  font-size: 16px;
+  color: #1146e5;
+  margin-bottom: 10px;
+  text-decoration: underline;
 }
 </style>
 

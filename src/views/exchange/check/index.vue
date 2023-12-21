@@ -32,7 +32,7 @@
       </el-table>
     </div>
 
-    <el-dialog title="申诉信息" :visible.sync="dialogVisible" style="width:auto">
+    <el-dialog title="申诉信息" :visible.sync="dialogVisible" custom-class="custom-dialog">
       <div class="split-container">
         <div class="split-line"></div>
         <div class="content left-content">
@@ -153,7 +153,8 @@ export default {
 .body {
   justify-content: space-between;
   height: auto;
-  background-color: rgb(211, 240, 203);
+  /* background-color: rgb(211, 240, 203); */
+  background-color: rgb(243, 246, 243);
   /* 左右排列 */
 }
 
@@ -217,7 +218,7 @@ export default {
 .left-content1 {
   padding: 20px;
   /* background-color: #c0f9b6; */
-  background-color: rgb(253, 248, 166);
+  background-color: rgb(198, 222, 243);
   box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -229,5 +230,11 @@ h1 {
   font-size: 24px;
   /* 设置字体颜色为蓝色 */
   color: black;
+}
+
+.custom-dialog {
+  width: auto;
+  min-height: 600px !important;
+  /* 使用 !important 来确保优先级 */
 }
 </style>

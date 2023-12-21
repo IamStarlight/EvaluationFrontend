@@ -14,7 +14,8 @@
             <VueMarkdown :source="blog.details" v-highlight></VueMarkdown>
           </div>
           <div>
-            <a color="blue" :href="blog.url" target="_blank" class="buttonText">下载附件：{{ blog.url }}</a>
+            <a class="hom-user2">下载附件：</a>
+            <a :href="blog.url" target="_blank" class="hom-user1">{{ blog.url }}</a>
           </div>
         </div>
       </div>
@@ -27,7 +28,7 @@
       </el-form>
     </div>
     <div class="hom-container2">
-      <div class="hom-user">评语</div>
+      <div class="hom-user">l 评语</div>
       <tinymce v-model="result.comments" />
     </div>
     <div class="hom-container3">
@@ -60,7 +61,7 @@ export default {
   },
   data () {
     const validateInput = (rule, value, callback) => {
-      if (value > 100 || value < 0 )
+      if (value > 100 || value < 0)
       {
         callback(new Error('请输入正确的分数'))
       } else
@@ -112,14 +113,22 @@ export default {
           this.result.evaSid = this.sid
           this.result.wid = this.homeworkid
           this.result.cid = this.cid
-          getexhomework(this.result).then(response => {
+          if (this.result.comments == "")
+          {
             this.$message({
-              message: '提交成功',
-              type: 'sucess'
+              message: '请输入评语',
+              type: 'warning'
             })
-            this.$router.push({ path: '/evaluation/index' })
-          })
-
+          } else
+          {
+            getexhomework(this.result).then(response => {
+              this.$message({
+                message: '提交成功',
+                type: 'sucess'
+              })
+              this.$router.push({ path: '/evaluation/index' })
+            })
+          }
         }
         else
         {
@@ -331,6 +340,19 @@ export default {
   width: 100px;
   height: 10px;
   /* 设置按钮宽度为100px，根据需要调整宽度 */
+}
+
+.hom-user2 {
+  font-size: 16px;
+  color: #181717;
+  margin-bottom: 10px;
+}
+
+.hom-user1 {
+  font-size: 16px;
+  color: #1146e5;
+  margin-bottom: 10px;
+  text-decoration: underline;
 }
 </style>
 

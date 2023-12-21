@@ -1,27 +1,7 @@
 <template>
   <div class="body">
-    <!-- <div class="image-container">
-      <img src="../../assets/background/c1.png" alt="Your Image">
-    </div> -->
-    <!-- <div class="left-content"> -->
-    <!-- <h1>{{ name }} , 欢迎进入课程</h1>
-      <p>亲爱的学生，欢迎来到我们的课程列表页面！在这里，你将发现丰富多彩的学习机会，覆盖各种感兴趣的主题。</p>
-    </div> -->
     <div class='ada'>
       <div class="left-content1">
-        <!-- <el-card class="box-card-component" style="margin-left:8px;">
-          <div slot="header" class="box-card-header">
-            <img src="../../assets/background/aa.jpg">
-          </div>
-          <div style="position:relative;">
-            <pan-thumb :image="avatar" class="panThumb" />
-            <mallki class-name="mallki-text" text="" />
-            <div style="padding-top:35px;" class="progress-item">
-              <span>学习进度</span>
-              <el-progress :percentage="70" />
-            </div>
-          </div>
-        </el-card> -->
         <h1>l 互动提醒</h1>
         <div class="list-item" v-for="(item, index) in list" :key="index" @click="toggleChildren(index)">
           <div class="item-name">
@@ -31,14 +11,14 @@
             <list :list="item.children"></list>
           </div>
         </div>
-        <!-- <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
+        <div class="list-item" v-for="(item, index) in list1" :key="index" @click="toggleChildren1(index)">
           <div class="item-name">
             <span>{{ item.name }}</span>
           </div>
           <div v-if="item.showChildren" class="children-item">
             <list :list="item.children"></list>
           </div>
-        </div> -->
+        </div>
       </div>
       <div class='left-content2'>
         <h1>l 课程列表</h1>
@@ -78,7 +58,7 @@
 </template>
 
 <script>
-import { getList, getAll, gethomenotice } from '@/api/course'
+import { getList, getAll, gethomenotice, gethomenotice1 } from '@/api/course'
 import store from '@/store'
 import vue from 'vue'
 import { mapGetters } from 'vuex'
@@ -113,6 +93,11 @@ export default {
         showChildren: false,
         children: []
       }],
+      list1: [{
+        name: "",
+        showChildren: false,
+        children: []
+      }],
       // list1: [{
       //   name: "您有两个课程通知",
       //   showChildren: false,
@@ -141,6 +126,7 @@ export default {
   created () {
     this.fetchData()
     this.fetchhomenotice()
+    this.fetchhomenotice1()
   },
 
   methods: {
@@ -164,6 +150,20 @@ export default {
           this.list[0].children.push({ name: this.momo[i].cname + "---" + "有" + number + "个未交作业", showChildren: false });
         }
         this.list[0].name = "您有" + new Set(this.momo).size + "个未交作业"//获取有未交作业的课程的数量
+      })
+    },
+    //获取互评作业的信息
+    fetchhomenotice1 () {
+      gethomenotice1().then(response => {
+        this.momo1 = response.data
+        console.log(new Set(this.momo1).size)
+        let number = 0
+        for (let i = 0; i < new Set(this.momo1).size; i++)
+        {
+          number = this.momo1[i].cnt + number
+          this.list1[0].children.push({ name: this.momo1[i].cname + "---" + "有" + number + "个互评作业", showChildren: false });
+        }
+        this.list1[0].name = "您有" + new Set(this.momo1).size + "个互评作业"//获取有未交作业的课程的数量
       })
     },
     // //获取课程通知的的信息
@@ -240,14 +240,14 @@ export default {
       }
 
     },
-    // toggleChildren1 (index) {
-    //   // 切换子项的显示状态
-    //   this.$set(this.list1, index, {
-    //     ...this.list1[index],
-    //     showChildren: !this.list1[index].showChildren,
-    //   });
-    //   console.log(this.list1[index].showChildren)
-    // },
+    toggleChildren1 (index) {
+      // 切换子项的显示状态
+      this.$set(this.list1, index, {
+        ...this.list1[index],
+        showChildren: !this.list1[index].showChildren,
+      });
+      console.log(this.list1[index].showChildren)
+    },
 
     search () {
       this.listLoading = true
@@ -269,7 +269,7 @@ export default {
 .body {
   justify-content: space-between;
   height: auto;
-  background-color: rgb(211, 240, 203);
+  background-color: rgb(243, 246, 243);
   /* 左右排列 */
 }
 

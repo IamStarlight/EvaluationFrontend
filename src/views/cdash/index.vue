@@ -153,7 +153,8 @@ export default {
 .body {
   justify-content: space-between;
   height: auto;
-  background-color: rgb(211, 240, 203);
+  // background-color: rgb(211, 240, 203);
+  background-color: rgb(243, 246, 243);
   /* 左右排列 */
 }
 
@@ -164,7 +165,7 @@ export default {
 .left-content {
   padding: 20px;
   /* background-color: #c0f9b6; */
-  background-color: rgb(253, 248, 166);
+  background-color: rgb(198, 222, 243);
   box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
   margin-left: 20px;
   margin-right: 20px;
@@ -207,7 +208,7 @@ h1 {
 
 .left-content3 {
   padding: 20px;
-  background-color: rgb(198, 222, 243);
+  background-color: rgb(253, 248, 166);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-left: 20px;
   margin-right: 20px;

@@ -204,7 +204,13 @@ export function getoutcome (data) {
     params: data
   })
 }
-
+export function getallcome (data) {
+  return request({
+    url: 'peer/evaluated',
+    method: 'get',
+    params: data
+  })
+}
 export function getreason (data) {
   return request({
     url: 'appeal/one',
@@ -230,6 +236,13 @@ export function getcancle (data) {
 }
 
 export function gethomenotice (data) {
+  return request({
+    url: 'statistics/all/missed',
+    method: 'get',
+  })
+}
+
+export function gethomenotice1 (data) {
   return request({
     url: 'statistics/all/missed',
     method: 'get',

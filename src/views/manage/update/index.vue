@@ -1,51 +1,74 @@
 <template>
   <div class="app-container">
-    <div class="dashboard-text">编辑课程资料</div>
-    <div class="dashboard-text">课程号是 : {{ cid }}</div>
-    <div class="dashboard-text">课程名是 : {{ cname }}</div>
-    <div class="dashboard-text">任课老师是 : {{ teacher }}</div>
-    <div class="dashboard-text">课程简介是 : {{ cintroduction }}</div>
+    <div class="left-content">
+      <div class="dashboard-text">课程资料</div>
+      <div class="dashboard-text">课程号: {{ cid }}</div>
+      <div class="dashboard-text">课程名: {{ cname }}</div>
+      <div class="dashboard-text">课程简介 : {{ cintroduction }}</div>
+    </div>
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
-<!--        @keyup.enter.native="handleFilter" />-->
+      <!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
+      <!--        @keyup.enter.native="handleFilter" />-->
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button> -->
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handlereturn">
-        返回课程列表
-      </el-button>
+      <div class="left-content1">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
+          @click="handleCreate">
+          Add
+        </el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
+          @click="handlereturn">
+          返回课程列表
+        </el-button>
+      </div>
       <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
         @click="handleDownload">
         Export
       </el-button> -->
     </div>
-    <el-table :key="tableKey" v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%;">
-      <el-table-column label="学号" min-width="150px">
-        <template slot-scope="{row}">
-          <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="姓名" width="110px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="邮箱" width="200px" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.email }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row)">
-            Delete
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <div class='left-content2'>
+      <h1> l 课程人员名单</h1>
+      <el-table :key="tableKey" v-loading="listLoading" :data="pagedList" border fit highlight-current-row>
+        <el-table-column label="学号" min-width="150px">
+          <template slot-scope="{row}">
+            <span class="link-type" @click="handleUpdate(row)">{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="姓名" width="500px" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="邮箱" align="center">
+          <template slot-scope="{row}">
+            <span>{{ row.email }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Actions" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="{row,$index}">
+            <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row)">
+              Delete
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="custom-pagination">
+        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 50, 100]"
+          :page-size="pageSize" :total="total" layout="sizes, prev, pager, next, jumper">
+          <!-- 自定义每页显示大小样式 -->
+          <span slot="sizes" class="custom-sizes">
+            每页显示：
+            <el-select v-model="pageSize" @change="handleSizeChange">
+              <el-option label="10" value="10"></el-option>
+              <el-option label="20" value="20"></el-option>
+              <el-option label="50" value="50"></el-option>
+              <el-option label="100" value="100"></el-option>
+            </el-select>
+          </span>
+        </el-pagination>
+      </div>
+    </div>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px"
@@ -89,6 +112,10 @@ export default {
   },
   data () {
     return {
+      pagedList: [], // 当前页显示的数据
+      currentPage: 1, // 当前页码
+      pageSize: 10, // 每页显示条目数
+      total: 0, // 总条目数
       tableKey: 0,
       list: [{
         id: '',
@@ -144,7 +171,16 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+        this.total = this.list.length;
+        this.handleCurrentChange(this.currentPage);
       })
+    },
+    handleCurrentChange (val) {
+      // 用户改变当前页码时触发的方法
+      this.currentPage = val;
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      this.pagedList = this.list.slice(startIndex, endIndex > this.list.length ? this.list.length : endIndex);
     },
     handleModifyStatus (row, status) {
       this.$message({
@@ -255,3 +291,82 @@ export default {
   }
 }
 </script>
+<style>
+.dashboard-text {
+  font-family: "Your Desired Font", sans-serif;
+  /* 替换 "Your Desired Font" 为您选择的字体名称 */
+  font-size: 16px;
+  /* 替换为您希望的字体大小 */
+  font-weight: bold;
+  /* 替换为您希望的字体粗细 */
+  color: #333;
+  /* 替换为您希望的字体颜色 */
+  margin-bottom: 10px;
+  /* 可选，根据需要设置底部边距 */
+}
+
+.left-content {
+  padding: 20px;
+  /* background-color: #c0f9b6; */
+  background-color: rgb(231, 231, 228);
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+
+  width: 50%;
+}
+
+.left-content1 {
+  padding: 20px;
+
+}
+
+.custom-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.custom-pagination .el-pagination {
+  display: inline-block;
+}
+
+.custom-pagination .el-pagination .el-pagination-button {
+  border-color: #409EFF;
+  color: #409EFF;
+}
+
+.custom-pagination .el-pagination .el-pagination-button.is-current {
+  background-color: #409EFF;
+  border-color: #409EFF;
+  color: #fff;
+}
+
+/* 自定义每页显示大小样式 */
+.custom-sizes {
+  margin-right: 10px;
+}
+
+.left-content2 {
+  padding: 20px;
+  width: 100%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  min-height: 720px;
+  border-radius: 10px;
+}
+
+h1 {
+  /* 设置字体样式为 Arial，如果 Arial 不可用，则使用 sans-serif 作为备用字体 */
+  font-family: 'Arial', sans-serif;
+  /* 设置字体大小为 24 像素 */
+  font-size: 24px;
+  /* 设置字体颜色为蓝色 */
+  color: black;
+}
+</style>
