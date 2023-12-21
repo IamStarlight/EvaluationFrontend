@@ -1,22 +1,27 @@
 <template>
   <div class="app-container">
-    <div class="dashboard-text">编辑课程资料</div>
-    <div class="dashboard-text">课程号是 : {{ cid }}</div>
-    <div class="dashboard-text">课程名是 : {{ cname }}</div>
-    <div class="dashboard-text">任课老师是 : {{ teacher }}</div>
-    <div class="dashboard-text">课程简介是 : {{ cintroduction }}</div>
+    <div class="left-content">
+      <div class="dashboard-text">课程资料</div>
+      <div class="dashboard-text">课程号: {{ cid }}</div>
+      <div class="dashboard-text">课程名: {{ cname }}</div>
+      <div class="dashboard-text">课程简介 : {{ cintroduction }}</div>
+    </div>
     <div class="filter-container">
-<!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
-<!--        @keyup.enter.native="handleFilter" />-->
+      <!--      <el-input v-model="listQuery.title" placeholder="学号" style="width: 200px;" class="filter-item"-->
+      <!--        @keyup.enter.native="handleFilter" />-->
       <!-- <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button> -->
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">
-        Add
-      </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handlereturn">
-        返回课程列表
-      </el-button>
+      <div class="left-content1">
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
+          @click="handleCreate">
+          Add
+        </el-button>
+        <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit"
+          @click="handlereturn">
+          返回课程列表
+        </el-button>
+      </div>
       <!-- <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
         @click="handleDownload">
         Export
@@ -255,3 +260,36 @@ export default {
   }
 }
 </script>
+<style>
+.dashboard-text {
+  font-family: "Your Desired Font", sans-serif;
+  /* 替换 "Your Desired Font" 为您选择的字体名称 */
+  font-size: 16px;
+  /* 替换为您希望的字体大小 */
+  font-weight: bold;
+  /* 替换为您希望的字体粗细 */
+  color: #333;
+  /* 替换为您希望的字体颜色 */
+  margin-bottom: 10px;
+  /* 可选，根据需要设置底部边距 */
+}
+
+.left-content {
+  padding: 20px;
+  /* background-color: #c0f9b6; */
+  background-color: rgb(231, 231, 228);
+  box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+
+  width: 50%;
+}
+
+.left-content1 {
+  padding: 20px;
+
+}
+</style>
