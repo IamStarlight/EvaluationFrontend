@@ -244,7 +244,7 @@ export function gethomenotice (data) {
 
 export function gethomenotice1 (data) {
   return request({
-    url: 'statistics/all/missed',
+    url: 'statistics/eva',
     method: 'get',
   })
 }

@@ -170,7 +170,7 @@ export default {
         this.list = response.data
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1.5 * 500)
         this.total = this.list.length;
         this.handleCurrentChange(this.currentPage);
       })
@@ -201,7 +201,7 @@ export default {
           this.list = response.data
           setTimeout(() => {
             this.listLoading = false
-          }, 1.5 * 1000)
+          }, 1.5 * 500)
         })
       }
     },

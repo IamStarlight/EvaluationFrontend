@@ -228,7 +228,7 @@ export default {
         console.log(this.list)
         setTimeout(() => {
           this.listLoading = false
-        }, 1.5 * 1000)
+        }, 1.5 * 500)
         this.total = this.list.length;
         this.handleCurrentChange(this.currentPage);
       })
@@ -267,7 +267,7 @@ export default {
           console.log(this.list)
           setTimeout(() => {
             this.listLoading = false
-          }, 1.5 * 1000)
+          }, 1.5 * 500)
           this.total = this.list.length;
           this.handleCurrentChange(this.currentPage);
         })
@@ -298,7 +298,7 @@ export default {
           console.log(response.data)
           setTimeout(() => {
             this.listLoading = false
-          }, 1.5 * 1000)
+          }, 1.5 * 500)
           this.total = this.list.length;
           this.handleCurrentChange(this.currentPage);
         })
@@ -325,7 +325,7 @@ export default {
           }
           setTimeout(() => {
             this.listLoading = false
-          }, 1.5 * 1000)
+          }, 1.5 * 500)
           this.total = this.list.length;
           this.handleCurrentChange(this.currentPage);
         })

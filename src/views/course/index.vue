@@ -161,7 +161,7 @@ export default {
         for (let i = 0; i < new Set(this.momo1).size; i++)
         {
           number = this.momo1[i].cnt + number
-          this.list1[0].children.push({ name: this.momo1[i].cname + "---" + "有" + number + "个互评作业", showChildren: false });
+          this.list1[0].children.push({ name: this.momo1[i].cname, showChildren: false });
         }
         this.list1[0].name = "您有" + new Set(this.momo1).size + "个互评作业"//获取有未交作业的课程的数量
       })
