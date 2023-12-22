@@ -233,7 +233,7 @@ export const asyncRoutes = [
       },
       {
         path: '/email/detail',
-        name: 'detail',
+        name: 'Detail',
         component: () => import('@/views/email/detail'),
       },
     ]

@@ -13,7 +13,8 @@
       </el-table-column>
       <el-table-column label="申诉理由">
         <template slot-scope="scope">
-          {{ scope.row.appeal_reason }}
+          <VueMarkdown :source="scope.row.appeal_reason" v-highlight></VueMarkdown>
+<!--          {{ scope.row.appeal_reason }}-->
         </template>
       </el-table-column>
       <el-table-column label="提交时间">
@@ -38,36 +39,12 @@
 <script>
 import {mapGetters} from "vuex";
 import {listEmail, deleteEmail} from "@/api/homework";
+import VueMarkdown from "vue-markdown";
 
 export default {
+  components: {VueMarkdown},
   data() {
     return {
-      // appealList: [
-      //   {
-      //     sid: 1,
-      //     wid:1,
-      //     title:'haha1',
-      //     sname: '张三',
-      //     reason: '作业批改有误',
-      //     submit_time: '2023-11-10 14:30:22'
-      //   },
-      //   {
-      //     sid: 2,
-      //     title:'haha2',
-      //     wid:2,
-      //     sname: '李四',
-      //     reason: '分数计算有误',
-      //     submit_time: '2023-11-11 09:20:11'
-      //   },
-      //   {
-      //     sid: 3,
-      //     wid:3,
-      //     title:'haha3',
-      //     sname: '王五',
-      //     reason: '作业未按时提交',
-      //     submit_time: '2023-11-11 10:05:58'
-      //   }
-      // ],
        appealList:[]
     }
   },
@@ -100,7 +77,7 @@ export default {
     viewDetail(wid,sid) {
       // 显示申诉详情
       this.$router.push({
-        name: 'detail',
+        name: 'Detail',
         query: { wid:wid ,sid:sid}
       });
     },

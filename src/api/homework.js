@@ -42,6 +42,13 @@ export function evaluate(data){
     data
   })
 }
+export function similar(data){
+  return request({
+    url: '/homework/similar',//deal
+    method: 'get',
+    params: data
+  })
+}
 
 //3.box界面
 //获取某个作业中所有学生的作业
@@ -134,6 +141,13 @@ export function listEmailDetail (data) {
     method: 'get',
     params: data
   })
+}
+export function appealReply(data) {
+  return request({
+    url: '/appeal/reply',//deal
+    method: 'put',
+    data
+  });
 }
 //修改老师评分,用之前那个
 // export function updateTeacherGrade(data) {

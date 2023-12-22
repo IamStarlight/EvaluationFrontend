@@ -3,35 +3,12 @@
     <div class="ada">
       <div class="left-content1">
         <h1>l 互动提醒</h1>
-        <div class="list-item" v-for="(item, index) in list" :key="index" @click="toggleChildren(index)">
-          <div class="item-name">
-            <span>{{ item.name }}</span>
-          </div>
-          <div v-if="item.showChildren" class="children-item">
-            <list :list="item.children"></list>
-          </div>
-        </div>
+        <ul>
+          <li v-for="item in appeal_list" :key="item.cid">
+            <a href="#" @click="change1(item.cid)">UI设计课程，有{{ item.appeal_count }}个申诉待处理</a>
+          </li>
+        </ul>
       </div>
-      <!--      filter换成搜索功能-->
-      <!--      <div class="filter">-->
-      <!--        <el-form class="search-form" inline>-->
-      <!--          <el-form-item label="课程搜索">-->
-      <!--            <el-input v-model="searchKeyword" placeholder="输入课程名" style="width: 300px;"></el-input>-->
-      <!--          </el-form-item>-->
-      <!--          <el-form-item>-->
-      <!--            <el-button type="primary" @click="search">搜索</el-button>-->
-      <!--          </el-form-item>-->
-      <!--        </el-form>-->
-      <!--      </div>-->
-      <!--      <div class="info_list">-->
-      <!--        <h1>TODO</h1>-->
-      <!--        <el-card class="box-card" style="height: 100%">-->
-      <!--          <p class="box-author">您有{{1}}个作业待发布</p>-->
-      <!--          <p class="box-author">您有{{ 2 }}份作业待批改</p>-->
-      <!--          <p class="box-author">您有{{3 }}个申诉待处理</p>-->
-      <!--        </el-card>-->
-
-      <!--      </div>-->
       <!--      以下是课程列表-->
       <div class="left-content2">
         <h1>l 课程列表</h1>
@@ -68,7 +45,7 @@
 
 
 <script>
-import { getTList } from "@/api/Tcourse";
+import { getTList,getAppeal } from "@/api/Tcourse";
 import { mapGetters } from 'vuex'
 
 export default {
@@ -81,17 +58,34 @@ export default {
         children: []
       }],
       momo: [],
-      // courses:[{
-      //   cid:'1',
-      //   cname:'数据结构',
-      //   name:'lsy',
-      //   content:'123123'
-      // }],
       courses: [],
       listLoading: true,
       current_page: 1,
       filter_price: false,
-      searchKeyword: ''
+      searchKeyword: '',
+      appeal_list:[
+        {
+          cid: 1,
+          wid: 9,
+          appeal_time: "2023-12-21 11:14",
+          sname: "陈锦璇",
+          title: "400",
+          appeal_reason: "<p>测试</p>",
+          sid: 21301000,
+          appeal_count: 1 // 添加一个appeal_count属性表示待处理的申诉数量
+        },
+        // {
+        //   cid: 2,
+        //   wid: 10,
+        //   appeal_time: "2023-12-20 18:39",
+        //   sname: "张三",
+        //   title: "401",
+        //   appeal_reason: "<p>申诉内容</p>",
+        //   sid: 21301001,
+        //   appeal_count: 3
+        // },
+        // 其他数据项
+      ],
     }
   },
   components: {
@@ -100,6 +94,7 @@ export default {
     this.fetchData();
   },
   mounted () {
+    this.fetchhomenotice()
     // this.getList();
   },
   computed: {
@@ -112,38 +107,9 @@ export default {
     //获取处理申诉的信息
     fetchhomenotice () {
       //接口改一下就好
-      gethomenotice().then(response => {
-        this.momo = response.data
-        console.log(new Set(this.momo).size)
-        let number = 0
-        for (let i = 0; i < new Set(this.momo).size; i++)
-        {
-          number = this.momo[i].cnt + number
-          this.list[0].children.push({ name: this.momo[i].cname + "---" + "有" + number + "个未交作业", showChildren: false });
-        }
-        this.list[0].name = "您有" + new Set(this.momo).size + "个未交作业"//获取有未交作业的课程的数量
+      getAppeal().then(response => {
+        this.list=response.data
       })
-    },
-    toggleChildren (index) {
-
-      if (index === 0)
-      {
-        console.log(this.list)
-        this.$set(this.list, index, {
-          ...this.list[index],
-          showChildren: !this.list[index].showChildren,
-        });
-      } else if (index > 0 && index - 1 < this.momo.length)
-      {
-        const cid = this.momo[index - 1].cid;
-        const resultArray = this.courses.filter(item => item.cid === cid);
-        console.log("在");
-        console.log(resultArray);
-      } else
-      {
-        console.warn("Invalid index:", index);
-      }
-
     },
     fetchData () {
       this.listLoading = true
@@ -165,7 +131,6 @@ export default {
         this.$store.dispatch("user/setchangerole",
           ['5']
         );
-
       }
       this.$store.dispatch("course/setchangeid",
         cid
@@ -183,6 +148,23 @@ export default {
         content
       );
       this.$router.push({ path: '/cdash/show' })
+    },
+    change1 (cid) {
+      if (this.roles == 3)
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['4']
+        );
+      } else
+      {
+        this.$store.dispatch("user/setchangerole",
+          ['5']
+        );
+      }
+      this.$store.dispatch("course/setchangeid",
+        cid
+      );
+      this.$router.push({ path: '/email/email' })
     },
 
     search () {

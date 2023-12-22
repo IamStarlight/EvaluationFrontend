@@ -2,11 +2,13 @@
   <div class="hom-container1">
     <p>正在批改学号为：{{this.$route.query.sid}} 同学的作业</p>
     <div class="hom-container1">
-      <p>文字内容：</p>
-      {{ sHomework[0].details }}
+      <p>文本内容：</p>
+      <VueMarkdown :source="sHomework[0].details" v-highlight></VueMarkdown>
     </div>
-    <el-button @click="download">下载附件</el-button>
-    <a href="sHomework[0].url" download>下载</a>
+<!--    <el-button @click="download">下载附件</el-button>-->
+    <div style="margin-bottom: 20px;"></div>
+    <a color="blue" :href="sHomework[0].url" target="_blank" class="buttonText">下载附件：{{ sHomework[0].url }}</a>
+    <div style="margin-bottom: 20px;"></div>
     <div class="hom-score" style="display: flex; flex-direction: column;">
       学生当前评分为：<p>{{sHomework[0].teacher_grade}}</p>
       <el-input
@@ -34,6 +36,7 @@
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
 import { mapGetters } from "vuex";
 import {download, getStudentHomework, updateScore} from "@/api/homework";
 
@@ -52,6 +55,10 @@ export default {
 
   created() {
     this.fetchData();
+  },
+
+  components:{
+    VueMarkdown, // 注入组件
   },
 
   methods: {

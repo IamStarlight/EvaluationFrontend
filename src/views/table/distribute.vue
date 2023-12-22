@@ -14,7 +14,7 @@
     </el-form-item>
 
     <el-form-item v-if="form.isScheduled" label="定时发布">
-      <el-date-picker type="datetime" v-model="form.startTime" :picker-options="pickerOptions" placeholder="选择日期时间"></el-date-picker>
+      <el-date-picker type="datetime" v-model="form.startTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd hh:mm"></el-date-picker>
     </el-form-item>
 
     <el-form-item label="截止日期" required>
@@ -45,10 +45,10 @@
     </el-form-item>
 
     <el-form-item label="评分占比" required>
-      <el-select v-model="form.rate" placeholder="请选择占比">
-        <el-option label="30" value="30"></el-option>
-        <el-option label="50" value="50"></el-option>
-        <el-option label="70" value="70"></el-option>
+      <el-select v-model="form.proportion" placeholder="请选择占比">
+        <el-option label="30%" value="0.3"></el-option>
+        <el-option label="50%" value="0.5"></el-option>
+        <el-option label="70%" value="0.7"></el-option>
       </el-select>
     </el-form-item>
 
@@ -90,7 +90,7 @@ export default {
         details: '',
         status:'',
         wid:'',//如果后端有传回一个wid那么把这个存起来，每次提交都传一个wid，如果有那么写在一起，如果为空那么新增一个
-        rate:'',
+        proportion:'',
       },
     }
   },
@@ -185,7 +185,7 @@ export default {
           const title = this.form.title;
           const endTime = this.form.endTime
           const status = this.form.status
-          const wid = this.form.wid
+          const fid = this.fid
           // 构造请求参数
           const requestData = {
             details,
@@ -193,6 +193,7 @@ export default {
             title,
             endTime,
             status,
+            fid
           };
           // 发送请求给后端，并传递请求参数
           deliverHomework(requestData)
@@ -200,7 +201,7 @@ export default {
               console.log(response.data.message);
               // 根据 API 返回的响应，进行相应的处理
               // 可以给用户显示作业提交成功的消息
-              this.$message.success('作业发布成功');
+              this.$message.success('存入草稿成功');
               // 其他操作
             })
           this.$message('save!')
@@ -221,7 +222,7 @@ export default {
           const endTime = this.form.endTime
           const status = this.form.status
           const startTime = this.form.startTime
-          const wid = this.form.wid
+          const fid = this.fid
           // 构造请求参数
           const requestData = {
             details,
@@ -230,7 +231,7 @@ export default {
             endTime,
             status,
             startTime,
-            wid
+            fid
           };
           // 发送请求给后端，并传递请求参数
           deliverHomework(requestData)
@@ -242,6 +243,7 @@ export default {
               // 其他操作
             })
           this.$message('submit!')
+          this.fid=-1
         } else {
           this.$message.error('请正确填写表单信息');
           return false;
