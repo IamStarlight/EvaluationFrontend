@@ -72,6 +72,7 @@ import { deliverHomework,deliverpdf } from "@/api/homework";
 export default {
   data () {
     return {
+      fid:-1,
       // content:'',
       // selectedDate: '',
       // isScheduled: false,
@@ -89,7 +90,7 @@ export default {
         details: '',
         status:'',
         wid:'',//如果后端有传回一个wid那么把这个存起来，每次提交都传一个wid，如果有那么写在一起，如果为空那么新增一个
-        rate:''
+        rate:'',
       },
     }
   },
@@ -117,7 +118,9 @@ export default {
       // 将输入表单数据添加到params表单中
       paramsData.append('cid', this.cid)
       deliverpdf(paramsData).then(response => {
-        this.form.wid = response.data.wid
+        this.fid = response.data
+        console.log(response.data)
+        console.log(response.data.data)
         this.$message({
           message: "导入成功",
           type: "success"
@@ -144,6 +147,7 @@ export default {
           const endTime = this.form.endTime
           const status = this.form.status
           const wid = this.form.wid
+          const fid = this.fid
           // 构造请求参数
           const requestData = {
             details,
@@ -151,7 +155,8 @@ export default {
             title,
             endTime,
             status,
-            wid
+            //wid,
+            fid
           };
           // 发送请求给后端，并传递请求参数
           deliverHomework(requestData)
@@ -163,6 +168,7 @@ export default {
               // 其他操作
             })
           this.$message('submit!')
+          this.fid=-1
         } else {
           this.$message.error('请正确填写表单信息');
           return false;
