@@ -14,11 +14,11 @@
     </el-form-item>
 
     <el-form-item v-if="form.isScheduled" label="定时发布">
-      <el-date-picker type="datetime" v-model="form.startTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd hh:mm"></el-date-picker>
+      <el-date-picker type="datetime" v-model="form.startTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm"></el-date-picker>
     </el-form-item>
 
     <el-form-item label="截止日期" required>
-      <el-date-picker type="datetime" v-model="form.endTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd hh:mm" ></el-date-picker>
+      <el-date-picker type="datetime" v-model="form.endTime" :picker-options="pickerOptions" placeholder="选择日期时间" value-format="yyyy-MM-dd HH:mm" ></el-date-picker>
     </el-form-item>
 
     <el-form-item label="上传附件">

@@ -1,74 +1,79 @@
 <template>
   <div>
-    <h2>已发布作业</h2>
-    <el-table :data="assignments"  class="custom-table">
-      <!-- 表头 -->
-      <el-table-column label="作业ID" width="80px">
-        <template slot-scope="scope">
-          {{ scope.row.wid }}
-        </template>
-      </el-table-column>
-      <el-table-column label="作业名称" width="200px">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="开始时间" width="190px">
-        <template slot-scope="scope">
-          {{ scope.row.startTime }}
-        </template>
-      </el-table-column>
-      <el-table-column label="截止时间" width="190px">
-        <template slot-scope="scope">
-          {{ scope.row.endTime }}
-        </template>
-      </el-table-column>
-      <el-table-column label="提交人数" width="80px">
-        <template slot-scope="scope">
-          {{ scope.row.submitNumber }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="450px">
-        <template slot-scope="scope">
-          <template v-if="new Date(scope.row.endTime) > new Date()">
-            <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
-              去批改
-            </el-button>
-            <span style="margin: 10px;"></span>
-            <el-button class="btn2" @click="deleteHom(scope.row.wid)">
-              删除作业
-            </el-button>
-            <span style="margin: 10px;"></span>
-            <el-button class="btn3" @click="showDia(scope.row.wid)"
-                       :disabled="false" type="primary">
-              发布互评
-            </el-button>
-            <el-button class="btn5" @click="startSimilar(scope.row.wid)"
-                        :disabled="true">
-              相似度检测
-            </el-button>
-          </template>
-          <template v-else>
-            <el-button class="btn4" @click="gotoDetail(scope.row.wid)"
-                       :disabled="false" type="warning">
-              查看详情
-            </el-button>
-            <span style="margin: 10px;"></span>
-            <el-button class="btn2" @click="deleteHom(scope.row.wid)">
-              删除作业
-            </el-button>
-            <span style="margin: 10px;"></span>
-            <el-button class="btn3" @click="showDia(scope.row.wid)"
-                       >
-              发布互评
-            </el-button>
-            <el-button class="btn5" @click="startSimilar(scope.row.wid)">
-              相似度检测
-            </el-button>
-          </template>
-        </template>
-      </el-table-column>
-    </el-table>
+    <h2>l 已发布作业</h2>
+    <div class="centered-card">
+      <el-card>
+        <el-table :data="assignments"  class="custom-table">
+          <!-- 表头 -->
+          <el-table-column label="作业ID" width="80px">
+            <template slot-scope="scope">
+              {{ scope.row.wid }}
+            </template>
+          </el-table-column>
+          <el-table-column label="作业名称" width="200px">
+            <template slot-scope="scope">
+              {{ scope.row.title }}
+            </template>
+          </el-table-column>
+          <el-table-column label="开始时间" width="190px">
+            <template slot-scope="scope">
+              {{ scope.row.startTime }}
+            </template>
+          </el-table-column>
+          <el-table-column label="截止时间" width="190px">
+            <template slot-scope="scope">
+              {{ scope.row.endTime }}
+            </template>
+          </el-table-column>
+          <el-table-column label="提交人数" width="80px">
+            <template slot-scope="scope">
+              {{ scope.row.submitNumber }}/61
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="450px">
+            <template slot-scope="scope">
+              <template v-if="new Date(scope.row.endTime) > new Date()">
+                <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
+                  去批改
+                </el-button>
+                <span style="margin: 10px;"></span>
+                <el-button class="btn2" @click="deleteHom(scope.row.wid)">
+                  删除作业
+                </el-button>
+                <span style="margin: 10px;"></span>
+                <el-button class="btn3" @click="showDia(scope.row.wid)" type="primary"
+                           :disabled="scope.row.evaStatus === '已发布互评'">
+                  发布互评
+                </el-button>
+                <el-button class="btn5" @click="startSimilar(scope.row.wid)"
+                           :disabled="true">
+                  相似度检测
+                </el-button>
+              </template>
+              <template v-else>
+                <el-button class="btn4" @click="gotoDetail(scope.row.wid)"
+                           :disabled="false" type="warning">
+                  查看详情
+                </el-button>
+                <span style="margin: 10px;"></span>
+                <el-button class="btn2" @click="deleteHom(scope.row.wid)">
+                  删除作业
+                </el-button>
+                <span style="margin: 10px;"></span>
+                <el-button class="btn3" @click="showDia(scope.row.wid)"
+                           :disabled="scope.row.evaStatus === '已发布互评'">
+                  发布互评
+                </el-button>
+                <el-button class="btn5" @click="startSimilar(scope.row.wid)">
+                  相似度检测
+                </el-button>
+              </template>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-card>
+    </div>
+
 
     <el-dialog :visible.sync="showDialog" title="互评截止日期">
       <div class="date-time-container">
@@ -101,12 +106,6 @@ import {deleteHomework, evaluate, listHomework,similar} from "@/api/homework";
 export default {
   data() {
     return {
-     // cid:'1',
-      // assignments: [
-      //   { id: 1, name: '作业1', startTime: '2023-11-01', deadline: '2023-11-07' },
-      //   { id: 2, name: '作业2', startTime: '2023-11-03', deadline: '2023-11-10' },
-      //   { id: 3, name: '作业3', startTime: '2023-11-05', deadline: '2023-11-12' },
-      // ],
       assignments:[],
       listLoading: true,
       showDialog:false,
@@ -192,7 +191,8 @@ export default {
           this.$alert('成功开启', '提示', {
             confirmButtonText: '确定',
             callback: () => {
-              this.appealList = response.data.map(item => ({
+              this.tableData = response.data
+                .map(item => ({
                 student1: item[0],
                 student2: item[1],
                 similarity: item[2]
@@ -254,6 +254,12 @@ export default {
 
 
 <style scoped>
+
+.centered-card {
+  display: flex;
+  justify-content: center;
+  margin: 0 20px; /* 调整左右间隔 */
+}
 
 h2{
   margin-left: 20px;
