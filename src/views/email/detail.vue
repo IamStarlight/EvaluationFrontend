@@ -49,7 +49,6 @@
 import { mapGetters } from "vuex";
 import { listEmailDetail, updateScore, appealReply} from "@/api/homework";
 import VueMarkdown from "vue-markdown";
-
 export default {
   components: {VueMarkdown},
   data() {
