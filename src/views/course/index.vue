@@ -91,12 +91,18 @@ export default {
       list: [{
         name: "",
         showChildren: false,
-        children: []
+        children: [{
+          name: "",
+          showChildren: false,
+        }]
       }],
       list1: [{
         name: "",
         showChildren: false,
-        children: []
+        children: [{
+          name: "",
+          showChildren: false,
+        }]
       }],
       // list1: [{
       //   name: "您有两个课程通知",
@@ -242,11 +248,24 @@ export default {
     },
     toggleChildren1 (index) {
       // 切换子项的显示状态
-      this.$set(this.list1, index, {
-        ...this.list1[index],
-        showChildren: !this.list1[index].showChildren,
-      });
-      console.log(this.list1[index].showChildren)
+      if (index === 0)
+      {
+        console.log(this.list1)
+        this.$set(this.list1, index, {
+          ...this.list1[index],
+          showChildren: !this.list1[index].showChildren,
+        });
+      } else if (index > 0 && index - 1 < this.momo.length)
+      {
+        console.log(index)
+        const cid = this.momo1[index - 1].cid;
+        const resultArray = this.courses.filter(item => item.cid === cid);
+        console.log("在");
+        console.log(resultArray);
+      } else
+      {
+        console.warn("Invalid index:", index);
+      }
     },
 
     search () {
