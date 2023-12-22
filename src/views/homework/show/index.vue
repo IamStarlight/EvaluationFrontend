@@ -61,7 +61,8 @@
               <el-button
                 :type="(scope.row.read == '是' && scope.row.appeal == false) ? 'success' : (scope.row.read == '是') ? 'warning' : 'info'"
                 plain @click="change1(scope.row.wid, scope.row.tname, scope.row.date, scope.row.read, scope.row.appeal)">
-                {{ scope.row.read != '是' ? '未开始' : (scope.row.appeal == true ? '已申诉' : "申诉") }}
+                {{ (scope.row.read != '是' && scope.row.status != "D") ? '未开始' : (scope.row.appeal == true ? '已申诉' : "申诉")
+                }}
               </el-button>
             </span>
           </template>
@@ -267,8 +268,8 @@ export default {
         // this.list.score = response.data["title"]
         // this.list.read = response.data["title"]
         // this.list.bool = response.data["title"]
-        this.handleCurrentChange(this.currentPage);
         this.listLoading = false
+        this.handleCurrentChange(this.currentPage);
       })
     },
     handleCurrentChange (val) {

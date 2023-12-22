@@ -126,15 +126,11 @@ export default {
         let count = 0
         for (let i = 0; i < this.list.length; i++)
         {
-
           if (this.list[i]["is_eva"] == true)
           {
             count = count + 1
             console.log(count)
           }
-
-
-
         }
         if (all1 == 0)
         {
@@ -236,7 +232,6 @@ h1 {
 
 .left-content {
   min-width: 200px;
-  padding: 10px;
   background-color: white;
 
 }

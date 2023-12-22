@@ -75,8 +75,8 @@ export default {
       },
       blog: {
         title: '作业1',//名字
-        content: "a",//文本内容
-        time: 'sdsdsd',//发布时间
+        details: "无",//文本内容
+        time: '无',//发布时间
         url: ""//下载链接
 
       },
@@ -96,13 +96,20 @@ export default {
     editorImage
   },
   created () {
-    this.fetchData()
+    //this.fetchData()
   },
   methods: {
     fetchData () {
       const a = { beEvaSid: this.exchangeid, wid: this.homeworkid, cid: this.cid }
       getexchomework(a).then(response => {
-        this.blog = response.data[0]
+        if (response.data == [])
+        {
+
+        } else
+        {
+          this.blog = response.data[0]
+        }
+
       })
     },
     onSubmit () {
