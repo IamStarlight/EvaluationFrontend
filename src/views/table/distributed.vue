@@ -1,34 +1,34 @@
 <template>
   <div>
     <h2>已发布作业</h2>
-    <el-table :data="assignments">
+    <el-table :data="assignments"  class="custom-table">
       <!-- 表头 -->
       <el-table-column label="作业ID" width="80px">
         <template slot-scope="scope">
           {{ scope.row.wid }}
         </template>
       </el-table-column>
-      <el-table-column label="作业名称">
+      <el-table-column label="作业名称" width="200px">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="开始时间">
+      <el-table-column label="开始时间" width="190px">
         <template slot-scope="scope">
           {{ scope.row.startTime }}
         </template>
       </el-table-column>
-      <el-table-column label="截止时间">
+      <el-table-column label="截止时间" width="190px">
         <template slot-scope="scope">
           {{ scope.row.endTime }}
         </template>
       </el-table-column>
-      <el-table-column label="提交人数" width="100px">
+      <el-table-column label="提交人数" width="80px">
         <template slot-scope="scope">
           {{ scope.row.submitNumber }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="300px">
+      <el-table-column label="操作" width="450px">
         <template slot-scope="scope">
           <template v-if="new Date(scope.row.endTime) > new Date()">
             <el-button class="btn1" @click="gotoGrading(scope.row.wid)">
@@ -43,6 +43,10 @@
                        :disabled="false" type="primary">
               发布互评
             </el-button>
+            <el-button class="btn5" @click="startSimilar(scope.row.wid)"
+                        :disabled="true">
+              相似度检测
+            </el-button>
           </template>
           <template v-else>
             <el-button class="btn4" @click="gotoDetail(scope.row.wid)"
@@ -55,8 +59,11 @@
             </el-button>
             <span style="margin: 10px;"></span>
             <el-button class="btn3" @click="showDia(scope.row.wid)"
-                       :disabled="true">
+                       >
               发布互评
+            </el-button>
+            <el-button class="btn5" @click="startSimilar(scope.row.wid)">
+              相似度检测
             </el-button>
           </template>
         </template>
@@ -72,13 +79,24 @@
       <el-button @click="cancel">取消</el-button>
     </el-dialog>
 
+    <el-dialog :visible.sync="showSimilarDialog" title="结果展示" @close="handleCloseDialog">
+      <el-table :data="tableData">
+        <el-table-column prop="student1" label="学生1"></el-table-column>
+        <el-table-column prop="student2" label="学生2"></el-table-column>
+        <el-table-column prop="similarity" label="相似度"></el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="handleCloseDialog">关闭</el-button>
+  </span>
+    </el-dialog>
+
   </div>
 </template>
 
 
 <script>
 import {mapGetters} from "vuex";
-import {deleteHomework, evaluate, listHomework} from "@/api/homework";
+import {deleteHomework, evaluate, listHomework,similar} from "@/api/homework";
 
 export default {
   data() {
@@ -93,6 +111,8 @@ export default {
       listLoading: true,
       showDialog:false,
       wwid:1,
+      showSimilarDialog: false, // 控制对话框的显示与隐藏
+      tableData: '' // 用于存储 response.data
     }
   },
   computed: {
@@ -159,6 +179,32 @@ export default {
     cancel() {
       this.showDialog = false;
     },
+    startSimilar(id){
+      const wid = id;
+      const cid = this.cid
+      const data={
+        wid,
+        cid
+      };
+      similar(data).then(response => {
+        console.log(response.data);
+        if (response.data !== null && response.data !== undefined && response.data !== '') {
+          this.$alert('成功开启', '提示', {
+            confirmButtonText: '确定',
+            callback: () => {
+              this.appealList = response.data.map(item => ({
+                student1: item[0],
+                student2: item[1],
+                similarity: item[2]
+              }));
+              this.showSimilarDialog = true;
+            }
+          });
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    },
     evaluation(){
       const endTimeInput = document.getElementById('endTime')
       const endTimeValue = endTimeInput.value;
@@ -187,6 +233,20 @@ export default {
           console.log(error);
         });
     },
+    openDialog(data) {
+      similar(data).then(response => {
+        console.log(response.data);
+        if (response.data !== null && response.data !== undefined && response.data !== '') {
+          this.dialogContent = response.data; // 将 response.data 存储到 dialogContent 中
+          this.showSimilarDialog = true; // 打开对话框，即将 showDialog 设置为 true
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    },
+    handleCloseDialog() {
+      this.showSimilarDialog = false; // 关闭对话框
+    }
 
   }
 }
@@ -194,6 +254,16 @@ export default {
 
 
 <style scoped>
+
+h2{
+  margin-left: 20px;
+}
+
+.custom-table {
+  margin-left: 20px; /* 左右各添加 20px 的空隙 */
+  margin-right:20px ;
+}
+
 el-table {
   margin-left: 20px;
   width: 95%;
@@ -233,6 +303,13 @@ thead {
   padding: 6px 12px;
   border: none;
   background-color:darkslategrey;
+  color: white;
+  cursor: pointer;
+}
+.btn5 {
+  padding: 6px 12px;
+  border: none;
+  background-color:grey;
   color: white;
   cursor: pointer;
 }
