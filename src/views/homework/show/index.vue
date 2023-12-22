@@ -58,10 +58,11 @@
         <el-table-column align="center" prop="created_at" label="申诉" width="120">
           <template slot-scope="scope">
             <span>
-              <el-button
-                :type="(scope.row.read == '是' && scope.row.appeal == false) ? 'success' : (scope.row.read == '是') ? 'warning' : 'info'"
-                plain @click="change1(scope.row.wid, scope.row.tname, scope.row.date, scope.row.read, scope.row.appeal)">
-                {{ (scope.row.read != '是' && scope.row.status != "D") ? '未开始' : (scope.row.appeal == true ? '已申诉' : "申诉")
+              <el-button :type="(scope.row.read == '是' && scope.row.appeal == false && scope.row.status == 'D') ? 'success' :
+                (scope.row.read == '是' && scope.row.appeal == true && scope.row.status == 'D') ? 'warning' : 'info'"
+                plain @click="change1(scope.row.wid, scope.row.status, scope.row.date, scope.row.read, scope.row.appeal)">
+                {{ (scope.row.read == '是' && scope.row.appeal == false && scope.row.status == 'D') ? '申诉' :
+                  (scope.row.read == '是' && scope.row.appeal == true && scope.row.status == 'D' ? '已申诉' : "未开始")
                 }}
               </el-button>
             </span>
@@ -351,7 +352,7 @@ export default {
       }
     },
     change1 (hid, cname, tid, read, states) {
-      if (read == "是" && states == false)
+      if (read == '是' && states == false && cname == 'D')
       {
         this.$store.dispatch("course/setchangehomeworkid",
           hid

@@ -99,8 +99,8 @@ export default {
       listLoading: false,
       i: 0,
       searchKeyword: '', // 添加searchKeyword属性
-      reason: "ssss",
-      outcome: "sssss",
+      reason: "",
+      outcome: "",
     }
   },
   created () {

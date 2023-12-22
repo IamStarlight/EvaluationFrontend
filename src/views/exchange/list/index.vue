@@ -51,7 +51,7 @@
           <el-table-column align="center" prop="created_at" label="互评作业" width="200">
             <template slot-scope="scope">
               <span>
-                <el-button :type="(scope.row.is_eva == true) ? 'success' : 'info'" plain
+                <el-button :type="(scope.row.is_eva == true) ? 'warning' : 'success'" plain
                   @click="change(scope.row.be_eva_sid, scope.row.is_eva)">
                   {{ scope.row.is_eva == true ? '已批改' : '未批改' }}
                 </el-button>
@@ -137,7 +137,10 @@ export default {
           this.percentage = 0
         } else
         {
-          this.percentage = count / all1 * 100
+          const rawPercentage = (count / all1) * 100;
+
+          // 使用 toFixed(2) 保留两位小数
+          this.percentage = rawPercentage.toFixed(2);
         }
 
 

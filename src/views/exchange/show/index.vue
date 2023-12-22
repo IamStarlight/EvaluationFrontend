@@ -96,7 +96,7 @@ export default {
     editorImage
   },
   created () {
-    //this.fetchData()
+    this.fetchData()
   },
   methods: {
     fetchData () {
